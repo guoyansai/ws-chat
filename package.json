@@ -1,0 +1,24 @@
+{
+  "name": "ws-chat",
+  "version": "1.0.0",
+  "description": "AsaiChat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "echo \"start server\" && node server/msg && node server/user && echo \"OK\"",
+    "http": "echo \"start http\" && node client/http && echo \"http://localhost:8000\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guoyansai/ws-chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guoyansai/ws-chat/issues"
+  },
+  "homepage": "https://github.com/guoyansai/ws-chat#readme",
+  "dependencies": {
+    "ws": "^8.0.0"
+  }
+}
