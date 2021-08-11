@@ -1,3 +1,5 @@
+import { config } from "config";
+
 console.log(666.101, "msg");
 // 导入WebSocket模块:
 const WebSocket = require("ws");
@@ -5,7 +7,7 @@ const WebSocket = require("ws");
 const WebSocketServer = WebSocket.Server;
 // 实例化:
 const wss = new WebSocketServer({
-  port: 3000,
+  port: config.wsPortMsg,
 });
 
 wss.on("connection", function (ws) {

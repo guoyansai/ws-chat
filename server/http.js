@@ -1,8 +1,8 @@
+import { config } from "config";
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
 const path = require("path");
-const port = 909;
 let server = http.createServer(function (request, response) {
   //获取输入的url解析后的对象
   let pathname = url.parse(request.url, true).pathname;
@@ -41,5 +41,5 @@ let server = http.createServer(function (request, response) {
     }
   });
 });
-server.listen(port);
-console.log("visit http://localhost:" + port);
+server.listen(config.httpPort);
+console.log("visit http://localhost:" + config.httpPort);
