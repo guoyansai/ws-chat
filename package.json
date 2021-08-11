@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "echo \"start server\" && node server/msg && node server/user && echo \"OK\"",
-    "http": "echo \"start http\" && node client/http && echo \"http://localhost:8000\""
+    "http": "echo \"start http\" && node server/http && echo \"OK\""
   },
   "repository": {
     "type": "git",

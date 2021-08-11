@@ -4,7 +4,7 @@
 
 1. `npm install`安装依赖
 2. `npm run server`启动 ws 服务
-3. `npm run http`启动 http 服务
+3. `npm run http`启动 http 服务（或者，将client文件夹中的所有文件上传到服务器上，绑定域名直接访问。）
 
 ### 文件夹介绍
 
