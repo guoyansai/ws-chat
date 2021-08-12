@@ -1,6 +1,6 @@
 var config = {
-  wsIp: "http://localhost:",
+  wsIp: "ws://localhost:",
   wsPortMsg: 909,
   wsPortUser: 900,
-  httpPort: 909,
+  httpPort: 1909,
 };

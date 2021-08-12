@@ -1,4 +1,4 @@
-import { config } from "config";
+const config = require("./config.json");
 
 console.log(666.201, "user");
 // 导入WebSocket模块:
@@ -21,3 +21,11 @@ wss.on("connection", function (ws) {
     });
   });
 });
+
+function getDate(val) {
+  return (
+    val.getFullYear() +
+    (val.getMonth() + 1 + "").padStart(2, "0") +
+    (val.getDate() + "").padStart(2, "0")
+  );
+}

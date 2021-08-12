@@ -5,13 +5,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AsaiChat</title>
+    <style>
+      #userform > label {
+        display: block;
+      }
+      #msgform > label {
+        display: block;
+      }
+      #msg {
+        line-height: 150%;
+      }
+    </style>
   </head>
   <body>
     <h1>HELLO WORLD</h1>
+    <div id="userform">
+      <label for="mz">
+        名字：
+        <input type="text" id="mz" name="mz" maxlength="20" value="" />
+      </label>
+      <label for="tx">
+        头像：
+        <select id="tx" name="tx">
+          <option value="1">男头像</option>
+          <option value="2">女头像</option>
+        </select>
+      </label>
+      <label for="sr">
+        生日：
+        <input type="date" id="sr" name="sr" maxlength="20" value="" />
+      </label>
+      <label for="cs">
+        城市：
+        <input type="text" id="cs" name="cs" maxlength="10" value="" />
+      </label>
+      <label for="wb">
+        尾巴：
+        <input type="text" id="wb" name="wb" maxlength="60" value="" />
+      </label>
+      <button>更新个人信息</button>
+    </div>
+    <hr />
+    <div id="msgform">
+      <label for="xx">
+        消息：
+        <input type="text" id="xx" name="xx" maxlength="200" value="" />
+      </label>
+      <button onclick="msgSend()">发送</button>
+    </div>
+    <hr />
+    <div id="msg">欢迎使用AsaiChat。</div>
+    <hr />
+    <script src="config.js"></script>
     <script src="msg.js"></script>
     <script src="user.js"></script>
-    <script>
-      document.write(t);
-    </script>
   </body>
 </html>
