@@ -8,37 +8,34 @@ const wss = new WebSocketServer({
   port: config.wsPortMsg,
 });
 
-let id = 0;
+let uid = 0;
 
-wss.on("connection", function (ws) {
-  console.log(`[SERVER] connection()`);
-  let db = [];
-  ws.on("message", function (message) {
-    id++;
-    let dbCur = JSON.parse(message) || [0];
-    dbCur.splice(1, 0, getTime());
-    db.unshift(dbCur);
-    let dbStr = JSON.stringify(db);
-    console.log(`[SERVER] Received: ${dbStr}`);
-    ws.send(dbStr, (err) => {
-      if (err) {
-        console.log(`[SERVER] error: ${err}`);
-      }
+// 广播
+wss.broadcast = function broadcast(msg) {
+  let msgArr = JSON.parse(msg || []) || [];
+  if (msgArr.length > 1) {
+    msgArr.push(getTime());
+    console.log(666.1009, `[SERVER] broadcast() ${msgArr}`);
+    wss.clients.forEach(function each(client) {
+      client.send(JSON.stringify(msgArr));
     });
-    this.msger = setInterval(() => {
-      ws.send(dbStr, (err) => {
-        if (err) {
-          console.log(`[SERVER] error: ${err}`);
-          clearInterval(this.msger);
-          this.msger = null;
-        }
-      });
-    }, 3000);
-    clearInterval(this.msger);
-    this.msger = null;
+  }
+};
+
+//建立连接后
+wss.on("connection", function (ws, req) {
+  console.log(
+    666.1001,
+    `[SERVER] connection() uid=${uid} ip=${req.connection.remoteAddress}`
+  );
+  uid++;
+  ws.send(uid);
+  ws.on("message", function (msg) {
+    wss.broadcast(msg);
   });
 });
 
+//获取时间
 function getTime() {
   const date = new Date();
   return (
