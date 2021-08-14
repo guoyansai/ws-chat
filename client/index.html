@@ -43,7 +43,7 @@
         尾巴：
         <input type="text" id="wb" name="wb" maxlength="60" value="" />
       </label>
-      <button>更新个人信息</button>
+      <button onclick="userSendSubmit()">更新个人信息</button>
     </div>
     <hr />
     <div id="msgform">
@@ -51,7 +51,8 @@
         消息：
         <input type="text" id="xx" name="xx" maxlength="200" value="" />
       </label>
-      <button onclick="msgSend()">发送</button>
+      <button onclick="msgSendSubmit()">发送</button>
+      <button onclick="clear()">清空</button>
     </div>
     <hr />
     <div id="msg">欢迎使用AsaiChat。</div>

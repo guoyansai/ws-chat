@@ -14,3 +14,4 @@
 ### 注意事项
 
 1. win2008 使用[node.js V12.0.0](https://cdn.npm.taobao.org/dist/node/v12.0.0/node-v12.0.0-x64.msi)
+2. https://blog.csdn.net/u011723584/article/details/89301012?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-18.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-18.control
