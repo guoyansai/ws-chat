@@ -94,9 +94,9 @@ function msgShow(msg) {
 
           msgSend([msgArr[0], config.msgType.inRoom, dataObj.arrUser]);
         } else if (msgArr[1] === config.msgType.inRoom) {
-          msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:【进入房间】${msg}`;
+          msgStr = `${msgArr[2][0]}:【进入房间】${msg}`;
         } else if (msgArr[1] === config.msgType.outRoom) {
-          msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:【离开房间】${msg}`;
+          msgStr = `${msgArr[2][0]}:【离开房间】${msg}`;
         } else {
           msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:${msgArr[2]}___
           ${msgArr[3]}`;

@@ -22,11 +22,13 @@ wss.broadcast = (msg, ws = {}) => {
     msgs.push([...msgArr]);
 
     if (msgArr[1] === config.msgType.inRoom) {
+      wss.clients.forEach(function each(client) {
+        client.send(toStr(msgArr));
+      });
       let arrUser = toObj(msgArr[2]);
       users[uid] = [...arrUser, getTime(), uid];
       ws.us.user = users[uid];
       msgArr = getUserList();
-    } else if (msgArr[1] === config.msgType.outRoom) {
     }
     // console.log(666.1008, `[SERVER] broadcast() ${msgArr}`);
     wss.clients.forEach(function each(client) {
@@ -61,7 +63,7 @@ wss.on("connection", (ws, req) => {
 
   ws.on("close", (o) => {
     try {
-      wss.broadcast([uid, config.msgType.outRoom, `[${ws.us.user}]`]);
+      wss.broadcast([uid, config.msgType.outRoom, ws.us.user]);
       delete users[ws.us.uid];
       // console.log(666.1009, `[SERVER] close uid=${ws.us.uid}`, o);
       wss.broadcast(getUserList());
