@@ -21,15 +21,22 @@ wss.broadcast = (msg, ws = {}) => {
     msgArr.push(getTime());
     msgs.push([...msgArr]);
 
-    if (msgArr[1] === config.msgType.inRoom) {
+    if (
+      msgArr[1] === config.msgType.inRoom ||
+      msgArr[1] === config.msgType.outRoom
+    ) {
       wss.clients.forEach(function each(client) {
         client.send(toStr(msgArr));
       });
-      let arrUser = toObj(msgArr[2]);
-      users[uid] = [...arrUser, getTime(), uid];
-      ws.us.user = users[uid];
+      console.log(666.77, toStr(msgArr));
+      if (msgArr[1] === config.msgType.inRoom) {
+        let arrUser = toObj(msgArr[2]);
+        users[uid] = [...arrUser, getTime(), uid];
+        ws.us.user = users[uid];
+      }
       msgArr = getUserList();
     }
+    console.log(666.888, toStr(msgArr));
     // console.log(666.1008, `[SERVER] broadcast() ${msgArr}`);
     wss.clients.forEach(function each(client) {
       client.send(toStr(msgArr));
@@ -63,10 +70,9 @@ wss.on("connection", (ws, req) => {
 
   ws.on("close", (o) => {
     try {
-      wss.broadcast([uid, config.msgType.outRoom, ws.us.user]);
       delete users[ws.us.uid];
-      // console.log(666.1009, `[SERVER] close uid=${ws.us.uid}`, o);
-      wss.broadcast(getUserList());
+      console.log(666.1009, `[SERVER] close uid=${ws.us.uid}`, o);
+      wss.broadcast([uid, config.msgType.outRoom, ws.us.user]);
     } catch (e) {
       console.log(666.1009, e);
     }
@@ -87,7 +93,7 @@ function toStr(val) {
   return val;
 }
 function getUserList() {
-  return [0, config.msgType.user, toStr(users), getTime()];
+  return [0, config.msgType.user, toStr({ ...users }), getTime()];
 }
 //获取时间
 function getTime() {
