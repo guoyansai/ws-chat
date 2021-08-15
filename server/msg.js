@@ -8,27 +8,27 @@ const wss = new WebSocketServer({
   port: config.wsPortMsg,
 });
 
-const epVal = "-";
-
 let uid = 0;
 let uuser = {};
 let users = {};
 let msgs = []; //聊天记录
 
 // 广播
-wss.broadcast = (msg) => {
+wss.broadcast = (msg, ws = {}) => {
+  console.log(666.555, msg);
   let msgArr = toObj(msg);
-  console.log(666.555,msgArr)
   if (msgArr.length === 3) {
-    msgs.push([...msgArr]);
     msgArr.push(getTime());
-    if (msgArr[1] === 2) {
+    msgs.push([...msgArr]);
+
+    if (msgArr[1] === config.msgType.inRoom) {
       let arrUser = toObj(msgArr[2]);
-      users[uid] = [...arrUser, getTime()];
-      msgArr = getMsgUsers();
-    } else if (msgArr[1] === 3) {
+      users[uid] = [...arrUser, getTime(), uid];
+      ws.us.user = users[uid];
+      msgArr = getUserList();
+    } else if (msgArr[1] === config.msgType.outRoom) {
     }
-    console.log(666.1008, `[SERVER] broadcast() ${msgArr}`);
+    // console.log(666.1008, `[SERVER] broadcast() ${msgArr}`);
     wss.clients.forEach(function each(client) {
       client.send(toStr(msgArr));
     });
@@ -38,30 +38,33 @@ wss.broadcast = (msg) => {
 //建立连接后
 wss.on("connection", (ws, req) => {
   uid++;
-  uid = uid;
   uuser = {
     uid,
     time: getTime(),
-    user: ["游客" + uid, 0, epVal, epVal, epVal],
+    user: config.userTmp,
   };
+  uuser.user[0] = `游客${uid}`;
+  uuser.user[3] = `IP${req.connection.remoteAddress}`;
   ws.us = uuser;
-  console.log(
-    666.1001,
-    `[SERVER] connection() uid=${uid} ip=${req.connection.remoteAddress}`
-  );
-  ws.send(toStr([uid, 1, uuser.user[0], uuser.time]));
+  console.log(666.2001, uuser, [
+    uid,
+    config.msgType.sendUid,
+    uuser.user[0],
+    uuser.time,
+  ]);
+  ws.send(toStr([uid, config.msgType.sendUid, uuser.user[0], uuser.time]));
 
   ws.on("message", (msg) => {
-    console.log(666.1001, `[SERVER] message msg=${msg}`);
-    wss.broadcast(msg);
+    console.log(666.1001, `[SERVER] message msg=${msg}`, "" + msg);
+    wss.broadcast("" + msg, ws);
   });
 
   ws.on("close", (o) => {
     try {
+      wss.broadcast([uid, config.msgType.outRoom, `[${ws.us.user}]`]);
       delete users[ws.us.uid];
-      console.log(666.1009, `[SERVER] close uid=${ws.us.uid}`, o);
-      wss.broadcast(toStr(getMsgUsers()));
-      wss.broadcast(toStr([uid, 3, `[${ws.us.user}]`]));
+      // console.log(666.1009, `[SERVER] close uid=${ws.us.uid}`, o);
+      wss.broadcast(getUserList());
     } catch (e) {
       console.log(666.1009, e);
     }
@@ -69,17 +72,20 @@ wss.on("connection", (ws, req) => {
 });
 
 function toObj(val) {
-  // if (val && typeof val === "string") {
+  if (typeof val === "string") {
     // const fVal = val.replace(/\//g, "");
     return JSON.parse(val);
-  // }
-  return [];
+  }
+  return val;
 }
 function toStr(val) {
-  return JSON.stringify(val);
+  if (typeof val === "object") {
+    return JSON.stringify(val);
+  }
+  return val;
 }
-function getMsgUsers() {
-  return [0, 5, toStr(users), getTime()];
+function getUserList() {
+  return [0, config.msgType.user, toStr(users), getTime()];
 }
 //获取时间
 function getTime() {

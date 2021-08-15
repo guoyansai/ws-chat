@@ -2,5 +2,19 @@
   "wsIp": "ws://localhost:",
   "wsPortMsg": 909,
   "wsPortUser": 900,
-  "httpPort": 1909
+  "httpPort": 1909,
+  "epVal": "-",
+  "msgType": {
+    "msg": 0,
+    "sendUid": 1,
+    "inRoom": 2,
+    "outRoom": 3,
+    "editUser": 4,
+    "user": 5
+  },
+  "msgTypeDes": "0消息1发送uid2进入3离开4更新user5广播user",
+  "userTmp": ["-", 0, "-", "-", "-"],
+  "userTmpDes": ["名字", "头像", "生日", "城市", "尾巴"],
+  "msgTmp": [0, 0, "-", "-"],
+  "msgTmpDes": ["用户ID", "消息类型", "消息内容", "时间"]
 }

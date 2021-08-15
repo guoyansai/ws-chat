@@ -1,6 +1,5 @@
 const config = require("./config.json");
 
-console.log(666.201, "user");
 // 导入WebSocket模块:
 const WebSocket = require("ws");
 // 引用Server类:
