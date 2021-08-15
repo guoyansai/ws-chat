@@ -58,7 +58,7 @@ wss.on("connection", (ws, req) => {
   ws.on("close", (o) => {
     try {
       delete users[ws.us.uid];
-      wss.broadcast([uid, config.msgType.outRoom, ws.us.user]);
+      wss.broadcast([ws.us.uid, config.msgType.outRoom, ws.us.user]);
     } catch (e) {
       console.log(666.1009, e);
     }
