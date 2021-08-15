@@ -15,7 +15,6 @@ initDataUser();
 initFormUser();
 
 ws.onmessage = function (msg) {
-  // console.log(666.102, msg.data, msg);
   msgShow("" + msg.data);
 };
 
@@ -23,7 +22,6 @@ function msgSendSubmit() {
   msgSend([dataObj.arrUid[0], config.msgType.msg, xx.value]);
 }
 function msgSend(msg) {
-  console.log(666.10088, msg, toStr(msg));
   ws.send(toStr(msg));
 }
 function initDataUser() {
@@ -54,13 +52,10 @@ function initDataMsg() {
 function msgShow(msg) {
   initDataMsg();
   if (msg && dataObj.strMsg !== msg) {
-    // console.log(666.303, msg);
     const msgArr = toObj(msg);
     if (msgArr.length === 4) {
-      console.log(666.10021, msgArr);
       if (msgArr[1] === config.msgType.user) {
         dataObj.arrUserList = toObj("" + msgArr[2]);
-        console.log(666.10022, dataObj.arrUserList);
         let strUserList = "";
         Object.keys(dataObj.arrUserList).forEach((index) => {
           strUserList += `<p>${dataObj.arrUserList[index]}</p>`;
@@ -85,12 +80,6 @@ function msgShow(msg) {
             initDataUser();
             initFormUser();
           }
-
-          console.log(666.123, [
-            msgArr[0],
-            config.msgType.inRoom,
-            dataObj.arrUser,
-          ]);
 
           msgSend([msgArr[0], config.msgType.inRoom, dataObj.arrUser]);
         } else if (msgArr[1] === config.msgType.inRoom) {
