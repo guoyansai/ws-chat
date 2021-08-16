@@ -11,6 +11,8 @@ var config = {
     outRoom: 3,
     editUser: 4,
     user: 5,
+    sendEditUser: 6,
+    wsSendChangeUser: 7,
   },
   msgTypeDes: "0消息1发送uid2进入3离开4更新user5广播user",
   userTmp: ["-", 0, "-", "-", "-"],

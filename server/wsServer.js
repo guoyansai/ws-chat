@@ -31,6 +31,21 @@ wss.broadcast = (msg, ws = {}) => {
         ws.us.user = users[uid];
       }
       msgArr = getUserList();
+    } else if (msgArr[1] === config.msgType.sendEditUser) {
+      let arrUser = toObj(msgArr[2]);
+      msgArr = [
+        msgArr[0],
+        config.msgType.wsSendChangeUser,
+        `${users[msgArr[0]][0]} 更名为 ${arrUser[0]}`,
+        getTime(),
+      ];
+      wss.clients.forEach(function each(client) {
+        client.send(toStr(msgArr));
+      });
+      users[msgArr[0]] = [...arrUser, getTime(), msgArr[0]];
+      ws.us.user = users[msgArr[0]];
+
+      msgArr = getUserList();
     }
     wss.clients.forEach(function each(client) {
       client.send(toStr(msgArr));

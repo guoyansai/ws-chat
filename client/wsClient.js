@@ -18,6 +18,17 @@ ws.onmessage = function (msg) {
   msgShow("" + msg.data);
 };
 
+function userSendSubmit() {
+  dataObj.arrUser[0] = mz.value;
+  dataObj.arrUser[1] = tx.value;
+  dataObj.arrUser[2] = sr.value;
+  dataObj.arrUser[3] = cs.value;
+  dataObj.arrUser[4] = wb.value;
+  localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
+  initDataUser();
+  msgSend([dataObj.arrUid[0], config.msgType.sendEditUser, dataObj.arrUser]);
+}
+
 function msgSendSubmit() {
   msgSend([dataObj.arrUid[0], config.msgType.msg, xx.value]);
 }
@@ -86,6 +97,8 @@ function msgShow(msg) {
           msgStr = `${msgArr[2][0]}:【进入房间】${msg}`;
         } else if (msgArr[1] === config.msgType.outRoom) {
           msgStr = `${msgArr[2][0]}:【离开房间】${msg}`;
+        } else if (msgArr[1] === config.msgType.wsSendChangeUser) {
+          msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:【更改名字】${msg}`;
         } else {
           msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:${msgArr[2]}___
           ${msgArr[3]}`;
