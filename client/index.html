@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AsaiChat</title>
     <style>
+      #menu {
+        line-height: 150%;
+      }
+      #menu > div {
+        display: inline-block;
+        cursor: pointer;
+      }
       #userform > label {
         display: block;
       }
@@ -19,6 +26,11 @@
   </head>
   <body>
     <h1>HELLO WORLD</h1>
+    <div id="menu">
+      <div onclick="menuClick(0)">聊天室</div>
+      <div onclick="menuClick(1)">在线人员<sup>18</sup></div>
+      <div onclick="menuClick(2)">我的信息</div>
+    </div>
     <div id="userform">
       <label for="mz">
         名字：
@@ -48,17 +60,24 @@
     <hr />
     <div id="user">用户列表</div>
     <hr />
+    <div id="msg">欢迎使用AsaiChat。</div>
+    <hr />
     <div id="msgform">
       <label for="xx">
         消息：
         <input type="text" id="xx" name="xx" maxlength="200" value="" />
       </label>
       <button onclick="msgSendSubmit()">发送</button>
-      <button onclick="clear()">清空</button>
+      <button onclick="localClear()">清空</button>
     </div>
     <hr />
-    <div id="msg">欢迎使用AsaiChat。</div>
-    <hr />
+    <script>
+      var $menu = document.getElementById("menu");
+      var $user = document.getElementById("user");
+      var $userform = document.getElementById("userform");
+      var $msg = document.getElementById("msg");
+      var $msgform = document.getElementById("msgform");
+    </script>
     <script src="config.js"></script>
     <script src="wsClient.js"></script>
   </body>

@@ -11,6 +11,7 @@ const dataObj = {
   arrMsg: [],
   strMsg: "",
 };
+menuClick(0);
 initDataUser();
 initFormUser();
 
@@ -110,8 +111,28 @@ function msgShow(msg) {
     }
   }
 }
-
-function clear() {
+function menuClick(index) {
+  $menu.children[0].style.fontWeight !== "normal" &&
+    ($menu.children[0].style.fontWeight = "normal");
+  $menu.children[1].style.fontWeight !== "normal" &&
+    ($menu.children[1].style.fontWeight = "normal");
+  $menu.children[2].style.fontWeight !== "normal" &&
+    ($menu.children[2].style.fontWeight = "normal");
+  $user.style.display !== "none" && ($user.style.display = "none");
+  $userform.style.display !== "none" && ($userform.style.display = "none");
+  $msg.style.display !== "none" && ($msg.style.display = "none");
+  $msgform.style.display !== "none" && ($msgform.style.display = "none");
+  $menu.children[index].style.fontWeight = "bold";
+  if (index === 2) {
+    $userform.style.display = "block";
+  } else if (index === 1) {
+    $user.style.display = "block";
+  } else {
+    $msg.style.display = "block";
+    $msgform.style.display = "block";
+  }
+}
+function localClear() {
   localStorage.setItem(dataUserKey, "");
   localStorage.setItem(dataMsgKey, "");
 }
