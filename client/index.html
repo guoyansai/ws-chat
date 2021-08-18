@@ -13,6 +13,11 @@
         display: inline-block;
         cursor: pointer;
       }
+      #userform {
+        border: 1px solid #d8d8d8;
+        padding: 5px 12px;
+        margin: 5px 12px;
+      }
       #userform > label {
         display: block;
       }
@@ -22,13 +27,25 @@
       #msg {
         line-height: 150%;
       }
+      .msg {
+        display: inline-block;
+        text-align: left;
+        border: 1px solid #d8d8d8;
+        padding: 5px 12px;
+        margin: 5px 12px;
+      }
+      .user {
+        border: 1px solid #d8d8d8;
+        padding: 5px 12px;
+        margin: 5px 12px;
+      }
     </style>
   </head>
   <body>
     <h1>HELLO WORLD</h1>
     <div id="menu">
       <div onclick="menuClick(0)">聊天室</div>
-      <div onclick="menuClick(1)">在线人员<sup>18</sup></div>
+      <div onclick="menuClick(1)">在线人员<sup id="usercount">18</sup></div>
       <div onclick="menuClick(2)">我的信息</div>
     </div>
     <div id="userform">
@@ -57,11 +74,11 @@
       </label>
       <button onclick="userSendSubmit()">更新个人信息</button>
     </div>
-    <hr />
+
     <div id="user">用户列表</div>
-    <hr />
-    <div id="msg">欢迎使用AsaiChat。</div>
-    <hr />
+
+    <div id="msg"><div class="msg">欢迎使用AsaiChat。</div></div>
+
     <div id="msgform">
       <label for="xx">
         消息：
@@ -70,13 +87,14 @@
       <button onclick="msgSendSubmit()">发送</button>
       <button onclick="localClear()">清空</button>
     </div>
-    <hr />
+
     <script>
       var $menu = document.getElementById("menu");
       var $user = document.getElementById("user");
       var $userform = document.getElementById("userform");
       var $msg = document.getElementById("msg");
       var $msgform = document.getElementById("msgform");
+      var $usercount = document.getElementById("usercount");
     </script>
     <script src="config.js"></script>
     <script src="wsClient.js"></script>

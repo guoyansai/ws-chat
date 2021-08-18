@@ -18,24 +18,25 @@ wss.broadcast = (msg, ws = {}) => {
     msgArr.push(getTime());
     msgs.push([...msgArr]);
 
-    if (
-      msgArr[1] === config.msgType.inRoom ||
-      msgArr[1] === config.msgType.outRoom
-    ) {
+    if (msgArr[1] === config.msgType.wsInRoom) {
+      let arrUser = toObj(msgArr[2]);
+      users[uid] = [...arrUser, getTime(), uid];
+      ws.us.user = users[uid];
       wss.clients.forEach(function each(client) {
+        client.send(toStr(getUserList()));
+      });
+      msgArr[1] = config.msgType.broadInRoom;
+    } else if (msgArr[1] === config.msgType.wsOutRoom) {
+      wss.clients.forEach(function each(client) {
+        msgArr[1] = config.msgType.broadOutRoom;
         client.send(toStr(msgArr));
       });
-      if (msgArr[1] === config.msgType.inRoom) {
-        let arrUser = toObj(msgArr[2]);
-        users[uid] = [...arrUser, getTime(), uid];
-        ws.us.user = users[uid];
-      }
       msgArr = getUserList();
-    } else if (msgArr[1] === config.msgType.sendEditUser) {
+    } else if (msgArr[1] === config.msgType.wsChangeUser) {
       let arrUser = toObj(msgArr[2]);
       msgArr = [
         msgArr[0],
-        config.msgType.wsSendChangeUser,
+        config.msgType.broadChangeUser,
         `${users[msgArr[0]][0]} 更名为 ${arrUser[0]}`,
         getTime(),
       ];
@@ -64,7 +65,7 @@ wss.on("connection", (ws, req) => {
   uuser.user[0] = `游客${uid}`;
   uuser.user[3] = `IP${req.connection.remoteAddress}`;
   ws.us = uuser;
-  ws.send(toStr([uid, config.msgType.sendUid, uuser.user[0], uuser.time]));
+  ws.send(toStr([uid, config.msgType.myUid, uuser.user, uuser.time]));
 
   ws.on("message", (msg) => {
     wss.broadcast("" + msg, ws);
@@ -73,7 +74,7 @@ wss.on("connection", (ws, req) => {
   ws.on("close", (o) => {
     try {
       delete users[ws.us.uid];
-      wss.broadcast([ws.us.uid, config.msgType.outRoom, ws.us.user]);
+      wss.broadcast([ws.us.uid, config.msgType.wsOutRoom, ws.us.user]);
     } catch (e) {
       console.log(666.1009, e);
     }
@@ -94,7 +95,7 @@ function toStr(val) {
   return val;
 }
 function getUserList() {
-  return [0, config.msgType.user, toStr({ ...users }), getTime()];
+  return [0, config.msgType.broadUser, toStr({ ...users }), getTime()];
 }
 //获取时间
 function getTime() {

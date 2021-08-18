@@ -27,11 +27,11 @@ function userSendSubmit() {
   dataObj.arrUser[4] = wb.value;
   localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
   initDataUser();
-  msgSend([dataObj.arrUid[0], config.msgType.sendEditUser, dataObj.arrUser]);
+  msgSend([dataObj.arrUid[0], config.msgType.wsChangeUser, dataObj.arrUser]);
 }
 
 function msgSendSubmit() {
-  msgSend([dataObj.arrUid[0], config.msgType.msg, xx.value]);
+  msgSend([dataObj.arrUid[0], config.msgType.broadMsg, xx.value]);
 }
 function msgSend(msg) {
   ws.send(toStr(msg));
@@ -61,56 +61,64 @@ function initDataMsg() {
     dataObj.arrMsg = config.msgTmp;
   }
 }
+
 function msgShow(msg) {
   initDataMsg();
   if (msg && dataObj.strMsg !== msg) {
     const msgArr = toObj(msg);
     if (msgArr.length === 4) {
-      if (msgArr[1] === config.msgType.user) {
+      if (msgArr[1] === config.msgType.broadUser) {
         dataObj.arrUserList = toObj("" + msgArr[2]);
         let strUserList = "";
+        let userCount = 0;
         Object.keys(dataObj.arrUserList).forEach((index) => {
-          strUserList += `<p>${dataObj.arrUserList[index]}</p>`;
+          userCount++;
+          const userInfo=dataObj.arrUserList[index];
+          strUserList += `<div class=user><div class=umz>名字：${userInfo[0]}</div><div class=utx>头像：${userInfo[1]}</div><div class=usr>生日：${userInfo[2]}</div><div class=ucs>城市：${userInfo[3]}</div><div class=uwb>尾巴：${userInfo[4]}</div><div class=usj>时间：${userInfo[5]}</div><div class=uid>ID：${userInfo[6]}</div></div>`;
         });
-        document.getElementById("user").innerHTML = strUserList;
+        $usercount.innerHTML = userCount;
+        $user.innerHTML = strUserList;
+      } else if (msgArr[1] === config.msgType.myUid) {
+        dataObj.arrUid[0] = msgArr[0];
+        dataObj.arrUid[1] = msgArr[3];
+        if (!dataObj.arrUser[0] || dataObj.arrUser[0] === config.epVal) {
+          dataObj.arrUser = msgArr[2];
+          localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
+          initDataUser();
+          initFormUser();
+        }
+        msgSend([msgArr[0], config.msgType.wsInRoom, dataObj.arrUser]);
       } else {
-        dataObj.strMsg = msg;
         localStorage.setItem(dataMsgKey, msg);
-        const msgDom = document.getElementById("msg");
-        const msgP = document.createElement("p");
-        let msgStr = "";
-        if (msgArr[0] === dataObj.arrUid[0]) {
-          msgP.style.textAlign = "right";
+        dataObj.strMsg = msg;
+        let myid = dataObj.arrUid[0];
+        let uid = msgArr[0];
+        let umz = dataObj.arrUserList[uid][0];
+        let clx = msgArr[1];
+        let cxx = msgArr[2];
+        let csj = msgArr[3];
+        const domMsgArea = document.createElement("div");
+        if (uid === myid) {
+          domMsgArea.style.textAlign = "right";
         }
-        // 0消息1发送uid2进入3离开4更新user5广播user
-        if (msgArr[1] === config.msgType.sendUid) {
-          dataObj.arrUid[0] = msgArr[0];
-          dataObj.arrUid[1] = msgArr[3];
-          if (!dataObj.arrUser[0]) {
-            dataObj.arrUser = msgArr[2];
-            localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
-            initDataUser();
-            initFormUser();
-          }
-
-          msgSend([msgArr[0], config.msgType.inRoom, dataObj.arrUser]);
-        } else if (msgArr[1] === config.msgType.inRoom) {
-          msgStr = `${msgArr[2][0]}:【进入房间】${msg}`;
-        } else if (msgArr[1] === config.msgType.outRoom) {
-          msgStr = `${msgArr[2][0]}:【离开房间】${msg}`;
-        } else if (msgArr[1] === config.msgType.wsSendChangeUser) {
-          msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:【更改名字】${msg}`;
-        } else {
-          msgStr = `${dataObj.arrUserList[msgArr[0]][0]}:${msgArr[2]}___
-          ${msgArr[3]}`;
+        if (clx === config.msgType.broadInRoom) {
+          umz = `${cxx[0]}`;
+          cxx = `【进入房间】`;
+        } else if (clx === config.msgType.broadOutRoom) {
+          umz = `${cxx[0]}`;
+          cxx = `【离开房间】`;
+        } else if (clx === config.msgType.broadChangeUser) {
+          cxx = `【更改名字】${msg}`;
+          cxx = `【更改名字】${msg}`;
         }
-        const msgTxt = document.createTextNode(msgStr);
-        msgP.appendChild(msgTxt);
-        msgDom.appendChild(msgP);
+        const msgHtml = `<div class=msg><div class=umz>名字：${umz}</div><div class=cxx>信息：${cxx}</div><div class=csj>时间：${csj}</div><div class=clx>类型：${clx}</div></div>`;
+        domMsgArea.innerHTML = msgHtml;
+        $msg.appendChild(domMsgArea);
       }
     }
   }
 }
+
 function menuClick(index) {
   $menu.children[0].style.fontWeight !== "normal" &&
     ($menu.children[0].style.fontWeight = "normal");
