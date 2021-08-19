@@ -21,5 +21,6 @@ var config = {
   msgTmp: [0, 0, "-", "-"],
   msgTmpDes: ["用户ID", "消息类型", "消息内容", "时间"],
 };
-
-module.exports = config;
+try {
+  module.exports = config;
+} catch {}

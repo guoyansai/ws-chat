@@ -16,9 +16,16 @@ initDataUser();
 initFormUser();
 
 ws.onmessage = function (msg) {
-  msgShow("" + msg.data);
+  chatShow("" + msg.data);
 };
 
+document.getElementById("xx").onkeydown = function (e) {
+  if (e.key === "Enter") {
+    msgSendSubmit();
+    xx.value = "";
+    xx.focus();
+  }
+};
 function userSendSubmit() {
   dataObj.arrUser[0] = mz.value;
   dataObj.arrUser[1] = tx.value;
@@ -45,6 +52,7 @@ function initDataUser() {
     dataObj.arrUser = config.userTmp;
   }
 }
+
 function initFormUser() {
   mz.value = dataObj.arrUser[0];
   tx.value = dataObj.arrUser[1];
@@ -52,6 +60,7 @@ function initFormUser() {
   cs.value = dataObj.arrUser[3];
   wb.value = dataObj.arrUser[4];
 }
+
 function initDataMsg() {
   dataObj.strMsg = localStorage.getItem(dataMsgKey);
   if (dataObj.strMsg) {
@@ -62,22 +71,13 @@ function initDataMsg() {
   }
 }
 
-function msgShow(msg) {
+function chatShow(msg) {
   initDataMsg();
   if (msg && dataObj.strMsg !== msg) {
     const msgArr = toObj(msg);
     if (msgArr.length === 4) {
       if (msgArr[1] === config.msgType.broadUser) {
-        dataObj.arrUserList = toObj("" + msgArr[2]);
-        let strUserList = "";
-        let userCount = 0;
-        Object.keys(dataObj.arrUserList).forEach((index) => {
-          userCount++;
-          const userInfo=dataObj.arrUserList[index];
-          strUserList += `<div class=user><div class=umz>名字：${userInfo[0]}</div><div class=utx>头像：${userInfo[1]}</div><div class=usr>生日：${userInfo[2]}</div><div class=ucs>城市：${userInfo[3]}</div><div class=uwb>尾巴：${userInfo[4]}</div><div class=usj>时间：${userInfo[5]}</div><div class=uid>ID：${userInfo[6]}</div></div>`;
-        });
-        $usercount.innerHTML = userCount;
-        $user.innerHTML = strUserList;
+        this.userToDom(msgArr);
       } else if (msgArr[1] === config.msgType.myUid) {
         dataObj.arrUid[0] = msgArr[0];
         dataObj.arrUid[1] = msgArr[3];
@@ -91,32 +91,52 @@ function msgShow(msg) {
       } else {
         localStorage.setItem(dataMsgKey, msg);
         dataObj.strMsg = msg;
-        let myid = dataObj.arrUid[0];
-        let uid = msgArr[0];
-        let umz = dataObj.arrUserList[uid][0];
-        let clx = msgArr[1];
-        let cxx = msgArr[2];
-        let csj = msgArr[3];
-        const domMsgArea = document.createElement("div");
-        if (uid === myid) {
-          domMsgArea.style.textAlign = "right";
-        }
-        if (clx === config.msgType.broadInRoom) {
-          umz = `${cxx[0]}`;
-          cxx = `【进入房间】`;
-        } else if (clx === config.msgType.broadOutRoom) {
-          umz = `${cxx[0]}`;
-          cxx = `【离开房间】`;
-        } else if (clx === config.msgType.broadChangeUser) {
-          cxx = `【更改名字】${msg}`;
-          cxx = `【更改名字】${msg}`;
-        }
-        const msgHtml = `<div class=msg><div class=umz>名字：${umz}</div><div class=cxx>信息：${cxx}</div><div class=csj>时间：${csj}</div><div class=clx>类型：${clx}</div></div>`;
-        domMsgArea.innerHTML = msgHtml;
-        $msg.appendChild(domMsgArea);
+        this.msgToDom(msgArr);
       }
     }
   }
+}
+
+function userToDom(msgArr) {
+  dataObj.arrUserList = toObj("" + msgArr[2]);
+  let strUserList = "";
+  let userCount = 0;
+  Object.keys(dataObj.arrUserList).forEach((index) => {
+    userCount++;
+    const userInfo = dataObj.arrUserList[index];
+    strUserList += `<div class=user><div class=umz>名字：${userInfo[0]}</div><div class=utx>头像：${userInfo[1]}</div><div class=usr>生日：${userInfo[2]}</div><div class=ucs>城市：${userInfo[3]}</div><div class=uwb>尾巴：${userInfo[4]}</div><div class=usj>时间：${userInfo[5]}</div><div class=uid>ID：${userInfo[6]}</div></div>`;
+  });
+  $usercount.innerHTML = userCount;
+  $user.innerHTML = strUserList;
+}
+
+function msgToDom(msgArr) {
+  const msgObj = {
+    myid: dataObj.arrUid[0],
+    uid: msgArr[0],
+    umz: dataObj.arrUserList[msgArr[0]][0],
+    clx: msgArr[1],
+    cxx: msgArr[2],
+    csj: msgArr[3],
+  };
+  const domMsgArea = document.createElement("div");
+  if (msgObj.uid === msgObj.myid) {
+    domMsgArea.style.textAlign = "right";
+  }
+  if (msgObj.clx === config.msgType.broadInRoom) {
+    msgObj.umz = `${msgObj.cxx[0]}`;
+    cxx = `【进入房间】`;
+  } else if (msgObj.clx === config.msgType.broadOutRoom) {
+    msgObj.umz = `${msgObj.cxx[0]}`;
+    msgObj.cxx = `【离开房间】`;
+  } else if (msgObj.clx === config.msgType.broadChangeUser) {
+    msgObj.cxx = `【更改名字】${msgObj.msg}`;
+    msgObj.cxx = `【更改名字】${msgObj.msg}`;
+  }
+  const msgHtml = `<div class=msg><div class=umz>名字：${msgObj.umz}</div><div class=cxx>信息：${msgObj.cxx}</div><div class=csj>时间：${msgObj.csj}</div><div class=clx>类型：${msgObj.clx}</div></div>`;
+  domMsgArea.innerHTML = msgHtml;
+  $msg.appendChild(domMsgArea);
+  $msg.scrollTop = $msg.scrollHeight;
 }
 
 function menuClick(index) {
