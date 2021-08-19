@@ -22,8 +22,6 @@ ws.onmessage = function (msg) {
 document.getElementById("xx").onkeydown = function (e) {
   if (e.key === "Enter") {
     msgSendSubmit();
-    xx.value = "";
-    xx.focus();
   }
 };
 function userSendSubmit() {
@@ -39,6 +37,8 @@ function userSendSubmit() {
 
 function msgSendSubmit() {
   msgSend([dataObj.arrUid[0], config.msgType.broadMsg, xx.value]);
+  xx.value = "";
+  xx.focus();
 }
 function msgSend(msg) {
   ws.send(toStr(msg));
@@ -104,7 +104,15 @@ function userToDom(msgArr) {
   Object.keys(dataObj.arrUserList).forEach((index) => {
     userCount++;
     const userInfo = dataObj.arrUserList[index];
-    strUserList += `<div class=user><div class=umz>名字：${userInfo[0]}</div><div class=utx>头像：${userInfo[1]}</div><div class=usr>生日：${userInfo[2]}</div><div class=ucs>城市：${userInfo[3]}</div><div class=uwb>尾巴：${userInfo[4]}</div><div class=usj>时间：${userInfo[5]}</div><div class=uid>ID：${userInfo[6]}</div></div>`;
+    strUserList += `<div class=user>
+    <div class=umz>名字：${userInfo[0]}</div>
+    <div class=utx>头像：${userInfo[1]}</div>
+    <div class=usr>生日：${userInfo[2]}</div>
+    <div class=ucs>城市：${userInfo[3]}</div>
+    <div class=uwb>尾巴：${userInfo[4]}</div>
+    <div class=usj>时间：${userInfo[5]}</div>
+    <div class=uid>ID：${userInfo[6]}</div>
+    </div>`;
   });
   $usercount.innerHTML = userCount;
   $user.innerHTML = strUserList;
@@ -125,39 +133,51 @@ function msgToDom(msgArr) {
   }
   if (msgObj.clx === config.msgType.broadInRoom) {
     msgObj.umz = `${msgObj.cxx[0]}`;
-    cxx = `【进入房间】`;
+    msgObj.cxx = `【进入房间】`;
   } else if (msgObj.clx === config.msgType.broadOutRoom) {
     msgObj.umz = `${msgObj.cxx[0]}`;
     msgObj.cxx = `【离开房间】`;
   } else if (msgObj.clx === config.msgType.broadChangeUser) {
-    msgObj.cxx = `【更改名字】${msgObj.msg}`;
-    msgObj.cxx = `【更改名字】${msgObj.msg}`;
+    msgObj.cxx = `【更改名字】${msgObj.cxx}`;
   }
-  const msgHtml = `<div class=msg><div class=umz>名字：${msgObj.umz}</div><div class=cxx>信息：${msgObj.cxx}</div><div class=csj>时间：${msgObj.csj}</div><div class=clx>类型：${msgObj.clx}</div></div>`;
+  const msgHtml = `<div class=msg>
+  <div class=umz>名字：${msgObj.umz}</div>
+  <div class=cxx>信息：${msgObj.cxx}</div>
+  <div class=csj>时间：${msgObj.csj}</div>
+  <div class=clx>类型：${msgObj.clx}</div>
+  </div>`;
   domMsgArea.innerHTML = msgHtml;
   $msg.appendChild(domMsgArea);
   $msg.scrollTop = $msg.scrollHeight;
 }
-
+function msgTool() {
+  if ($msgformtool.style.display === "block") {
+    $msgformtool.style.display = "none";
+    $msgformsaytool.className = "";
+  } else {
+    $msgformtool.style.display = "block";
+    $msgformsaytool.className = "astbg";
+  }
+}
 function menuClick(index) {
-  $menu.children[0].style.fontWeight !== "normal" &&
-    ($menu.children[0].style.fontWeight = "normal");
-  $menu.children[1].style.fontWeight !== "normal" &&
-    ($menu.children[1].style.fontWeight = "normal");
-  $menu.children[2].style.fontWeight !== "normal" &&
-    ($menu.children[2].style.fontWeight = "normal");
+  $menu.children[0].className === "curmenu" &&
+    ($menu.children[0].className = "");
+  $menu.children[1].className === "curmenu" &&
+    ($menu.children[1].className = "");
+  $menu.children[2].className === "curmenu" &&
+    ($menu.children[2].className = "");
   $user.style.display !== "none" && ($user.style.display = "none");
   $userform.style.display !== "none" && ($userform.style.display = "none");
   $msg.style.display !== "none" && ($msg.style.display = "none");
   $msgform.style.display !== "none" && ($msgform.style.display = "none");
-  $menu.children[index].style.fontWeight = "bold";
+  $menu.children[index].className = "curmenu";
   if (index === 2) {
     $userform.style.display = "block";
   } else if (index === 1) {
     $user.style.display = "block";
   } else {
     $msg.style.display = "block";
-    $msgform.style.display = "block";
+    $msgform.style.display = "flex";
   }
 }
 function localClear() {

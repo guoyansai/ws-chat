@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AsaiChat</title>
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>AsaiChat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="AsaiChat">
+<meta name="description" content="AsaiChat">
+<meta name="copyright" content="AsaiChat,asai.cc">
     <style>
       body {
         padding: 0;
@@ -12,13 +13,9 @@
         height: 100vh;
       }
       #area {
-        padding: 0;
-        margin: 0;
         height: 100vh;
         display: flex;
         flex-direction: column;
-      }
-      #area h1 {
       }
       #chat {
         flex-grow: 1;
@@ -28,20 +25,38 @@
       }
       #menu {
         line-height: 150%;
+        border-bottom: 1px solid #d8d8d8;
+        padding-left: 12px;
       }
-      #menu > div {
+      .menu div {
+        padding: 5px 8px;
         display: inline-block;
         cursor: pointer;
+        margin-left: 2px;
+        margin-right: 2px;
+        margin-bottom: -1px;
+      }
+      .curmenu,
+      .menu div:hover {
+        border-top: 1px solid #d8d8d8;
+        border-left: 1px solid #d8d8d8;
+        border-right: 1px solid #d8d8d8;
+        background-color: #fff;
+        margin-left: 1px;
+        margin-right: 1px;
+      }
+      .curmenu {
+        font-weight: bold;
+        pointer-events: none;
       }
       #userform {
         flex-grow: 1;
         overflow: auto;
-        border: 1px solid #d8d8d8;
         padding: 5px 12px;
-        margin: 5px 12px;
       }
       #userform > label {
         display: block;
+        padding-bottom: 5px;
       }
       #user {
         flex-grow: 1;
@@ -52,13 +67,60 @@
         padding: 5px 12px;
         margin: 5px 12px;
       }
+
       #msgform {
-        border: 1px solid #d8d8d8;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         padding: 5px 12px;
-        margin: 5px 12px;
+        border-top: 1px solid #d8d8d8;
       }
-      #msgform > label {
-        display: inline-block;
+      .astbg,
+      #msgformtools,
+      #msgformsaytool:hover {
+        background-color: bisque;
+      }
+      #msgformtool {
+        display: none;
+        width: 100%;
+      }
+      #msgformtools {
+        margin-left: 26px;
+        margin-right: 16%;
+        margin-bottom: 4px;
+        padding: 11px;
+        border-radius: 11px 11px 11px 0;
+      }
+      #msgformsaytool,
+      #msgformtools {
+        display: none;
+        border: 1px solid #d8d8d8;
+      }
+      #msgformsay {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      #msgformsaytool {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        font-size: larger;
+        text-align: center;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+      #msgformsay > input {
+        flex-grow: 1;
+        padding: 5px;
+        margin-right: 5px;
+      }
+      #msgformsay > button {
+        padding: 5px;
+        border-radius: 20%;
+        cursor: pointer;
       }
       #msg {
         flex-grow: 1;
@@ -78,10 +140,10 @@
     <div id="area">
       <h1>HELLO WORLD</h1>
       <div id="chat">
-        <div id="menu">
-          <div onclick="menuClick(0)">聊天室</div>
-          <div onclick="menuClick(1)">在线人员<sup id="usercount">18</sup></div>
-          <div onclick="menuClick(2)">我的信息</div>
+        <div id="menu" class="menu">
+          <div onclick="menuClick(0)">聊天室<sup id="saycount"></sup></div>
+          <div onclick="menuClick(1)">在线人员<sup id="usercount">1</sup></div>
+          <div onclick="menuClick(2)">我的信息<sup id="mycount"></sup></div>
         </div>
 
         <div id="userform">
@@ -113,17 +175,20 @@
 
         <div id="user"><div class="user">用户列表</div></div>
 
-        <div id="msg"><div class="msg">欢迎使用AsaiChat。</div></div>
+        <div id="msg"><div class="msg">欢迎使用AsaiChat，本聊天室不保留任何信息。</div></div>
 
         <div id="msgform">
-          <label for="xx">
-            消息：
+          <div id="msgformtool">
+            <div id="msgformtools">
+              工具箱<button onclick="localClear()">清空</button>
+            </div>
+          </div>
+          <div id="msgformsay">
+            <label id="msgformsaytool" for="xx" onclick="msgTool()">＋</label>
             <input type="text" id="xx" name="xx" maxlength="200" value="" />
-          </label>
-          <button onclick="msgSendSubmit()">发送</button>
-          <button onclick="localClear()">清空</button>
+            <button onclick="msgSendSubmit()">发送</button>
+          </div>
         </div>
-        
       </div>
       <script>
         var $menu = document.getElementById("menu");
@@ -131,6 +196,8 @@
         var $userform = document.getElementById("userform");
         var $msg = document.getElementById("msg");
         var $msgform = document.getElementById("msgform");
+        var $msgformtool = document.getElementById("msgformtool");
+        var $msgformsaytool = document.getElementById("msgformsaytool");
         var $usercount = document.getElementById("usercount");
       </script>
       <script src="config.js"></script>
