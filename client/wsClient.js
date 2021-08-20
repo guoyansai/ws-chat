@@ -11,6 +11,7 @@ const dataObj = {
   arrMsg: [],
   strMsg: "",
 };
+hiddenDom($cardarea);
 menuClick(0);
 initDataUser();
 initFormUser();
@@ -19,17 +20,24 @@ ws.onmessage = function (msg) {
   chatShow("" + msg.data);
 };
 
-document.getElementById("xx").onkeydown = function (e) {
+$xx.onkeydown = function (e) {
   if (e.key === "Enter") {
     msgSendSubmit();
   }
 };
+$cardarea.addEventListener(
+  "click",
+  function (e) {
+    cardHidden();
+  },
+  true
+);
 function userSendSubmit() {
   dataObj.arrUser[0] = mz.value;
   dataObj.arrUser[1] = tx.value;
   dataObj.arrUser[2] = sr.value;
   dataObj.arrUser[3] = cs.value;
-  dataObj.arrUser[4] = wb.value;
+  dataObj.arrUser[4] = qm.value;
   localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
   initDataUser();
   msgSend([dataObj.arrUid[0], config.msgType.wsChangeUser, dataObj.arrUser]);
@@ -58,7 +66,7 @@ function initFormUser() {
   tx.value = dataObj.arrUser[1];
   sr.value = dataObj.arrUser[2];
   cs.value = dataObj.arrUser[3];
-  wb.value = dataObj.arrUser[4];
+  qm.value = dataObj.arrUser[4];
 }
 
 function initDataMsg() {
@@ -104,32 +112,57 @@ function userToDom(msgArr) {
   Object.keys(dataObj.arrUserList).forEach((index) => {
     userCount++;
     const userInfo = dataObj.arrUserList[index];
-    strUserList += `<div class=user>
-    <div class=umz>名字：${userInfo[0]}</div>
-    <div class=utx>头像：${userInfo[1]}</div>
-    <div class=usr>生日：${userInfo[2]}</div>
-    <div class=ucs>城市：${userInfo[3]}</div>
-    <div class=uwb>尾巴：${userInfo[4]}</div>
-    <div class=usj>时间：${userInfo[5]}</div>
-    <div class=uid>ID：${userInfo[6]}</div>
+    strUserList += `<div class=userd>
+    ${getUserDom(userInfo[1], userInfo[0], index)}
     </div>`;
   });
   $usercount.innerHTML = userCount;
   $user.innerHTML = strUserList;
 }
 
+function cardShowUser(uid) {
+  const userInfo = dataObj.arrUserList[uid];
+  if (userInfo) {
+    const userDom = `<div class=usercard>
+  <div class=cutx><img src=t${userInfo[1]}.jpg></div>
+  <div class=cuid>(ID：${userInfo[6]})</div>
+  <div class=cumz>${htmlToTxt(userInfo[0])}</div>
+  <div class=cuqm>${htmlToTxt(userInfo[4])}</div>
+  <div class=cucs>城市：${htmlToTxt(userInfo[3])}</div>
+  <div class=cusr>生日：${userInfo[2]}</div>
+  <div class=cusj>时间：${numToDate(userInfo[5])}</div>
+  <div class=cubt><button onclick="cardHidden()">关闭</button></div>
+  </div>`;
+    $card.innerHTML = userDom;
+    showDom($cardarea, "flex");
+  }
+}
+
+function getUserDom(utx, umz, uid) {
+  return `<div class="user" onclick="cardShowUser(${uid})">
+<div class=utx><img src=t${utx}.jpg></div>
+<div class=umz>${htmlToTxt(umz)}</div>
+</div>`;
+}
+function cardHidden() {
+  $card.innerHTML = "";
+  hiddenDom($cardarea);
+}
+
 function msgToDom(msgArr) {
+  const userInfo = dataObj.arrUserList[msgArr[0]];
   const msgObj = {
     myid: dataObj.arrUid[0],
     uid: msgArr[0],
-    umz: dataObj.arrUserList[msgArr[0]][0],
+    umz: userInfo[0],
+    utx: userInfo[1],
     clx: msgArr[1],
     cxx: msgArr[2],
     csj: msgArr[3],
   };
   const domMsgArea = document.createElement("div");
   if (msgObj.uid === msgObj.myid) {
-    domMsgArea.style.textAlign = "right";
+    domMsgArea.className = "msgmy";
   }
   if (msgObj.clx === config.msgType.broadInRoom) {
     msgObj.umz = `${msgObj.cxx[0]}`;
@@ -140,16 +173,20 @@ function msgToDom(msgArr) {
   } else if (msgObj.clx === config.msgType.broadChangeUser) {
     msgObj.cxx = `【更改名字】${msgObj.cxx}`;
   }
-  const msgHtml = `<div class=msg>
-  <div class=umz>名字：${msgObj.umz}</div>
-  <div class=cxx>信息：${msgObj.cxx}</div>
-  <div class=csj>时间：${msgObj.csj}</div>
-  <div class=clx>类型：${msgObj.clx}</div>
-  </div>`;
+  const msgHtml = `<div class=msgd><div class=msg>
+  <div class=msgu>
+  ${getUserDom(msgObj.utx, msgObj.umz, msgObj.uid)}
+  </div>
+  <div class=msgc>
+  <div class=csj>${numToDate(msgObj.csj)}</div>
+  <div class="cxx lx${msgObj.clx}">${htmlToTxt(msgObj.cxx)}</div>
+  </div>
+  </div></div>`;
   domMsgArea.innerHTML = msgHtml;
   $msg.appendChild(domMsgArea);
   $msg.scrollTop = $msg.scrollHeight;
 }
+
 function msgTool() {
   if ($msgformtool.style.display === "block") {
     $msgformtool.style.display = "none";
@@ -160,26 +197,42 @@ function msgTool() {
   }
 }
 function menuClick(index) {
-  $menu.children[0].className === "curmenu" &&
-    ($menu.children[0].className = "");
-  $menu.children[1].className === "curmenu" &&
-    ($menu.children[1].className = "");
-  $menu.children[2].className === "curmenu" &&
-    ($menu.children[2].className = "");
-  $user.style.display !== "none" && ($user.style.display = "none");
-  $userform.style.display !== "none" && ($userform.style.display = "none");
-  $msg.style.display !== "none" && ($msg.style.display = "none");
-  $msgform.style.display !== "none" && ($msgform.style.display = "none");
-  $menu.children[index].className = "curmenu";
+  setDomClass($menu.children[0], "");
+  setDomClass($menu.children[1], "");
+  setDomClass($menu.children[2], "");
+  setDomClass($menu.children[index], "curmenu");
+  hiddenDom($user);
+  hiddenDom($userform);
+  hiddenDom($msg);
+  hiddenDom($msgform);
   if (index === 2) {
-    $userform.style.display = "block";
+    showDom($userform, "block");
   } else if (index === 1) {
-    $user.style.display = "block";
+    showDom($user, "block");
   } else {
-    $msg.style.display = "block";
-    $msgform.style.display = "flex";
+    showDom($msg, "block");
+    showDom($msgform, "flex");
   }
 }
+
+function setDomClass(dom, value) {
+  if (dom.className !== value) {
+    dom.className = value;
+  }
+}
+
+function showDom(dom, value) {
+  if (dom.style.display !== value) {
+    dom.style.display = value;
+  }
+}
+
+function hiddenDom(dom) {
+  if (dom.style.display !== "none") {
+    dom.style.display = "none";
+  }
+}
+
 function localClear() {
   localStorage.setItem(dataUserKey, "");
   localStorage.setItem(dataMsgKey, "");
@@ -195,4 +248,16 @@ function toStr(val) {
     return JSON.stringify(val);
   }
   return val;
+}
+
+function htmlToTxt(val) {
+  var tmpDom = document.createElement("div");
+  tmpDom.textContent ? (tmpDom.textContent = val) : (tmpDom.innerText = val);
+  var tmpTxt = tmpDom.innerHTML;
+  tmpDom = null;
+  return tmpTxt;
+}
+function numToDate(val) {
+  return `${val.substr(0, 4)}-${val.substr(4, 2)}-${val.substr(6, 2)} 
+  ${val.substr(8, 2)}:${val.substr(10, 2)}:${val.substr(12, 2)}`;
 }

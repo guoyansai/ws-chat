@@ -1,11 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-<meta charset="utf-8">
-<title>AsaiChat</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="AsaiChat">
-<meta name="description" content="AsaiChat">
-<meta name="copyright" content="AsaiChat,asai.cc">
+  <head>
+    <meta charset="utf-8" />
+    <title>AsaiChat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="AsaiChat" />
+    <meta name="description" content="AsaiChat" />
+    <meta name="copyright" content="AsaiChat,asai.cc" />
     <style>
       body {
         padding: 0;
@@ -49,6 +50,64 @@
         font-weight: bold;
         pointer-events: none;
       }
+
+      #cardarea {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #card {
+        border-top: 1px solid #d8d8d8;
+        border-right: 1px solid #d8d8d8;
+        border-bottom: 1px solid #d8d8d8;
+        border-left: 12px solid #d8d8d8;
+        background-color: #fff;
+        padding: 12px;
+        max-width: 280px;
+        min-width: 100px;
+      }
+      .usercard {
+      }
+      .cutx,
+      .cuid,
+      .cumz,
+      .cuqm,
+      .cubt {
+        text-align: center;
+      }
+      .cutx img {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+      }
+      .cuid {
+        color: #999;
+      }
+      .cumz {
+        margin: 12px 0;
+        font-weight: bold;
+      }
+      .cuqm {
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      .cucs,
+      .cusr,
+      .cusj {
+        font-size: 12px;
+        color: #666;
+      }
+      .cubt button {
+        cursor: pointer;
+        margin-top: 12px;
+      }
+
       #userform {
         flex-grow: 1;
         overflow: auto;
@@ -61,11 +120,14 @@
       #user {
         flex-grow: 1;
         overflow: auto;
+        padding: 5px 12px;
       }
-      .user {
+      .userd {
+        display: inline-block;
+        width: 52px;
         border: 1px solid #d8d8d8;
         padding: 5px 12px;
-        margin: 5px 12px;
+        margin: 5px;
       }
 
       #msgform {
@@ -127,12 +189,59 @@
         overflow: auto;
         line-height: 150%;
       }
-      .msg {
+      .msgmy {
+        text-align: right;
+      }
+      .msgmy .msg {
+        flex-direction: row-reverse;
+      }
+      .msgmy .csj {
+        text-align: right;
+      }
+      .msgmy .cxx {
+        border-radius: 12px 0 12px 12px;
+      }
+      .msgd {
         display: inline-block;
         text-align: left;
-        border: 1px solid #d8d8d8;
         padding: 5px 12px;
         margin: 5px 12px;
+      }
+      .msg {
+        display: flex;
+      }
+      .msgu {
+        width: 52px;
+      }
+      .msgc {
+        flex-grow: 1;
+        margin: 0 5px;
+      }
+      .cxx {
+        border: 1px solid #d8d8dd;
+        padding: 12px;
+        border-radius: 0 12px 12px 12px;
+      }
+
+      .csj {
+        color: #999;
+        font-size: 12px;
+      }
+      .user {
+        width: 100%;
+        cursor: pointer;
+      }
+      .utx img {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+      }
+      .umz {
+        text-align: center;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     </style>
   </head>
@@ -144,6 +253,10 @@
           <div onclick="menuClick(0)">聊天室<sup id="saycount"></sup></div>
           <div onclick="menuClick(1)">在线人员<sup id="usercount">1</sup></div>
           <div onclick="menuClick(2)">我的信息<sup id="mycount"></sup></div>
+        </div>
+
+        <div id="cardarea">
+          <div id="card"></div>
         </div>
 
         <div id="userform">
@@ -166,16 +279,18 @@
             城市：
             <input type="text" id="cs" name="cs" maxlength="10" value="" />
           </label>
-          <label for="wb">
-            尾巴：
-            <input type="text" id="wb" name="wb" maxlength="60" value="" />
+          <label for="qm">
+            签名：
+            <input type="text" id="qm" name="qm" maxlength="60" value="" />
           </label>
           <button onclick="userSendSubmit()">更新个人信息</button>
         </div>
 
         <div id="user"><div class="user">用户列表</div></div>
 
-        <div id="msg"><div class="msg">欢迎使用AsaiChat，本聊天室不保留任何信息。</div></div>
+        <div id="msg">
+          <div class="msg">欢迎使用AsaiChat，本聊天室不保留任何信息。</div>
+        </div>
 
         <div id="msgform">
           <div id="msgformtool">
@@ -192,12 +307,15 @@
       </div>
       <script>
         var $menu = document.getElementById("menu");
+        var $cardarea = document.getElementById("cardarea");
+        var $card = document.getElementById("card");
         var $user = document.getElementById("user");
         var $userform = document.getElementById("userform");
         var $msg = document.getElementById("msg");
         var $msgform = document.getElementById("msgform");
         var $msgformtool = document.getElementById("msgformtool");
         var $msgformsaytool = document.getElementById("msgformsaytool");
+        var $xx = document.getElementById("xx");
         var $usercount = document.getElementById("usercount");
       </script>
       <script src="config.js"></script>
