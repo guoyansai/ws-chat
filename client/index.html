@@ -7,6 +7,10 @@
     <meta name="keywords" content="南京聊天室" />
     <meta name="description" content="南京聊天室" />
     <meta name="copyright" content="南京聊天室,cc.asai.cc" />
+    <style id="cssvar">
+      :root {
+      }
+    </style>
     <link type="text/css" href="css.css" rel="stylesheet" />
   </head>
   <body>
@@ -16,7 +20,7 @@
       <div id="chat">
         <div id="menu" class="menu">
           <div onclick="menuClick(0)">聊天室<sup id="saycount"></sup></div>
-          <div onclick="menuClick(1)">在线人员<sup id="usercount">1</sup></div>
+          <div onclick="menuClick(1)">在线人员<sup id="usercount">1人</sup></div>
           <div onclick="menuClick(2)">我的信息<sup id="mycount"></sup></div>
         </div>
 
@@ -65,7 +69,7 @@
         <div id="user"><div class="user">用户列表</div></div>
 
         <div id="msg">
-          <div class="msgg">欢迎光临南京聊天室http://cc.asai.cc/。</div>
+          <div class="msgg">欢迎光临南京聊天室http://cc.asai.cc/</div>
         </div>
 
         <div id="msgform">
@@ -76,7 +80,14 @@
           </div>
           <div id="msgformsay">
             <label id="msgformsaytool" for="xx" onclick="msgTool()">＋</label>
-            <input type="text" id="xx" name="xx" maxlength="200" value="" />
+            <input
+              type="text"
+              id="xx"
+              name="xx"
+              maxlength="200"
+              value=""
+              placeholder="请在这里输入发言内容，按Enter键或发送按钮提交。"
+            />
             <button onclick="msgSendSubmit()">发送</button>
           </div>
         </div>

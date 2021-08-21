@@ -41,7 +41,7 @@ wss.broadcast = (msg, ws = {}) => {
       let cStr = "";
       arrUser.forEach((item, index) => {
         if (oldUser[index] !== item) {
-          cStr += `${config.userTmpDes[index]}（${oldUser[index]} => ${item}）`;
+          cStr += `${config.userTmpDes[index]}（${oldUser[index]} 变更为 ${item}）`;
         }
       });
       if (cStr) {
@@ -67,7 +67,7 @@ wss.on("connection", (ws, req) => {
     user: config.userTmp,
   };
   uuser.user[0] = `游客${uid}`;
-  uuser.user[3] = `IP${req.connection.remoteAddress}`;
+  uuser.user[3] = `${req.connection.remoteAddress}`;
   ws.us = uuser;
   ws.send(toStr([uid, config.msgType.myUid, uuser.user, uuser.time]));
 

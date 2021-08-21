@@ -1,4 +1,6 @@
+const $cssvar = document.getElementById("cssvar");
 const $menu = document.getElementById("menu");
+const $saycount = document.getElementById("saycount");
 const $cardarea = document.getElementById("cardarea");
 const $card = document.getElementById("card");
 const $user = document.getElementById("user");
@@ -19,11 +21,46 @@ const dataObj = {
   strUser: "",
   arrMsg: [],
   strMsg: "",
+  msgType: config.msgType.broadMsg,
+  menuIndex: 0,
+  newMsg: 0,
+};
+const cssObj = {
+  bgimg: "",
+  fontcolorlight: "#999",
+  fontcolor: "#000",
+  fontsizesmall: "12px",
+  fontsize: "16px",
+  bordercolor: "#d8d8d8",
+  bgcolor: "rgba(255, 255, 255, 0.8)",
+  bgcolorspe: "rgba(252, 248, 230, 0.8)",
+  bglinearmenu:
+    "linear-gradient(rgba(255, 255, 255, 0),rgba(255, 255, 255, 1))",
 };
 
 let ws = null;
 let wsTime = 10; // 重连次数
 const wsUrl = config.wsIp + config.wsPortMsg;
+
+function initCssVar() {
+  const cssStr = `:root {
+    --bgimg: url("${cssObj.bgimg}");
+    --fontcolorlight: ${cssObj.fontcolorlight};
+    --fontcolor: ${cssObj.fontcolor};
+    --fontsizesmall: ${cssObj.fontsizesmall};
+    --fontsize: ${cssObj.fontsize};
+    --bordercolor: ${cssObj.bordercolor};
+    --bgcolor: ${cssObj.bgcolor};
+    --bgcolorspe: ${cssObj.bgcolorspe};
+    --bglinearmenu: ${cssObj.bglinearmenu};
+  }
+  `;
+  if ($cssvar.innerHTML) {
+    $cssvar.innerHTML = cssStr;
+  } else {
+    $cssvar.styleSheet && ($cssvar.styleSheet.cssText = cssStr);
+  }
+}
 
 function wsInit() {
   ws.onopen = function () {
@@ -125,4 +162,5 @@ var wsHeart = {
   },
 };
 
+initCssVar();
 wsHeart.newWs();

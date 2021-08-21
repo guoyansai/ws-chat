@@ -1,5 +1,5 @@
 hiddenDom($cardarea);
-menuClick(0);
+menuClick(dataObj.menuIndex);
 initDataUser();
 initFormUser();
 
@@ -20,12 +20,15 @@ function userSendSubmit() {
   localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
   initDataUser();
   msgSend([dataObj.arrUid[0], config.msgType.wsChangeUser, dataObj.arrUser]);
+  menuClick(0);
 }
 
 function msgSendSubmit() {
-  msgSend([dataObj.arrUid[0], config.msgType.broadMsg, xx.value]);
-  xx.value = "";
-  xx.focus();
+  if (xx.value) {
+    msgSend([dataObj.arrUid[0], dataObj.msgType, xx.value]);
+    xx.value = "";
+    xx.focus();
+  }
 }
 
 function initDataUser() {
@@ -93,7 +96,7 @@ function userToDom(msgArr) {
     ${getUserDom(userInfo[1], userInfo[0], index)}
     </div>`;
   });
-  $usercount.innerHTML = userCount;
+  $usercount.innerHTML = userCount + "人";
   $user.innerHTML = strUserList;
 }
 
@@ -182,6 +185,7 @@ function msgToDom(msgArr) {
       });
       domMsgArea.innerHTML = msgHtml;
     } else {
+      newMsgCount(0);
       if (msgObj.uid === msgObj.myid) {
         setDomClass(domMsgArea, "msgmy");
       }
@@ -197,15 +201,32 @@ function evil(fn) {
   var Fn = Function;
   return new Fn("return " + fn)();
 }
+
+function newMsgCount(type) {
+  if (dataObj.menuIndex !== 0) {
+    if (!type) {
+      dataObj.newMsg++;
+    }
+    if (dataObj.newMsg > 0) {
+      $saycount.innerText = dataObj.newMsg;
+    }
+  } else {
+    if (dataObj.newMsg > 0) {
+      $saycount.innerText = "";
+    }
+    dataObj.newMsg = 0;
+  }
+}
+
 function getMsgHtml(msgObj) {
   if (msgObj.clx === config.msgType.broadInRoom) {
     msgObj.umz = `${msgObj.cxx[0]}`;
-    msgObj.cxx = `【进入房间】`;
+    msgObj.cxx = `【进入聊天室】`;
   } else if (msgObj.clx === config.msgType.broadOutRoom) {
     msgObj.umz = `${msgObj.cxx[0]}`;
-    msgObj.cxx = `【离开房间】`;
+    msgObj.cxx = `【离开聊天室】`;
   } else if (msgObj.clx === config.msgType.broadChangeUser) {
-    msgObj.cxx = `【${msgObj.cxx}】`;
+    msgObj.cxx = `【变更个人信息】\n${msgObj.cxx}`;
   }
   return `<div class=msgd><div class=msg>
     <div class=msgu>
@@ -229,6 +250,7 @@ function msgTool() {
 }
 
 function menuClick(index) {
+  dataObj.menuIndex = index;
   setDomClass($menu.children[0], "");
   setDomClass($menu.children[1], "");
   setDomClass($menu.children[2], "");
@@ -244,7 +266,9 @@ function menuClick(index) {
   } else {
     showDom($msg, "block");
     showDom($msgform, "flex");
+    xx.focus();
   }
+  newMsgCount(1);
 }
 
 function setDomClass(dom, value) {
