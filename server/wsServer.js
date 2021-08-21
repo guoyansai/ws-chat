@@ -17,7 +17,6 @@ const saveMsg = {
 let uid = 0;
 let uuser = {};
 let users = {};
-let msgs = []; //聊天记录
 
 // 广播
 wss.broadcast = (msg, ws = {}) => {
