@@ -3,6 +3,14 @@ body {
   margin: 0;
   height: 100vh;
 }
+h1 {
+  padding-left: 12px;
+}
+h1 u {
+  padding-left: 10px;
+  font-size: 12px;
+  color: #999;
+}
 #area {
   height: 100vh;
   display: flex;

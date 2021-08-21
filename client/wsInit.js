@@ -32,7 +32,7 @@ function wsInit() {
   ws.onmessage = function (e) {
     wsHeart.reStart();
     if (e.data === "pong") {
-      console.log(666.909, "pong");
+      // console.log(666.909, "pong");
     } else {
       // 处理正常消息的地方
       chatShow("" + e.data);

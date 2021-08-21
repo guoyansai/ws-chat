@@ -119,9 +119,16 @@ function getTime() {
 function doBroadcast(msgArr) {
   if (msgArr.length === 4) {
     saveMsgs(msgArr);
-    wss.clients.forEach(function each(client) {
-      client.send(toStr(msgArr));
-    });
+    if (
+      msgArr[1] === config.msgType.broadInRoom ||
+      msgArr[1] === config.msgType.broadOutRoom
+    ) {
+      // 不发送进出聊天室广播
+    } else {
+      wss.clients.forEach(function each(client) {
+        client.send(toStr(msgArr));
+      });
+    }
   }
 }
 function saveMsgs(msg) {
