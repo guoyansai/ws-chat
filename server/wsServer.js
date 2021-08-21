@@ -1,11 +1,19 @@
 const config = require("../client/config.js");
 
+const fs = require("fs");
 const WebSocket = require("ws");
 const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer({
   port: config.wsPortMsg,
 });
-
+const saveMsg = {
+  total: 100,
+  fileName: "",
+  tmp: {
+    total: 100,
+    fileName: "",
+  },
+};
 let uid = 0;
 let uuser = {};
 let users = {};
@@ -16,41 +24,37 @@ wss.broadcast = (msg, ws = {}) => {
   let msgArr = toObj(msg);
   if (msgArr.length === 3) {
     msgArr.push(getTime());
-    msgs.push([...msgArr]);
 
     if (msgArr[1] === config.msgType.wsInRoom) {
       let arrUser = toObj(msgArr[2]);
       users[uid] = [...arrUser, getTime(), uid];
       ws.us.user = users[uid];
-      wss.clients.forEach(function each(client) {
-        client.send(toStr(getUserList()));
-      });
+      doBroadcast(getUserList());
       msgArr[1] = config.msgType.broadInRoom;
     } else if (msgArr[1] === config.msgType.wsOutRoom) {
-      wss.clients.forEach(function each(client) {
-        msgArr[1] = config.msgType.broadOutRoom;
-        client.send(toStr(msgArr));
-      });
+      msgArr[1] = config.msgType.broadOutRoom;
+      doBroadcast(msgArr);
       msgArr = getUserList();
     } else if (msgArr[1] === config.msgType.wsChangeUser) {
+      let oldUser = users[msgArr[0]];
       let arrUser = toObj(msgArr[2]);
-      msgArr = [
-        msgArr[0],
-        config.msgType.broadChangeUser,
-        `${users[msgArr[0]][0]} 更名为 ${arrUser[0]}`,
-        getTime(),
-      ];
-      wss.clients.forEach(function each(client) {
-        client.send(toStr(msgArr));
+      let cStr = "";
+      arrUser.forEach((item, index) => {
+        if (oldUser[index] !== item) {
+          cStr += `${config.userTmpDes[index]}（${oldUser[index]} => ${item}）`;
+        }
       });
-      users[msgArr[0]] = [...arrUser, getTime(), msgArr[0]];
-      ws.us.user = users[msgArr[0]];
-
-      msgArr = getUserList();
+      if (cStr) {
+        msgArr = [msgArr[0], config.msgType.broadChangeUser, cStr, getTime()];
+        doBroadcast(msgArr);
+        users[msgArr[0]] = [...arrUser, getTime(), msgArr[0]];
+        ws.us.user = users[msgArr[0]];
+        msgArr = getUserList();
+      } else {
+        msgArr = [];
+      }
     }
-    wss.clients.forEach(function each(client) {
-      client.send(toStr(msgArr));
-    });
+    doBroadcast(msgArr);
   }
 };
 
@@ -87,7 +91,6 @@ wss.on("connection", (ws, req) => {
 
 function toObj(val) {
   if (typeof val === "string") {
-    // const fVal = val.replace(/\//g, "");
     return JSON.parse(val);
   }
   return val;
@@ -112,4 +115,27 @@ function getTime() {
     (date.getMinutes() + "").padStart(2, "0") +
     (date.getSeconds() + "").padStart(2, "0")
   );
+}
+
+function doBroadcast(msgArr) {
+  if (msgArr.length === 4) {
+    saveMsgs(msgArr);
+    wss.clients.forEach(function each(client) {
+      client.send(toStr(msgArr));
+    });
+  }
+}
+function saveMsgs(msg) {
+  if (msg[1] !== config.msgType.broadUser) {
+    saveMsg.total--;
+    if (saveMsg.total < 1) {
+      saveMsg.total = saveMsg.tmp.total;
+      saveMsg.fileName = "data/" + msg[3] + ".txt";
+    } else if (!saveMsg.fileName) {
+      saveMsg.fileName = "data/" + msg[3] + ".txt";
+    }
+    fs.appendFile(saveMsg.fileName, toStr(msg) + ",\n", (err, data) => {
+      if (err) throw err;
+    });
+  }
 }

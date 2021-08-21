@@ -1,0 +1,247 @@
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+#area {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+#chat {
+  flex-grow: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+#menu {
+  line-height: 150%;
+  border-bottom: 1px solid #d8d8d8;
+  padding-left: 12px;
+}
+.menu div {
+  padding: 5px 8px;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-bottom: -1px;
+}
+.curmenu,
+.menu div:hover {
+  border-top: 1px solid #d8d8d8;
+  border-left: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
+  background-color: #fff;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+.curmenu {
+  font-weight: bold;
+  pointer-events: none;
+}
+
+#cardarea {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#card {
+  border-top: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+  border-left: 12px solid #d8d8d8;
+  background-color: #fff;
+  padding: 12px;
+  max-width: 288px;
+  min-width: 100px;
+  max-height: 88%;
+  overflow: auto;
+}
+.usercard {
+}
+.cutx,
+.cuid,
+.cumz,
+.cuqm,
+.cubt {
+  text-align: center;
+}
+.cutx img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+}
+.cuid {
+  color: #999;
+}
+.cumz {
+  margin: 12px 0;
+  font-weight: bold;
+}
+.cuqm {
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.cucs,
+.cusr,
+.cusj {
+  font-size: 12px;
+  color: #666;
+}
+.cubt button {
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+#userform {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 5px 12px;
+}
+#userform > label {
+  display: block;
+  padding-bottom: 5px;
+}
+#user {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 5px 12px;
+}
+.userd,
+.usertx {
+  display: inline-block;
+  width: 52px;
+  border: 1px solid #d8d8d8;
+  padding: 5px 12px;
+  margin: 5px;
+}
+
+#msgform {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 5px 12px;
+  border-top: 1px solid #d8d8d8;
+}
+.astbg,
+#msgformtools,
+#msgformsaytool:hover {
+  background-color: bisque;
+}
+#msgformtool {
+  display: none;
+  width: 100%;
+}
+#msgformtools {
+  margin-left: 26px;
+  margin-right: 16%;
+  margin-bottom: 4px;
+  padding: 11px;
+  border-radius: 11px 11px 11px 0;
+}
+#msgformsaytool,
+#msgformtools {
+  display: none;
+  border: 1px solid #d8d8d8;
+}
+#msgformsay {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+#msgformsaytool {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  font-size: larger;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+}
+#msgformsay > input {
+  flex-grow: 1;
+  padding: 5px;
+  margin-right: 5px;
+}
+#msgformsay > button {
+  padding: 5px;
+  border-radius: 20%;
+  cursor: pointer;
+}
+#msg {
+  flex-grow: 1;
+  overflow: auto;
+  line-height: 150%;
+}
+.msgg {
+  display: inline-block;
+  text-align: left;
+  padding: 5px 12px;
+  margin: 5px 12px;
+  border: 1px solid #d8d8d8;
+  color: #999;
+  font-size: 12px;
+}
+.msgmy {
+  text-align: right;
+}
+.msgmy .msg {
+  flex-direction: row-reverse;
+}
+.msgmy .csj {
+  text-align: right;
+}
+.msgmy .cxx {
+  border-radius: 12px 0 12px 12px;
+}
+.msgd {
+  display: inline-block;
+  text-align: left;
+  padding: 5px 12px;
+  margin: 5px 12px;
+}
+.msg {
+  display: flex;
+}
+.msgu {
+  width: 52px;
+}
+.msgc {
+  flex-grow: 1;
+  margin: 0 5px;
+}
+.cxx {
+  border: 1px solid #d8d8dd;
+  padding: 12px;
+  border-radius: 0 12px 12px 12px;
+}
+
+.csj {
+  color: #999;
+  font-size: 12px;
+}
+.user {
+  width: 100%;
+  cursor: pointer;
+}
+.utx img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+}
+.umz {
+  text-align: center;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

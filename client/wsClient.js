@@ -7,6 +7,10 @@ function msgSend(msg) {
   ws.send(toStr(msg));
 }
 
+function getTx(utx) {
+  return `tx/${utx}.jpg`;
+}
+
 function userSendSubmit() {
   dataObj.arrUser[0] = mz.value;
   dataObj.arrUser[1] = tx.value;
@@ -97,7 +101,7 @@ function cardShowUser(uid) {
   const userInfo = dataObj.arrUserList[uid];
   if (userInfo) {
     const userDom = `<div class=usercard>
-  <div class=cutx><img src=t${userInfo[1]}.jpg></div>
+  <div class=cutx><img src=${getTx(userInfo[1])}></div>
   <div class=cuid>(ID：${userInfo[6]})</div>
   <div class=cumz>${htmlToTxt(userInfo[0])}</div>
   <div class=cuqm>${htmlToTxt(userInfo[4])}</div>
@@ -111,9 +115,30 @@ function cardShowUser(uid) {
   }
 }
 
+function cardShowTx(utx) {
+  let i = 0;
+  let strDom = "";
+  while (i < 95) {
+    strDom += `<div class=usertx><div class="user" onclick="setTxValue(${i})">
+    <div class=utx><img src=${getTx(i)}></div>
+    <div class=umz>头像${i}</div>
+    </div></div>`;
+    i++;
+  }
+
+  $card.innerHTML = strDom;
+  showDom($cardarea, "flex");
+}
+
+function setTxValue(utx) {
+  dataObj.arrUser[1] = utx;
+  tx.value = utx;
+  userSendSubmit();
+}
+
 function getUserDom(utx, umz, uid) {
   return `<div class="user" onclick="cardShowUser(${uid})">
-<div class=utx><img src=t${utx}.jpg></div>
+<div class=utx><img src=${getTx(utx)}></div>
 <div class=umz>${htmlToTxt(umz)}</div>
 </div>`;
 }
@@ -125,29 +150,30 @@ function cardHidden() {
 
 function msgToDom(msgArr) {
   const userInfo = dataObj.arrUserList[msgArr[0]];
-  const msgObj = {
-    myid: dataObj.arrUid[0],
-    uid: msgArr[0],
-    umz: userInfo[0],
-    utx: userInfo[1],
-    clx: msgArr[1],
-    cxx: msgArr[2],
-    csj: msgArr[3],
-  };
-  const domMsgArea = document.createElement("div");
-  if (msgObj.uid === msgObj.myid) {
-    domMsgArea.className = "msgmy";
-  }
-  if (msgObj.clx === config.msgType.broadInRoom) {
-    msgObj.umz = `${msgObj.cxx[0]}`;
-    msgObj.cxx = `【进入房间】`;
-  } else if (msgObj.clx === config.msgType.broadOutRoom) {
-    msgObj.umz = `${msgObj.cxx[0]}`;
-    msgObj.cxx = `【离开房间】`;
-  } else if (msgObj.clx === config.msgType.broadChangeUser) {
-    msgObj.cxx = `【更改名字】${msgObj.cxx}`;
-  }
-  const msgHtml = `<div class=msgd><div class=msg>
+  if (userInfo.length) {
+    const msgObj = {
+      myid: dataObj.arrUid[0],
+      uid: msgArr[0],
+      umz: userInfo[0],
+      utx: userInfo[1],
+      clx: msgArr[1],
+      cxx: msgArr[2],
+      csj: msgArr[3],
+    };
+    const domMsgArea = document.createElement("div");
+    if (msgObj.uid === msgObj.myid) {
+      domMsgArea.className = "msgmy";
+    }
+    if (msgObj.clx === config.msgType.broadInRoom) {
+      msgObj.umz = `${msgObj.cxx[0]}`;
+      msgObj.cxx = `【进入房间】`;
+    } else if (msgObj.clx === config.msgType.broadOutRoom) {
+      msgObj.umz = `${msgObj.cxx[0]}`;
+      msgObj.cxx = `【离开房间】`;
+    } else if (msgObj.clx === config.msgType.broadChangeUser) {
+      msgObj.cxx = `【${msgObj.cxx}】`;
+    }
+    const msgHtml = `<div class=msgd><div class=msg>
   <div class=msgu>
   ${getUserDom(msgObj.utx, msgObj.umz, msgObj.uid)}
   </div>
@@ -156,9 +182,10 @@ function msgToDom(msgArr) {
   <div class="cxx lx${msgObj.clx}">${htmlToTxt(msgObj.cxx)}</div>
   </div>
   </div></div>`;
-  domMsgArea.innerHTML = msgHtml;
-  $msg.appendChild(domMsgArea);
-  $msg.scrollTop = $msg.scrollHeight;
+    domMsgArea.innerHTML = msgHtml;
+    $msg.appendChild(domMsgArea);
+    $msg.scrollTop = $msg.scrollHeight;
+  }
 }
 
 function msgTool() {
@@ -234,6 +261,7 @@ function htmlToTxt(val) {
   tmpDom = null;
   return tmpTxt;
 }
+
 function numToDate(val) {
   return `${val.substr(0, 4)}-${val.substr(4, 2)}-${val.substr(6, 2)} 
   ${val.substr(8, 2)}:${val.substr(10, 2)}:${val.substr(12, 2)}`;
