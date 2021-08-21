@@ -11,6 +11,7 @@ var config = {
     broadChangeUser: 22,
     broadInRoom: 23,
     broadOutRoom: 24,
+    broadMsgFetch: 25,
     wsChangeUser: 32,
     wsInRoom: 33,
     wsOutRoom: 34,

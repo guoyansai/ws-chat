@@ -150,7 +150,7 @@ function cardHidden() {
 
 function msgToDom(msgArr) {
   const userInfo = dataObj.arrUserList[msgArr[0]];
-  if (userInfo.length) {
+  if (userInfo && userInfo.length) {
     const msgObj = {
       myid: dataObj.arrUid[0],
       uid: msgArr[0],
@@ -160,32 +160,62 @@ function msgToDom(msgArr) {
       cxx: msgArr[2],
       csj: msgArr[3],
     };
+
     const domMsgArea = document.createElement("div");
-    if (msgObj.uid === msgObj.myid) {
-      domMsgArea.className = "msgmy";
+
+    if (msgObj.clx === config.msgType.broadMsgFetch) {
+      const msgFetch = evil(msgObj.cxx);
+      let msgHtml = "";
+      msgFetch.forEach((msgItem) => {
+        msgObj.uid = msgItem[0];
+        if (dataObj.arrUserList[msgItem[0]]) {
+          msgObj.umz = dataObj.arrUserList[msgItem[0]][0];
+          msgObj.utx = dataObj.arrUserList[msgItem[0]][1];
+        } else {
+          msgObj.umz = "游客" + msgObj.uid;
+          msgObj.utx = 0;
+        }
+        msgObj.clx = msgItem[1];
+        msgObj.cxx = msgItem[2];
+        msgObj.csj = msgItem[3];
+        msgHtml += "<div>" + getMsgHtml(msgObj) + "</div>";
+      });
+      domMsgArea.innerHTML = msgHtml;
+    } else {
+      if (msgObj.uid === msgObj.myid) {
+        setDomClass(domMsgArea, "msgmy");
+      }
+      domMsgArea.innerHTML = getMsgHtml(msgObj);
     }
-    if (msgObj.clx === config.msgType.broadInRoom) {
-      msgObj.umz = `${msgObj.cxx[0]}`;
-      msgObj.cxx = `【进入房间】`;
-    } else if (msgObj.clx === config.msgType.broadOutRoom) {
-      msgObj.umz = `${msgObj.cxx[0]}`;
-      msgObj.cxx = `【离开房间】`;
-    } else if (msgObj.clx === config.msgType.broadChangeUser) {
-      msgObj.cxx = `【${msgObj.cxx}】`;
-    }
-    const msgHtml = `<div class=msgd><div class=msg>
-  <div class=msgu>
-  ${getUserDom(msgObj.utx, msgObj.umz, msgObj.uid)}
-  </div>
-  <div class=msgc>
-  <div class=csj>${numToDate(msgObj.csj)}</div>
-  <div class="cxx lx${msgObj.clx}">${htmlToTxt(msgObj.cxx)}</div>
-  </div>
-  </div></div>`;
-    domMsgArea.innerHTML = msgHtml;
+
     $msg.appendChild(domMsgArea);
     $msg.scrollTop = $msg.scrollHeight;
   }
+}
+
+function evil(fn) {
+  var Fn = Function;
+  return new Fn("return " + fn)();
+}
+function getMsgHtml(msgObj) {
+  if (msgObj.clx === config.msgType.broadInRoom) {
+    msgObj.umz = `${msgObj.cxx[0]}`;
+    msgObj.cxx = `【进入房间】`;
+  } else if (msgObj.clx === config.msgType.broadOutRoom) {
+    msgObj.umz = `${msgObj.cxx[0]}`;
+    msgObj.cxx = `【离开房间】`;
+  } else if (msgObj.clx === config.msgType.broadChangeUser) {
+    msgObj.cxx = `【${msgObj.cxx}】`;
+  }
+  return `<div class=msgd><div class=msg>
+    <div class=msgu>
+    ${getUserDom(msgObj.utx, msgObj.umz, msgObj.uid)}
+    </div>
+    <div class=msgc>
+    <div class=csj>${numToDate(msgObj.csj)}</div>
+    <div class="cxx lx${msgObj.clx}">${htmlToTxt(msgObj.cxx)}</div>
+    </div>
+    </div></div>`;
 }
 
 function msgTool() {
@@ -263,6 +293,8 @@ function htmlToTxt(val) {
 }
 
 function numToDate(val) {
-  return `${val.substr(0, 4)}-${val.substr(4, 2)}-${val.substr(6, 2)} 
+  if (val) {
+    return `${val.substr(0, 4)}-${val.substr(4, 2)}-${val.substr(6, 2)} 
   ${val.substr(8, 2)}:${val.substr(10, 2)}:${val.substr(12, 2)}`;
+  }
 }

@@ -11,7 +11,7 @@ const saveMsg = {
   fileName: "",
   tmp: {
     total: 100,
-    fileName: "",
+    fileName: "data/asai.txt",
   },
 };
 let uid = 0;
@@ -29,6 +29,7 @@ wss.broadcast = (msg, ws = {}) => {
       users[uid] = [...arrUser, getTime(), uid];
       ws.us.user = users[uid];
       doBroadcast(getUserList());
+      fetchMsg(ws);
       msgArr[1] = config.msgType.broadInRoom;
     } else if (msgArr[1] === config.msgType.wsOutRoom) {
       msgArr[1] = config.msgType.broadOutRoom;
@@ -137,11 +138,40 @@ function saveMsgs(msg) {
     if (saveMsg.total < 1) {
       saveMsg.total = saveMsg.tmp.total;
       saveMsg.fileName = "data/" + msg[3] + ".txt";
+      saveCurFileName();
     } else if (!saveMsg.fileName) {
-      saveMsg.fileName = "data/" + msg[3] + ".txt";
+      try {
+        saveMsg.fileName = fs.readFileSync(saveMsg.tmp.fileName, "utf-8");
+      } catch (err) {
+        saveMsg.fileName = "data/" + msg[3] + ".txt";
+        saveCurFileName();
+      }
     }
-    fs.appendFile(saveMsg.fileName, toStr(msg) + ",\n", (err, data) => {
+    fs.appendFile(saveMsg.fileName, toStr(msg) + ",", (err, data) => {
       if (err) throw err;
     });
+  }
+}
+
+function saveCurFileName() {
+  fs.writeFile(saveMsg.tmp.fileName, saveMsg.fileName, (err, data) => {
+    if (err) throw err;
+  });
+}
+
+function fetchMsg(ws) {
+  if (saveMsg.fileName) {
+    try {
+      const msgData = fs.readFileSync(saveMsg.fileName, "utf-8");
+      if (msgData) {
+        if (msgData.length > 0) {
+          ws.send(
+            toStr([ws.us.uid, config.msgType.broadMsgFetch, `[${msgData}]`, getTime()])
+          );
+        }
+      }
+    } catch (err) {
+      console.log(666.909, err);
+    }
   }
 }
