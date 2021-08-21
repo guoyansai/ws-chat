@@ -70,10 +70,8 @@ wss.on("connection", (ws, req) => {
   ws.on("message", (msg) => {
     if ("" + msg === "ping") {
       ws.send("pong");
-      console.log(666.101, "" + msg);
     } else {
       wss.broadcast("" + msg, ws);
-      console.log(666.202, "" + msg);
     }
   });
 
@@ -82,7 +80,7 @@ wss.on("connection", (ws, req) => {
       delete users[ws.us.uid];
       wss.broadcast([ws.us.uid, config.msgType.wsOutRoom, ws.us.user]);
     } catch (e) {
-      console.log(666.1009, e);
+      console.log(666.909, e);
     }
   });
 });

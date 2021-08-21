@@ -10,7 +10,6 @@ const $msgformsaytool = document.getElementById("msgformsaytool");
 const $xx = document.getElementById("xx");
 const $usercount = document.getElementById("usercount");
 
-const wsUrl = config.wsIp + config.wsPortMsg;
 const dataUserKey = "user";
 const dataMsgKey = "msg";
 const dataObj = {
@@ -24,26 +23,24 @@ const dataObj = {
 
 let ws = null;
 let wsTime = 10; // 重连次数
+const wsUrl = config.wsIp + config.wsPortMsg;
 
 function wsInit() {
   ws.onopen = function () {
     wsHeart.reStart();
-    console.log(666.201, "连接成功!" + new Date().toLocaleString());
   };
   ws.onmessage = function (e) {
     wsHeart.reStart();
-    console.log(666.102, "收到消息啦:" + e.data);
     if (e.data === "pong") {
-      console.log(666.109, "pong成功" + e.data);
+      console.log(666.909, "pong");
     } else {
       // 处理正常消息的地方
-      chatShow("" + msg.data);
+      chatShow("" + e.data);
     }
   };
   ws.onclose = function () {
     if (wsTime > 0) {
       wsHeart.reConnect();
-      console.log(666.203, wsTime, "连接关闭!" + new Date().toLocaleString());
     } else {
       wsHeart.reClose();
     }
@@ -51,7 +48,6 @@ function wsInit() {
   ws.onerror = function () {
     if (wsTime > 0) {
       wsHeart.reConnect();
-      console.log(666.204, wsTime, "连接错误!");
     } else {
       wsHeart.reClose();
     }
@@ -76,7 +72,7 @@ function wsInit() {
 }
 
 var wsHeart = {
-  timeout: 3000, // 心跳延迟时间
+  timeout: 15000, // 心跳延迟时间
   timeoutObj: null,
   serverTimeoutObj: null,
   connectTimeoutObj: null,
@@ -102,9 +98,7 @@ var wsHeart = {
   reCheck: function () {
     this.timeoutObj = setTimeout(() => {
       ws.send("ping");
-      console.log(666.301, "ping" + new Date().toLocaleString());
       this.serverTimeoutObj = setTimeout(() => {
-        console.log(666.303, "close" + new Date().toLocaleString());
         this.reClose();
       }, this.timeout);
     }, this.timeout);
@@ -114,7 +108,6 @@ var wsHeart = {
       wsTime--;
       this.lockConnect = true;
       this.connectTimeoutObj = setTimeout(() => {
-        console.log(666.301, "重连" + new Date().toLocaleString());
         this.newWs();
         this.lockConnect = false;
       }, this.lockConnectTimeout);
@@ -128,7 +121,6 @@ var wsHeart = {
       }
     } catch (e) {
       this.reConnect();
-      console.log(666.101, e);
     }
   },
 };
