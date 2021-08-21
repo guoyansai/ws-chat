@@ -68,7 +68,13 @@ wss.on("connection", (ws, req) => {
   ws.send(toStr([uid, config.msgType.myUid, uuser.user, uuser.time]));
 
   ws.on("message", (msg) => {
-    wss.broadcast("" + msg, ws);
+    if ("" + msg === "ping") {
+      ws.send("pong");
+      console.log(666.101, "" + msg);
+    } else {
+      wss.broadcast("" + msg, ws);
+      console.log(666.202, "" + msg);
+    }
   });
 
   ws.on("close", (o) => {

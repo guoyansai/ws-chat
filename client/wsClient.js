@@ -1,37 +1,12 @@
-const ws = new WebSocket(config.wsIp + config.wsPortMsg);
-const dataLocal = {};
-
-const dataUserKey = "user";
-const dataMsgKey = "msg";
-const dataObj = {
-  arrUid: [],
-  arrUserList: {},
-  arrUser: [],
-  strUser: "",
-  arrMsg: [],
-  strMsg: "",
-};
 hiddenDom($cardarea);
 menuClick(0);
 initDataUser();
 initFormUser();
 
-ws.onmessage = function (msg) {
-  chatShow("" + msg.data);
-};
+function msgSend(msg) {
+  ws.send(toStr(msg));
+}
 
-$xx.onkeydown = function (e) {
-  if (e.key === "Enter") {
-    msgSendSubmit();
-  }
-};
-$cardarea.addEventListener(
-  "click",
-  function (e) {
-    cardHidden();
-  },
-  true
-);
 function userSendSubmit() {
   dataObj.arrUser[0] = mz.value;
   dataObj.arrUser[1] = tx.value;
@@ -48,9 +23,7 @@ function msgSendSubmit() {
   xx.value = "";
   xx.focus();
 }
-function msgSend(msg) {
-  ws.send(toStr(msg));
-}
+
 function initDataUser() {
   dataObj.strUser = localStorage.getItem(dataUserKey);
   if (dataObj.strUser) {
@@ -144,6 +117,7 @@ function getUserDom(utx, umz, uid) {
 <div class=umz>${htmlToTxt(umz)}</div>
 </div>`;
 }
+
 function cardHidden() {
   $card.innerHTML = "";
   hiddenDom($cardarea);
@@ -196,6 +170,7 @@ function msgTool() {
     $msgformsaytool.className = "astbg";
   }
 }
+
 function menuClick(index) {
   setDomClass($menu.children[0], "");
   setDomClass($menu.children[1], "");
@@ -237,12 +212,14 @@ function localClear() {
   localStorage.setItem(dataUserKey, "");
   localStorage.setItem(dataMsgKey, "");
 }
+
 function toObj(val) {
   if (typeof val === "string") {
-    return JSON.parse(val);
+    return JSON.parse("" + val);
   }
   return val;
 }
+
 function toStr(val) {
   if (typeof val === "object") {
     return JSON.stringify(val);
@@ -251,9 +228,9 @@ function toStr(val) {
 }
 
 function htmlToTxt(val) {
-  var tmpDom = document.createElement("div");
+  let tmpDom = document.createElement("div");
   tmpDom.textContent ? (tmpDom.textContent = val) : (tmpDom.innerText = val);
-  var tmpTxt = tmpDom.innerHTML;
+  const tmpTxt = tmpDom.innerHTML;
   tmpDom = null;
   return tmpTxt;
 }
