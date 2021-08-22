@@ -18,6 +18,17 @@ h1 u {
   font-size: var(--fontsizesmall);
   color: var(--fontcolorlight);
 }
+#music {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  opacity: 0.2;
+}
+#music:hover {
+  right: 0;
+  opacity: 0.7;
+}
 #area {
   height: 100vh;
   display: flex;
