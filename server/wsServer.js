@@ -363,13 +363,13 @@ function saveMsgs(msg) {
     saveMsg.total--;
     if (saveMsg.total < 1) {
       saveMsg.total = saveMsg.tmp.total;
-      saveMsg.fileName = "data/" + msg[3] + ".txt";
+      saveMsg.fileName = "data/" + msg[4] + ".txt";
       saveCurFileName();
     } else if (!saveMsg.fileName) {
       try {
         saveMsg.fileName = fs.readFileSync(saveMsg.tmp.fileName, "utf-8");
       } catch (err) {
-        saveMsg.fileName = "data/" + msg[3] + ".txt";
+        saveMsg.fileName = "data/" + msg[4] + ".txt";
         saveCurFileName();
       }
     }
