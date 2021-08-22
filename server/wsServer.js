@@ -210,7 +210,7 @@ let users = {
   ],
 };
 const aiCount = Object.keys(users).length;
-const aiSleep = 3; // 多少人在线的时候AI睡觉
+const aiSleep = 50; // 多少人在线的时候AI睡觉
 let uid = aiCount;
 let uuser = {};
 
@@ -257,7 +257,8 @@ wss.broadcast = (msg, ws = {}) => {
       }
     } else if (
       (msgArr[1] === config.msgType.broadMsg &&
-        Object.keys(users).length < aiCount + aiSleep) ||
+        Object.keys(users).length < aiCount + aiSleep &&
+        msgArr[3] === 0) ||
       (msgArr[3] <= aiCount && msgArr[3] !== 0)
     ) {
       let aiApi;
