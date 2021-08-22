@@ -9,6 +9,7 @@ const $msg = document.getElementById("msg");
 const $msgform = document.getElementById("msgform");
 const $msgformtool = document.getElementById("msgformtool");
 const $msgformsaytool = document.getElementById("msgformsaytool");
+const $msgformdx = document.getElementById("msgformdx");
 const $xx = document.getElementById("xx");
 const $usercount = document.getElementById("usercount");
 
@@ -22,6 +23,7 @@ const dataObj = {
   arrMsg: [],
   strMsg: "",
   msgType: config.msgType.broadMsg,
+  msgDx: 0,
   menuIndex: 0,
   newMsg: 0,
 };

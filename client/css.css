@@ -198,6 +198,14 @@ h1 u {
   cursor: pointer;
   margin-right: 5px;
 }
+#msgformdx {
+  font-size: var(--fontsizesmall);
+  color: var(--fontcolorlight);
+  display: inline-block;
+  height: 26px;
+  cursor: pointer;
+  margin-right: 5px;
+}
 #msgformsay > input {
   flex-grow: 1;
   padding: 5px;
@@ -296,4 +304,7 @@ h1 u {
 }
 .lx24 {
   background-color: rgb(253, 239, 239, 0.7);
+}
+.lx26 {
+  background-color: rgba(239, 246, 253, 0.7);
 }

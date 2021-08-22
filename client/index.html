@@ -20,7 +20,9 @@
       <div id="chat">
         <div id="menu" class="menu">
           <div onclick="menuClick(0)">聊天室<sup id="saycount"></sup></div>
-          <div onclick="menuClick(1)">在线人员<sup id="usercount">1人</sup></div>
+          <div onclick="menuClick(1)">
+            在线人员<sup id="usercount">1人</sup>
+          </div>
           <div onclick="menuClick(2)">我的信息<sup id="mycount"></sup></div>
         </div>
 
@@ -80,6 +82,7 @@
           </div>
           <div id="msgformsay">
             <label id="msgformsaytool" for="xx" onclick="msgTool()">＋</label>
+            <div id="msgformdx" for="xx" onclick="setMsgDx(0)"></div>
             <input
               type="text"
               id="xx"

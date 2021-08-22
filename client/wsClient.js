@@ -19,13 +19,13 @@ function userSendSubmit() {
   dataObj.arrUser[4] = qm.value;
   localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
   initDataUser();
-  msgSend([dataObj.arrUid[0], config.msgType.wsChangeUser, dataObj.arrUser]);
+  msgSend([dataObj.arrUid[0], config.msgType.wsChangeUser, dataObj.arrUser, 0]);
   menuClick(0);
 }
 
 function msgSendSubmit() {
   if (xx.value) {
-    msgSend([dataObj.arrUid[0], dataObj.msgType, xx.value]);
+    msgSend([dataObj.arrUid[0], dataObj.msgType, xx.value, dataObj.msgDx]);
     xx.value = "";
     xx.focus();
   }
@@ -63,19 +63,19 @@ function chatShow(msg) {
   initDataMsg();
   if (msg && dataObj.strMsg !== msg) {
     const msgArr = toObj(msg);
-    if (msgArr.length === 4) {
+    if (msgArr.length === 5) {
       if (msgArr[1] === config.msgType.broadUser) {
         this.userToDom(msgArr);
       } else if (msgArr[1] === config.msgType.myUid) {
         dataObj.arrUid[0] = msgArr[0];
-        dataObj.arrUid[1] = msgArr[3];
+        dataObj.arrUid[1] = msgArr[4];
         if (!dataObj.arrUser[0] || dataObj.arrUser[0] === config.epVal) {
           dataObj.arrUser = msgArr[2];
           localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
           initDataUser();
           initFormUser();
         }
-        msgSend([msgArr[0], config.msgType.wsInRoom, dataObj.arrUser]);
+        msgSend([msgArr[0], config.msgType.wsInRoom, dataObj.arrUser, 0]);
       } else {
         localStorage.setItem(dataMsgKey, msg);
         dataObj.strMsg = msg;
@@ -111,7 +111,9 @@ function cardShowUser(uid) {
   <div class=cucs>城市：${htmlToTxt(userInfo[3])}</div>
   <div class=cusr>生日：${userInfo[2]}</div>
   <div class=cusj>时间：${numToDate(userInfo[5])}</div>
-  <div class=cubt><button onclick="cardHidden()">关闭</button></div>
+  <div class=cubt><button onclick="setMsgDx(${
+    userInfo[6]
+  })">对Ta说</button> <button onclick="cardHidden()">关闭</button></div>
   </div>`;
     $card.innerHTML = userDom;
     showDom($cardarea, "flex");
@@ -161,7 +163,8 @@ function msgToDom(msgArr) {
       utx: userInfo[1],
       clx: msgArr[1],
       cxx: msgArr[2],
-      csj: msgArr[3],
+      cdx: msgArr[3],
+      csj: msgArr[4],
     };
 
     const domMsgArea = document.createElement("div");
@@ -180,13 +183,14 @@ function msgToDom(msgArr) {
         }
         msgObj.clx = msgItem[1];
         msgObj.cxx = msgItem[2];
-        msgObj.csj = msgItem[3];
+        msgObj.cdx = msgItem[3];
+        msgObj.csj = msgItem[4];
         msgHtml += "<div>" + getMsgHtml(msgObj) + "</div>";
       });
       domMsgArea.innerHTML = msgHtml;
     } else {
       newMsgCount(0);
-      if (msgObj.uid === msgObj.myid) {
+      if (msgObj.uid === msgObj.myid || msgObj.cdx === msgObj.myid) {
         setDomClass(domMsgArea, "msgmy");
       }
       domMsgArea.innerHTML = getMsgHtml(msgObj);
@@ -217,7 +221,17 @@ function newMsgCount(type) {
     dataObj.newMsg = 0;
   }
 }
-
+function setMsgDx(dxid) {
+  dataObj.msgDx = dxid || 0;
+  if (dataObj.msgDx && dataObj.arrUserList[dataObj.msgDx]) {
+    $msgformdx.innerHTML =
+      dataObj.arrUserList[dataObj.msgDx][0].substr(0, 3) + "..<sup>×</sup>";
+  } else {
+    dataObj.msgDx = 0;
+    $msgformdx.innerHTML = "";
+  }
+  menuClick(0);
+}
 function getMsgHtml(msgObj) {
   if (msgObj.clx === config.msgType.broadInRoom) {
     msgObj.umz = `${msgObj.cxx[0]}`;
