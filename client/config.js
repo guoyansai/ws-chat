@@ -17,7 +17,6 @@ var config = {
     wsInRoom: 33,
     wsOutRoom: 34,
   },
-  msgTypeDes: "0消息1发送uid2进入3离开4更新user5广播user",
   userTmp: ["-", 0, "2012-12-12", "-", "-"],
   userTmpDes: ["名字", "头像", "生日", "城市", "签名"],
   msgTmp: [0, 0, "-", 0, "-"],
