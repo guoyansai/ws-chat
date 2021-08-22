@@ -9,7 +9,11 @@ module.exports = function (aqWord) {
         (res) => {
           res.on("data", (data) => {
             // {"result":0,"content":"先告诉菲菲您在哪个城市，让我帮您查天气吧"}
-            resolve(JSON.parse("" + data).content);
+            try {
+              resolve(JSON.parse("" + data).content);
+            } catch (e) {
+              resolve("嗯");
+            }
           });
         }
       )

@@ -8,7 +8,11 @@ module.exports = function (aqWord) {
           encodeURIComponent(aqWord),
         (res) => {
           res.on("data", (data) => {
-            resolve(JSON.parse("" + data).data.info.text);
+            try {
+              resolve(JSON.parse("" + data).data.info.text);
+            } catch (e) {
+              resolve("嗯");
+            }
           });
         }
       )
