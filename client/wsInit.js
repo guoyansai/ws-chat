@@ -108,6 +108,13 @@ function wsInit() {
     },
     true
   );
+  $msg.ondblclick = function (e) {
+    if ($msg.scrollTop === 0) {
+      $msg.scrollTop = $msg.scrollHeight;
+    } else {
+      $msg.scrollTop = 0;
+    }
+  };
 }
 
 var wsHeart = {
