@@ -190,6 +190,7 @@ function msgToDom(msgArr) {
       domMsgArea.innerHTML = msgHtml;
     } else {
       newMsgCount(0);
+      msgSpeak(msgObj.cxx)
       if (msgObj.uid === msgObj.myid || msgObj.cdx === msgObj.myid) {
         setDomClass(domMsgArea, "msgmy");
       }
@@ -335,4 +336,29 @@ function numToDate(val) {
     return `${val.substr(0, 4)}-${val.substr(4, 2)}-${val.substr(6, 2)} 
   ${val.substr(8, 2)}:${val.substr(10, 2)}:${val.substr(12, 2)}`;
   }
+}
+
+function msgSpeak(val) {
+  try {
+    let eesfstr = htmlToTxt(val);
+    eesfstr = eesfstr.replace(/<\/?[^>]*>/g, "");
+    eesfstr = eesfstr.replace(/[ | ]*\n/g, "\n");
+    eesfstr = eesfstr.replace(/\n[\s| | ]*\r/g, "\n");
+    if (eesfstr != "") {
+      sdom = document.createElement("video");
+      sdom.style.display = "none";
+      sdom.src =
+        "http://tts.baidu.com/text2audio/text2audio?lan=zh&ie=UTF-8&spd=6&text=" +
+        eesfstr;
+      sdom.loop = false;
+      sdom.autoplay = true;
+      sdom.addEventListener(
+        "ended",
+        function () {
+          sdom = null;
+        },
+        false
+      );
+    }
+  } catch (err) {}
 }

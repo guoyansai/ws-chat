@@ -346,7 +346,10 @@ function getTime() {
 function doBroadcast(msgArr) {
   if (msgArr.length === 5) {
     if (msgArr[3] === 2 && msgArr[2] === "clear") {
-      saveMsg.fileName = "data/" + msgArr[4] + ".txt";
+      saveMsg.fileName =saveMsg.tmp.fileName.replace(
+        "asai.txt",
+        msgArr[4] + ".txt"
+      );
       saveCurFileName();
     } else {
       saveMsgs(msgArr);
@@ -363,22 +366,28 @@ function doBroadcast(msgArr) {
     }
   }
 }
-function saveMsgs(msgarr) {
-  if (msgarr[1] !== config.msgType.broadUser) {
+function saveMsgs(msgArr) {
+  if (msgArr[1] !== config.msgType.broadUser) {
     saveMsg.total--;
     if (saveMsg.total < 1) {
       saveMsg.total = saveMsg.tmp.total;
-      saveMsg.fileName = "data/" + msgarr[4] + ".txt";
+      saveMsg.fileName = saveMsg.tmp.fileName.replace(
+        "asai.txt",
+        msgArr[4] + ".txt"
+      );
       saveCurFileName();
     } else if (!saveMsg.fileName) {
       try {
         saveMsg.fileName = fs.readFileSync(saveMsg.tmp.fileName, "utf-8");
       } catch (err) {
-        saveMsg.fileName = "data/" + msgarr[4] + ".txt";
+        saveMsg.fileName = saveMsg.tmp.fileName.replace(
+          "asai.txt",
+          msgArr[4] + ".txt"
+        );
         saveCurFileName();
       }
     }
-    fs.appendFile(saveMsg.fileName, toStr(msgarr) + ",", (err, data) => {
+    fs.appendFile(saveMsg.fileName, toStr(msgArr) + ",", (err, data) => {
       if (err) throw err;
     });
   }
