@@ -345,35 +345,40 @@ function getTime() {
 
 function doBroadcast(msgArr) {
   if (msgArr.length === 5) {
-    saveMsgs(msgArr);
-    if (
-      msgArr[1] === config.msgType.broadInRoom ||
-      msgArr[1] === config.msgType.broadOutRoom
-    ) {
-      // 不发送进出聊天室广播
+    if (msgArr[3] === 2 && msgArr[2] === "clear") {
+      saveMsg.fileName = "data/" + msgArr[4] + ".txt";
+      saveCurFileName();
     } else {
-      wss.clients.forEach(function each(client) {
-        client.send(toStr(msgArr));
-      });
+      saveMsgs(msgArr);
+      if (
+        msgArr[1] === config.msgType.broadInRoom ||
+        msgArr[1] === config.msgType.broadOutRoom
+      ) {
+        // 不发送进出聊天室广播
+      } else {
+        wss.clients.forEach(function each(client) {
+          client.send(toStr(msgArr));
+        });
+      }
     }
   }
 }
-function saveMsgs(msg) {
-  if (msg[1] !== config.msgType.broadUser) {
+function saveMsgs(msgarr) {
+  if (msgarr[1] !== config.msgType.broadUser) {
     saveMsg.total--;
     if (saveMsg.total < 1) {
       saveMsg.total = saveMsg.tmp.total;
-      saveMsg.fileName = "data/" + msg[4] + ".txt";
+      saveMsg.fileName = "data/" + msgarr[4] + ".txt";
       saveCurFileName();
     } else if (!saveMsg.fileName) {
       try {
         saveMsg.fileName = fs.readFileSync(saveMsg.tmp.fileName, "utf-8");
       } catch (err) {
-        saveMsg.fileName = "data/" + msg[4] + ".txt";
+        saveMsg.fileName = "data/" + msgarr[4] + ".txt";
         saveCurFileName();
       }
     }
-    fs.appendFile(saveMsg.fileName, toStr(msg) + ",", (err, data) => {
+    fs.appendFile(saveMsg.fileName, toStr(msgarr) + ",", (err, data) => {
       if (err) throw err;
     });
   }

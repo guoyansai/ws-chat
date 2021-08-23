@@ -23,7 +23,7 @@ h1 u {
   top: 0;
   right: 0;
   display: inline-block;
-  opacity: 0.2;
+  opacity: 0.1;
 }
 #music:hover {
   right: 0;
