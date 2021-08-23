@@ -190,7 +190,7 @@ function msgToDom(msgArr) {
       domMsgArea.innerHTML = msgHtml;
     } else {
       newMsgCount(0);
-      msgSpeak(msgObj.cxx)
+      msgSpeak(msgObj.cxx);
       if (msgObj.uid === msgObj.myid || msgObj.cdx === msgObj.myid) {
         setDomClass(domMsgArea, "msgmy");
       }
@@ -347,8 +347,11 @@ function msgSpeak(val) {
     if (eesfstr != "") {
       sdom = document.createElement("video");
       sdom.style.display = "none";
+      // 0为女声,1为男声,3为情感合成-度逍遥,4为情感合成-度丫丫;
       sdom.src =
-        "http://tts.baidu.com/text2audio/text2audio?lan=zh&ie=UTF-8&spd=6&text=" +
+        "http://tts.baidu.com/text2audio/text2audio?lan=zh&ie=UTF-8&spd=6&per=" +
+        Math.floor(Math.random() * 4) +
+        "&text=" +
         eesfstr;
       sdom.loop = false;
       sdom.autoplay = true;
