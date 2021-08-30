@@ -360,7 +360,10 @@ function initFaceDom() {
 }
 
 function insertFace(e) {
-  xx.value += `{${e.target.id.replace("face", "face:")}}`;
+  if (e.target.id.startsWith("face")) {
+    xx.value += `{${e.target.id.replace("face", "face:")}}`;
+    xx.focus();
+  }
 }
 
 function numToDate(val) {
