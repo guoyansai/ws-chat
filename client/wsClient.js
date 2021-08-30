@@ -2,6 +2,8 @@ hiddenDom($cardarea);
 menuClick(dataObj.menuIndex);
 initDataUser();
 initFormUser();
+initFaceDom();
+msgSpeak(config.helloMsg[parseInt(Math.random() * config.helloMsg.length)]);
 
 function msgSend(msg) {
   ws.send(toStr(msg));
@@ -28,6 +30,7 @@ function msgSendSubmit() {
     msgSend([dataObj.arrUid[0], dataObj.msgType, xx.value, dataObj.msgDx]);
     xx.value = "";
     xx.focus();
+    msgToolClose();
   }
 }
 
@@ -256,12 +259,20 @@ function getMsgHtml(msgObj) {
 
 function msgTool() {
   if ($msgformtool.style.display === "block") {
-    $msgformtool.style.display = "none";
-    $msgformsaytool.className = "";
+    msgToolClose();
   } else {
-    $msgformtool.style.display = "block";
-    $msgformsaytool.className = "astbg";
+    msgToolOpen();
   }
+}
+
+function msgToolOpen() {
+  $msgformtool.style.display = "block";
+  $msgformsaytool.className = "astbg";
+}
+
+function msgToolClose() {
+  $msgformtool.style.display = "none";
+  $msgformsaytool.className = "";
 }
 
 function menuClick(index) {
@@ -326,9 +337,30 @@ function toStr(val) {
 function htmlToTxt(val) {
   let tmpDom = document.createElement("div");
   tmpDom.textContent ? (tmpDom.textContent = val) : (tmpDom.innerText = val);
-  const tmpTxt = tmpDom.innerHTML;
+  const tmpTxt = faceToImg(tmpDom.innerHTML);
   tmpDom = null;
   return tmpTxt;
+}
+
+function faceToImg(val) {
+  return val.replace(
+    /{face:([^}]*)}/gim,
+    '<img id=face$1 src="http://x.asai.cc/js/qqbq/qq$1.gif">'
+  );
+}
+
+function initFaceDom() {
+  let faceCo = config.faceCount;
+  let faceDom = "";
+  while (faceCo > 0) {
+    faceDom = `{face:${faceCo}}` + faceDom;
+    faceCo--;
+  }
+  $msgformtools.innerHTML = faceToImg(faceDom);
+}
+
+function insertFace(e) {
+  xx.value += `{${e.target.id.replace("face", "face:")}}`;
 }
 
 function numToDate(val) {
@@ -345,7 +377,7 @@ function msgSpeak(val) {
     eesfstr = eesfstr.replace(/[ | ]*\n/g, "\n");
     eesfstr = eesfstr.replace(/\n[\s| | ]*\r/g, "\n");
     if (eesfstr != "") {
-      sdom = document.createElement("video");
+      const sdom = document.createElement("video");
       sdom.style.display = "none";
       // 0为女声,1为男声,3为情感合成-度逍遥,4为情感合成-度丫丫;
       sdom.src =

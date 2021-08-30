@@ -188,9 +188,7 @@ h1 u {
   padding: 11px;
   border-radius: 11px 11px 11px 0;
 }
-#msgformsaytool,
 #msgformtools {
-  display: none;
   border: 1px solid var(--bordercolor);
 }
 #msgformsay {

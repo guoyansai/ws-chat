@@ -17,6 +17,8 @@ var config = {
     wsInRoom: 33,
     wsOutRoom: 34,
   },
+  faceCount: 96,
+  helloMsg: ["欢迎", "帅哥靓妹看过来", "你好", "嗨，吃过啦？"],
   userTmp: ["-", 0, "2012-12-12", "-", "-"],
   userTmpDes: ["名字", "头像", "生日", "城市", "签名"],
   msgTmp: [0, 0, "-", 0, "-"],

@@ -8,6 +8,7 @@ const $userform = document.getElementById("userform");
 const $msg = document.getElementById("msg");
 const $msgform = document.getElementById("msgform");
 const $msgformtool = document.getElementById("msgformtool");
+const $msgformtools = document.getElementById("msgformtools");
 const $msgformsaytool = document.getElementById("msgformsaytool");
 const $msgformdx = document.getElementById("msgformdx");
 const $xx = document.getElementById("xx");
@@ -115,6 +116,13 @@ function wsInit() {
       $msg.scrollTop = 0;
     }
   };
+  $msgformtools.addEventListener(
+    "click",
+    function (e) {
+      insertFace(e);
+    },
+    true
+  );
 }
 
 var wsHeart = {
