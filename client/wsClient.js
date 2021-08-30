@@ -362,8 +362,8 @@ function initFaceDom() {
 function insertFace(e) {
   if (e.target.id.startsWith("face")) {
     xx.value += `{${e.target.id.replace("face", "face:")}}`;
-    xx.focus();
   }
+  xx.focus();
 }
 
 function numToDate(val) {
@@ -379,6 +379,7 @@ function msgSpeak(val) {
     eesfstr = eesfstr.replace(/<\/?[^>]*>/g, "");
     eesfstr = eesfstr.replace(/[ | ]*\n/g, "\n");
     eesfstr = eesfstr.replace(/\n[\s| | ]*\r/g, "\n");
+    eesfstr = eesfstr.replace(/{face:([^}]*)}/gim, "");
     if (eesfstr != "") {
       const sdom = document.createElement("video");
       sdom.style.display = "none";
