@@ -13,10 +13,18 @@ body {
 h1 {
   padding-left: 12px;
 }
-h1 u {
+h1 label {
   padding-left: 10px;
   font-size: var(--fontsizesmall);
   color: var(--fontcolorlight);
+}
+h1 input {
+  width: 38px;
+  border: 1px solid var(--fontcolorlight);
+}
+h1 button {
+  font-size: var(--fontsizesmall);
+  border: 1px solid var(--fontcolorlight);
 }
 #music {
   position: fixed;

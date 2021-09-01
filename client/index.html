@@ -15,9 +15,22 @@
   </head>
   <body>
     <div id="area">
-      <h1>AI聊天室<u>聊天室内有AI机器人</u></h1>
-      <div id="music">
-      </div>
+      <h1>
+        AI聊天室
+        <label for="fh">
+          <input
+            type="number"
+            name="fh"
+            id="fh"
+            value="1"
+            min="1"
+            max="99"
+          />
+          号房
+        </label>
+        <button id="infh">进入</button>
+      </h1>
+      <div id="music"></div>
       <div id="chat">
         <div id="menu" class="menu">
           <div onclick="menuClick(0)">聊天室<sup id="saycount"></sup></div>
@@ -72,9 +85,7 @@
         <div id="user"><div class="user">用户列表</div></div>
 
         <div id="msg">
-          <div class="msgg">
-            欢迎光临！这就是个简洁的聊天室而已，随意聊...
-          </div>
+          <div class="msgg">欢迎光临！这就是个简洁的聊天室而已，随意聊...</div>
         </div>
 
         <div id="msgform">

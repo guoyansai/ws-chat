@@ -3,6 +3,7 @@ menuClick(dataObj.menuIndex);
 initDataUser();
 initFormUser();
 initFaceDom();
+hiddenDom($infh);
 msgSpeak(config.helloMsg[parseInt(Math.random() * config.helloMsg.length)]);
 
 function msgSend(msg) {
@@ -14,20 +15,30 @@ function getTx(utx) {
 }
 
 function userSendSubmit() {
-  dataObj.arrUser[0] = mz.value;
-  dataObj.arrUser[1] = tx.value;
-  dataObj.arrUser[2] = sr.value;
-  dataObj.arrUser[3] = cs.value;
-  dataObj.arrUser[4] = qm.value;
+  config.userTmpName.forEach((item, index) => {
+    dataObj.arrUser[index] = document.getElementById(item).value;
+  });
   localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
   initDataUser();
-  msgSend([dataObj.arrUid[0], config.msgType.wsChangeUser, dataObj.arrUser, 0]);
+  msgSend([
+    dataObj.arrUser[0],
+    dataObj.arrUid[0],
+    config.msgType.wsChangeUser,
+    dataObj.arrUser,
+    0,
+  ]);
   menuClick(0);
 }
 
 function msgSendSubmit() {
   if (xx.value) {
-    msgSend([dataObj.arrUid[0], dataObj.msgType, xx.value, dataObj.msgDx]);
+    msgSend([
+      dataObj.arrUser[0],
+      dataObj.arrUid[0],
+      dataObj.msgType,
+      xx.value,
+      dataObj.msgDx,
+    ]);
     xx.value = "";
     xx.focus();
     msgToolClose();
@@ -45,11 +56,9 @@ function initDataUser() {
 }
 
 function initFormUser() {
-  mz.value = dataObj.arrUser[0];
-  tx.value = dataObj.arrUser[1];
-  sr.value = dataObj.arrUser[2];
-  cs.value = dataObj.arrUser[3];
-  qm.value = dataObj.arrUser[4];
+  config.userTmpName.forEach((item, index) => {
+    document.getElementById(item).value = dataObj.arrUser[index];
+  });
 }
 
 function initDataMsg() {
@@ -66,19 +75,25 @@ function chatShow(msg) {
   initDataMsg();
   if (msg && dataObj.strMsg !== msg) {
     const msgArr = toObj(msg);
-    if (msgArr.length === 5) {
-      if (msgArr[1] === config.msgType.broadUser) {
+    if (msgArr.length === 6) {
+      if (msgArr[2] === config.msgType.broadUser) {
         this.userToDom(msgArr);
-      } else if (msgArr[1] === config.msgType.myUid) {
-        dataObj.arrUid[0] = msgArr[0];
-        dataObj.arrUid[1] = msgArr[4];
-        if (!dataObj.arrUser[0] || dataObj.arrUser[0] === config.epVal) {
-          dataObj.arrUser = msgArr[2];
+      } else if (msgArr[2] === config.msgType.myUid) {
+        dataObj.arrUid[0] = msgArr[1];
+        dataObj.arrUid[1] = msgArr[5];
+        if (!dataObj.arrUser[1] || dataObj.arrUser[1] === config.epVal) {
+          dataObj.arrUser = msgArr[3];
           localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
           initDataUser();
           initFormUser();
         }
-        msgSend([msgArr[0], config.msgType.wsInRoom, dataObj.arrUser, 0]);
+        msgSend([
+          msgArr[0],
+          msgArr[1],
+          config.msgType.wsInRoom,
+          dataObj.arrUser,
+          0,
+        ]);
       } else {
         localStorage.setItem(dataMsgKey, msg);
         dataObj.strMsg = msg;
@@ -89,14 +104,14 @@ function chatShow(msg) {
 }
 
 function userToDom(msgArr) {
-  dataObj.arrUserList = toObj("" + msgArr[2]);
+  dataObj.arrUserList = toObj("" + msgArr[3]);
   let strUserList = "";
   let userCount = 0;
   Object.keys(dataObj.arrUserList).forEach((index) => {
     userCount++;
-    const userInfo = dataObj.arrUserList[index];
+    const infoUser = dataObj.arrUserList[index];
     strUserList += `<div class=userd>
-    ${getUserDom(userInfo[1], userInfo[0], index)}
+    ${getUserDom(infoUser[2], infoUser[1], index)}
     </div>`;
   });
   $usercount.innerHTML = userCount + "人";
@@ -104,18 +119,18 @@ function userToDom(msgArr) {
 }
 
 function cardShowUser(uid) {
-  const userInfo = dataObj.arrUserList[uid];
-  if (userInfo) {
+  const infoUser = dataObj.arrUserList[uid];
+  if (infoUser) {
     const userDom = `<div class=usercard>
-  <div class=cutx><img src=${getTx(userInfo[1])}></div>
-  <div class=cuid>(ID：${userInfo[6]})</div>
-  <div class=cumz>${htmlToTxt(userInfo[0])}</div>
-  <div class=cuqm>${htmlToTxt(userInfo[4])}</div>
-  <div class=cucs>城市：${htmlToTxt(userInfo[3])}</div>
-  <div class=cusr>生日：${userInfo[2]}</div>
-  <div class=cusj>时间：${numToDate(userInfo[5])}</div>
+  <div class=cutx><img src=${getTx(infoUser[2])}></div>
+  <div class=cuid>(ID：${infoUser[7]})</div>
+  <div class=cumz>${htmlToTxt(infoUser[1])}</div>
+  <div class=cuqm>${htmlToTxt(infoUser[5])}</div>
+  <div class=cucs>城市：${htmlToTxt(infoUser[4])}</div>
+  <div class=cusr>生日：${infoUser[3]}</div>
+  <div class=cusj>时间：${numToDate(infoUser[6])}</div>
   <div class=cubt><button onclick="setMsgDx(${
-    userInfo[6]
+    infoUser[7]
   })">对Ta说</button> <button onclick="cardHidden()">关闭</button></div>
   </div>`;
     $card.innerHTML = userDom;
@@ -139,7 +154,7 @@ function cardShowTx(utx) {
 }
 
 function setTxValue(utx) {
-  dataObj.arrUser[1] = utx;
+  dataObj.arrUser[2] = utx;
   tx.value = utx;
   userSendSubmit();
 }
@@ -157,37 +172,37 @@ function cardHidden() {
 }
 
 function msgToDom(msgArr) {
-  const userInfo = dataObj.arrUserList[msgArr[0]];
-  if (userInfo && userInfo.length) {
+  const infoUser = dataObj.arrUserList[msgArr[1]];
+  if (infoUser && infoUser.length) {
     const msgObj = {
       myid: dataObj.arrUid[0],
-      uid: msgArr[0],
-      umz: userInfo[0],
-      utx: userInfo[1],
-      clx: msgArr[1],
-      cxx: msgArr[2],
-      cdx: msgArr[3],
-      csj: msgArr[4],
+      uid: msgArr[1],
+      umz: infoUser[1],
+      utx: infoUser[2],
+      clx: msgArr[2],
+      cxx: msgArr[3],
+      cdx: msgArr[4],
+      csj: msgArr[5],
     };
 
     const domMsgArea = document.createElement("div");
 
     if (msgObj.clx === config.msgType.broadMsgFetch) {
-      const msgFetch = evil(msgObj.cxx);
+      const msgFetch = toObj(msgObj.cxx);
       let msgHtml = "";
-      msgFetch.forEach((msgItem) => {
-        msgObj.uid = msgItem[0];
-        if (dataObj.arrUserList[msgItem[0]]) {
-          msgObj.umz = dataObj.arrUserList[msgItem[0]][0];
-          msgObj.utx = dataObj.arrUserList[msgItem[0]][1];
+      msgFetch.forEach((ItemMsgArr) => {
+        msgObj.uid = ItemMsgArr[1];
+        if (dataObj.arrUserList[ItemMsgArr[1]]) {
+          msgObj.umz = dataObj.arrUserList[ItemMsgArr[1]][1];
+          msgObj.utx = dataObj.arrUserList[ItemMsgArr[1]][2];
         } else {
           msgObj.umz = "游客" + msgObj.uid;
           msgObj.utx = 0;
         }
-        msgObj.clx = msgItem[1];
-        msgObj.cxx = msgItem[2];
-        msgObj.cdx = msgItem[3];
-        msgObj.csj = msgItem[4];
+        msgObj.clx = ItemMsgArr[2];
+        msgObj.cxx = ItemMsgArr[3];
+        msgObj.cdx = ItemMsgArr[4];
+        msgObj.csj = ItemMsgArr[5];
         msgHtml += "<div>" + getMsgHtml(msgObj) + "</div>";
       });
       domMsgArea.innerHTML = msgHtml;
@@ -203,11 +218,6 @@ function msgToDom(msgArr) {
     $msg.appendChild(domMsgArea);
     $msg.scrollTop = $msg.scrollHeight;
   }
-}
-
-function evil(fn) {
-  var Fn = Function;
-  return new Fn("return " + fn)();
 }
 
 function newMsgCount(type) {
@@ -229,7 +239,7 @@ function setMsgDx(dxid) {
   dataObj.msgDx = dxid || 0;
   if (dataObj.msgDx && dataObj.arrUserList[dataObj.msgDx]) {
     $msgformdx.innerHTML =
-      dataObj.arrUserList[dataObj.msgDx][0].substr(0, 3) + "..<sup>×</sup>";
+      dataObj.arrUserList[dataObj.msgDx][1].substr(0, 3) + "..<sup>×</sup>";
   } else {
     dataObj.msgDx = 0;
     $msgformdx.innerHTML = "";
@@ -381,7 +391,7 @@ function msgSpeak(val) {
     eesfstr = eesfstr.replace(/\n[\s| | ]*\r/g, "\n");
     eesfstr = eesfstr.replace(/{face:([^}]*)}/gim, "");
     if (eesfstr != "") {
-      const sdom = document.createElement("video");
+      let sdom = document.createElement("video");
       sdom.style.display = "none";
       // 0为女声,1为男声,3为情感合成-度逍遥,4为情感合成-度丫丫;
       sdom.src =
@@ -400,4 +410,17 @@ function msgSpeak(val) {
       );
     }
   } catch (err) {}
+}
+
+function fhOnInput(e) {
+  if (+fh.value === +dataObj.arrUser[0]) {
+    hiddenDom($infh);
+  } else {
+    showDom($infh, "inline-block");
+  }
+}
+function infhOnClick() {
+  dataObj.arrUser[0] = +fh.value || 0;
+  userSendSubmit();
+  hiddenDom($infh);
 }

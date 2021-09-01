@@ -12,6 +12,8 @@ const $msgformtools = document.getElementById("msgformtools");
 const $msgformsaytool = document.getElementById("msgformsaytool");
 const $msgformdx = document.getElementById("msgformdx");
 const $xx = document.getElementById("xx");
+const $fh = document.getElementById("fh");
+const $infh = document.getElementById("infh");
 const $usercount = document.getElementById("usercount");
 
 const dataUserKey = "user";
@@ -106,6 +108,20 @@ function wsInit() {
     "click",
     function (e) {
       cardHidden();
+    },
+    true
+  );
+  $fh.addEventListener(
+    "input",
+    function (e) {
+      fhOnInput(e);
+    },
+    true
+  );
+  $infh.addEventListener(
+    "click",
+    function (e) {
+      infhOnClick();
     },
     true
   );

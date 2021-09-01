@@ -70,6 +70,7 @@ const nameList = [
 ];
 let users = {
   1: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -79,6 +80,7 @@ let users = {
     1,
   ],
   2: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -88,6 +90,7 @@ let users = {
     2,
   ],
   3: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -97,6 +100,7 @@ let users = {
     3,
   ],
   4: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -106,6 +110,7 @@ let users = {
     4,
   ],
   5: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -115,6 +120,7 @@ let users = {
     5,
   ],
   6: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -124,6 +130,7 @@ let users = {
     6,
   ],
   7: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -133,6 +140,7 @@ let users = {
     7,
   ],
   8: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -142,6 +150,7 @@ let users = {
     8,
   ],
   9: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -151,6 +160,7 @@ let users = {
     9,
   ],
   10: [
+    0,
     nameList[parseInt(Math.random() * 50)],
     parseInt(Math.random() * 90 + 1),
     "2012-02-14",
@@ -168,23 +178,23 @@ let uuser = {};
 // 广播
 wss.broadcast = (msg, ws = {}) => {
   let msgArr = toObj(msg);
-  if (msgArr.length === 4) {
+  if (msgArr.length === 5) {
     msgArr.push(getTime());
 
-    if (msgArr[1] === config.msgType.wsInRoom) {
-      let arrUser = toObj(msgArr[2]);
+    if (msgArr[2] === config.msgType.wsInRoom) {
+      let arrUser = toObj(msgArr[3]);
       users[uid] = [...arrUser, getTime(), uid];
       ws.us.user = users[uid];
-      doBroadcast(getUserList());
+      doBroadcast(getUserList(arrUser[0]));
       fetchMsg(ws);
-      msgArr[1] = config.msgType.broadInRoom;
-    } else if (msgArr[1] === config.msgType.wsOutRoom) {
-      msgArr[1] = config.msgType.broadOutRoom;
+      msgArr[2] = config.msgType.broadInRoom;
+    } else if (msgArr[2] === config.msgType.wsOutRoom) {
+      msgArr[2] = config.msgType.broadOutRoom;
       doBroadcast(msgArr);
-      msgArr = getUserList();
-    } else if (msgArr[1] === config.msgType.wsChangeUser) {
-      let oldUser = users[msgArr[0]];
-      let arrUser = toObj(msgArr[2]);
+      msgArr = getUserList(msgArr[0]);
+    } else if (msgArr[2] === config.msgType.wsChangeUser) {
+      let oldUser = users[msgArr[1]];
+      let arrUser = toObj(msgArr[3]);
       let cStr = "";
       arrUser.forEach((item, index) => {
         if (oldUser[index] !== item) {
@@ -194,38 +204,40 @@ wss.broadcast = (msg, ws = {}) => {
       if (cStr) {
         msgArr = [
           msgArr[0],
+          msgArr[1],
           config.msgType.broadChangeUser,
           cStr,
           0,
           getTime(),
         ];
         doBroadcast(msgArr);
-        users[msgArr[0]] = [...arrUser, getTime(), msgArr[0]];
-        ws.us.user = users[msgArr[0]];
-        msgArr = getUserList();
+        users[msgArr[1]] = [...arrUser, getTime(), msgArr[1]];
+        ws.us.user = users[msgArr[1]];
+        msgArr = getUserList(msgArr[0]);
       } else {
         msgArr = [];
       }
     } else if (
-      (msgArr[1] === config.msgType.broadMsg &&
+      (msgArr[2] === config.msgType.broadMsg &&
         Object.keys(users).length < aiCount + aiSleep &&
-        msgArr[3] === 0) ||
-      (msgArr[3] <= aiCount && msgArr[3] !== 0)
+        msgArr[4] === 0) ||
+      (msgArr[4] <= aiCount && msgArr[4] !== 0)
     ) {
       let aiApi;
-      let aiId = msgArr[3];
+      let aiId = msgArr[4];
       !aiId && (aiId = parseInt(Math.random() * aiCount + 1));
       if (aiId % 2 === 0) {
-        aiApi = aiOwnthink(msgArr[2]);
+        aiApi = aiOwnthink(msgArr[3]);
       } else {
-        aiApi = aiQingyunke(msgArr[2]);
+        aiApi = aiQingyunke(msgArr[3]);
       }
       aiApi.then((res) => {
         const aiRe = [
+          msgArr[0],
           aiId,
           config.msgType.broadMsgAi,
           res,
-          msgArr[0],
+          msgArr[1],
           getTime(),
         ];
         doBroadcast(aiRe);
@@ -243,10 +255,10 @@ wss.on("connection", (ws, req) => {
     time: getTime(),
     user: config.userTmp,
   };
-  uuser.user[0] = `游客${uid}`;
-  uuser.user[3] = `${req.connection.remoteAddress}`;
+  uuser.user[1] = `游客${uid}`;
+  uuser.user[4] = `${req.connection.remoteAddress}`;
   ws.us = uuser;
-  ws.send(toStr([uid, config.msgType.myUid, uuser.user, 0, uuser.time]));
+  ws.send(toStr([0, uid, config.msgType.myUid, uuser.user, 0, uuser.time]));
 
   ws.on("message", (msg) => {
     if ("" + msg === "ping") {
@@ -259,7 +271,13 @@ wss.on("connection", (ws, req) => {
   ws.on("close", (o) => {
     try {
       delete users[ws.us.uid];
-      wss.broadcast([ws.us.uid, config.msgType.wsOutRoom, ws.us.user, 0]);
+      wss.broadcast([
+        ws.us.user[0],
+        ws.us.uid,
+        config.msgType.wsOutRoom,
+        ws.us.user,
+        0,
+      ]);
     } catch (e) {
       console.log(666.909, e);
     }
@@ -278,8 +296,14 @@ function toStr(val) {
   }
   return val;
 }
-function getUserList() {
-  return [0, config.msgType.broadUser, toStr({ ...users }), 0, getTime()];
+function getUserList(fh) {
+  const fhUser = {};
+  Object.keys(users).forEach((key) => {
+    if (+users[key][0] === +fh || !users[key][0]) {
+      fhUser[key] = users[key];
+    }
+  });
+  return [fh, 0, config.msgType.broadUser, toStr(fhUser), 0, getTime()];
 }
 //获取时间
 function getTime() {
@@ -295,36 +319,38 @@ function getTime() {
 }
 
 function doBroadcast(msgArr) {
-  if (msgArr.length === 5) {
-    if (msgArr[3] === 2 && msgArr[2] === "clear") {
+  if (msgArr.length === 6) {
+    if (msgArr[4] === 2 && msgArr[3] === "clear") {
       saveMsg.fileName = saveMsg.tmp.fileName.replace(
         "asai.txt",
-        msgArr[4] + ".txt"
+        msgArr[5] + ".txt"
       );
       saveCurFileName();
     } else {
       if (
-        msgArr[1] === config.msgType.broadInRoom ||
-        msgArr[1] === config.msgType.broadOutRoom
+        msgArr[2] === config.msgType.broadInRoom ||
+        msgArr[2] === config.msgType.broadOutRoom
       ) {
         // 不发送进出聊天室广播
       } else {
         saveMsgs(msgArr);
         wss.clients.forEach(function each(client) {
-          client.send(toStr(msgArr));
+          if (+client.us.user[0] === +msgArr[0] || !msgArr[0]) {
+            client.send(toStr(msgArr));
+          }
         });
       }
     }
   }
 }
 function saveMsgs(msgArr) {
-  if (msgArr[1] !== config.msgType.broadUser) {
+  if (msgArr[2] !== config.msgType.broadUser) {
     saveMsg.total--;
     if (saveMsg.total < 1) {
       saveMsg.total = saveMsg.tmp.total;
       saveMsg.fileName = saveMsg.tmp.fileName.replace(
         "asai.txt",
-        msgArr[4] + ".txt"
+        msgArr[5] + ".txt"
       );
       saveCurFileName();
     } else if (!saveMsg.fileName) {
@@ -333,7 +359,7 @@ function saveMsgs(msgArr) {
       } catch (err) {
         saveMsg.fileName = saveMsg.tmp.fileName.replace(
           "asai.txt",
-          msgArr[4] + ".txt"
+          msgArr[5] + ".txt"
         );
         saveCurFileName();
       }
@@ -353,22 +379,32 @@ function saveCurFileName() {
 function fetchMsg(ws) {
   if (saveMsg.fileName) {
     try {
-      const msgData = fs.readFileSync(saveMsg.fileName, "utf-8");
-      if (msgData) {
-        if (msgData.length > 0) {
-          ws.send(
-            toStr([
-              ws.us.uid,
-              config.msgType.broadMsgFetch,
-              `[${msgData}]`,
-              0,
-              getTime(),
-            ])
-          );
+      const msgData = [];
+      let msgList = evil(`[${fs.readFileSync(saveMsg.fileName, "utf-8")}]`);
+      msgList.forEach((item) => {
+        if (+item[0] === +ws.us.user[0]) {
+          msgData.push(item);
         }
+      });
+      if (msgData.length > 0) {
+        ws.send(
+          toStr([
+            0,
+            ws.us.uid,
+            config.msgType.broadMsgFetch,
+            toStr(msgData),
+            0,
+            getTime(),
+          ])
+        );
       }
     } catch (err) {
       console.log(666.909, err);
     }
   }
+}
+
+function evil(fn) {
+  var Fn = Function;
+  return new Fn("return " + fn)();
 }
