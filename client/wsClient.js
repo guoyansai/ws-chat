@@ -353,10 +353,12 @@ function htmlToTxt(val) {
 }
 
 function faceToImg(val) {
-  return val.replace(
-    /{face:([^}]*)}/gim,
-    '<img id=face$1 src="http://x.asai.cc/js/qqbq/qq$1.gif">'
-  );
+  return val
+    .replace(
+      /{face:([\d]*)}/gim,
+      '<img id=face$1 src="http://x.asai.cc/js/qqbq/qq$1.gif">'
+    )
+    .replace(/{br}/gim, "<br>");
 }
 
 function initFaceDom() {

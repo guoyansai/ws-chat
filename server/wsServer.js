@@ -197,7 +197,7 @@ wss.broadcast = (msg, ws = {}) => {
       let arrUser = toObj(msgArr[3]);
       let cStr = "";
       arrUser.forEach((item, index) => {
-        if (oldUser[index] !== item) {
+        if (oldUser[index] != item) {
           cStr += `${config.userTmpDes[index]}（${oldUser[index]} 变更为 ${item}）`;
         }
       });
