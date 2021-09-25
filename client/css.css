@@ -194,7 +194,9 @@ h1 button {
   margin-right: 16%;
   margin-bottom: 4px;
   padding: 11px;
-  border-radius: 11px 11px 11px 0;
+  border-radius: 11px 0 0 0;
+  max-height: 128px;
+  overflow: auto;
 }
 #msgformtools {
   border: 1px solid var(--bordercolor);
