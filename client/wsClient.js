@@ -11,7 +11,7 @@ function msgSend(msg) {
 }
 
 function getTx(utx) {
-  return `http://x.asai.cc/js/tx/${utx}.jpg`;
+  return `http://x.asai.cc/js/tx/${utx||0}.jpg`;
 }
 
 function userSendSubmit() {
