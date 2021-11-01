@@ -1,3 +1,16 @@
+const dataObj = {
+  arrUid: [],
+  arrUserList: {},
+  arrUser: [],
+  strUser: "",
+  arrMsg: [],
+  strMsg: "",
+  msgType: config.msgType.broadMsg,
+  msgDx: 0,
+  menuIndex: 0,
+  newMsg: 0,
+};
+
 hiddenDom($cardarea);
 menuClick(dataObj.menuIndex);
 initDataUser();

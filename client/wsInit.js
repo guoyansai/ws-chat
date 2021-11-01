@@ -18,18 +18,6 @@ const $usercount = document.getElementById("usercount");
 
 const dataUserKey = "user";
 const dataMsgKey = "msg";
-const dataObj = {
-  arrUid: [],
-  arrUserList: {},
-  arrUser: [],
-  strUser: "",
-  arrMsg: [],
-  strMsg: "",
-  msgType: config.msgType.broadMsg,
-  msgDx: 0,
-  menuIndex: 0,
-  newMsg: 0,
-};
 const cssObj = {
   bgimg: "",
   fontcolorlight: "#999",
