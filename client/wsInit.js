@@ -1,24 +1,24 @@
-const $cssvar = document.getElementById("cssvar");
-const $menu = document.getElementById("menu");
-const $saycount = document.getElementById("saycount");
-const $cardarea = document.getElementById("cardarea");
-const $card = document.getElementById("card");
-const $user = document.getElementById("user");
-const $userform = document.getElementById("userform");
-const $msg = document.getElementById("msg");
-const $msgform = document.getElementById("msgform");
-const $msgformtool = document.getElementById("msgformtool");
-const $msgformtools = document.getElementById("msgformtools");
-const $msgformsaytool = document.getElementById("msgformsaytool");
-const $msgformdx = document.getElementById("msgformdx");
-const $xx = document.getElementById("xx");
-const $fh = document.getElementById("fh");
-const $infh = document.getElementById("infh");
-const $usercount = document.getElementById("usercount");
+var $cssvar = document.getElementById("cssvar");
+var $menu = document.getElementById("menu");
+var $saycount = document.getElementById("saycount");
+var $cardarea = document.getElementById("cardarea");
+var $card = document.getElementById("card");
+var $user = document.getElementById("user");
+var $userform = document.getElementById("userform");
+var $msg = document.getElementById("msg");
+var $msgform = document.getElementById("msgform");
+var $msgformtool = document.getElementById("msgformtool");
+var $msgformtools = document.getElementById("msgformtools");
+var $msgformsaytool = document.getElementById("msgformsaytool");
+var $msgformdx = document.getElementById("msgformdx");
+var $xx = document.getElementById("xx");
+var $fh = document.getElementById("fh");
+var $infh = document.getElementById("infh");
+var $usercount = document.getElementById("usercount");
 
-const dataUserKey = "user";
-const dataMsgKey = "msg";
-const cssObj = {
+var dataUserKey = "user";
+var dataMsgKey = "msg";
+var cssObj = {
   bgimg: "",
   fontcolorlight: "#999",
   fontcolor: "#000",
@@ -33,21 +33,29 @@ const cssObj = {
 
 let ws = null;
 let wsTime = 10; // 重连次数
-const wsUrl = config.wsIp + config.wsPortMsg;
+var wsUrl = config.wsIp + config.wsPortMsg;
 
 function initCssVar() {
-  const cssStr = `:root {
-    --bgimg: url("${cssObj.bgimg}");
-    --fontcolorlight: ${cssObj.fontcolorlight};
-    --fontcolor: ${cssObj.fontcolor};
-    --fontsizesmall: ${cssObj.fontsizesmall};
-    --fontsize: ${cssObj.fontsize};
-    --bordercolor: ${cssObj.bordercolor};
-    --bgcolor: ${cssObj.bgcolor};
-    --bgcolorspe: ${cssObj.bgcolorspe};
-    --bglinearmenu: ${cssObj.bglinearmenu};
-  }
-  `;
+  var cssStr =
+    ':root {--bgimg: url("' +
+    cssObj.bgimg +
+    '");--fontcolorlight: ' +
+    cssObj.fontcolorlight +
+    ";--fontcolor: " +
+    cssObj.fontcolor +
+    ";--fontsizesmall: " +
+    cssObj.fontsizesmall +
+    ";--fontsize: " +
+    cssObj.fontsize +
+    ";--bordercolor: " +
+    cssObj.bordercolor +
+    ";--bgcolor: " +
+    cssObj.bgcolor +
+    ";--bgcolorspe: " +
+    cssObj.bgcolorspe +
+    ";--bglinearmenu: " +
+    cssObj.bglinearmenu +
+    ";}";
   if ($cssvar.innerHTML) {
     $cssvar.innerHTML = cssStr;
   } else {
@@ -154,21 +162,23 @@ var wsHeart = {
     this.reCheck();
   },
   reCheck: function () {
-    this.timeoutObj = setTimeout(() => {
+    var _this = this;
+    this.timeoutObj = setTimeout(function () {
       ws.send("ping");
-      this.serverTimeoutObj = setTimeout(() => {
-        this.reClose();
-      }, this.timeout);
-    }, this.timeout);
+      _this.serverTimeoutObj = setTimeout(function () {
+        _this.reClose();
+      }, _this.timeout);
+    }, _this.timeout);
   },
   reConnect: function () {
     if (!this.lockConnect) {
       wsTime--;
       this.lockConnect = true;
-      this.connectTimeoutObj = setTimeout(() => {
-        this.newWs();
-        this.lockConnect = false;
-      }, this.lockConnectTimeout);
+      var _this = this;
+      this.connectTimeoutObj = setTimeout(function () {
+        _this.newWs();
+        _this.lockConnect = false;
+      }, _this.lockConnectTimeout);
     }
   },
   newWs: function () {

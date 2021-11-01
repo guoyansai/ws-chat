@@ -24,14 +24,14 @@ function msgSend(msg) {
 }
 
 function getTx(utx) {
-  return `http://x.asai.cc/js/tx/${utx||0}.jpg`;
+  return "http://x.asai.cc/js/tx/" + utx + ".jpg";
 }
 
 function userSendSubmit() {
-  config.userTmpName.forEach((item, index) => {
+  config.userTmpName.forEach(function (item, index) {
     dataObj.arrUser[index] = document.getElementById(item).value;
   });
-  localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
+  storageSetItem(dataUserKey, toStr(dataObj.arrUser));
   initDataUser();
   msgSend([
     dataObj.arrUser[0],
@@ -58,8 +58,23 @@ function msgSendSubmit() {
   }
 }
 
+function storageGetItem(key) {
+  if (window.localStorage) {
+    return localStorage.getItem(key);
+  }
+  return;
+}
+
+function storageSetItem(key, value) {
+  if (window.localStorage) {
+    localStorage.setItem(key, value);
+  }
+}
+
 function initDataUser() {
-  dataObj.strUser = localStorage.getItem(dataUserKey);
+  if (window.localStorage) {
+    dataObj.strUser = storageGetItem(dataUserKey);
+  }
   if (dataObj.strUser) {
     dataObj.arrUser = toObj(dataObj.strUser);
   } else {
@@ -69,13 +84,13 @@ function initDataUser() {
 }
 
 function initFormUser() {
-  config.userTmpName.forEach((item, index) => {
+  config.userTmpName.forEach(function (item, index) {
     document.getElementById(item).value = dataObj.arrUser[index];
   });
 }
 
 function initDataMsg() {
-  dataObj.strMsg = localStorage.getItem(dataMsgKey);
+  dataObj.strMsg = storageGetItem(dataMsgKey);
   if (dataObj.strMsg) {
     dataObj.arrMsg = toObj(dataObj.strMsg);
   } else {
@@ -96,7 +111,7 @@ function chatShow(msg) {
         dataObj.arrUid[1] = msgArr[5];
         if (!dataObj.arrUser[1] || dataObj.arrUser[1] === config.epVal) {
           dataObj.arrUser = msgArr[3];
-          localStorage.setItem(dataUserKey, toStr(dataObj.arrUser));
+          storageSetItem(dataUserKey, toStr(dataObj.arrUser));
           initDataUser();
           initFormUser();
         }
@@ -108,7 +123,7 @@ function chatShow(msg) {
           0,
         ]);
       } else {
-        localStorage.setItem(dataMsgKey, msg);
+        storageSetItem(dataMsgKey, msg);
         dataObj.strMsg = msg;
         this.msgToDom(msgArr);
       }
@@ -120,12 +135,13 @@ function userToDom(msgArr) {
   dataObj.arrUserList = toObj("" + msgArr[3]);
   let strUserList = "";
   let userCount = 0;
-  Object.keys(dataObj.arrUserList).forEach((index) => {
+  Object.keys(dataObj.arrUserList).forEach(function (index) {
     userCount++;
     const infoUser = dataObj.arrUserList[index];
-    strUserList += `<div class=userd>
-    ${getUserDom(infoUser[2], infoUser[1], index)}
-    </div>`;
+    strUserList +=
+      "<div class=userd>" +
+      getUserDom(infoUser[2], infoUser[1], index) +
+      "</div>";
   });
   $usercount.innerHTML = userCount + "人";
   $user.innerHTML = strUserList;
@@ -134,18 +150,24 @@ function userToDom(msgArr) {
 function cardShowUser(uid) {
   const infoUser = dataObj.arrUserList[uid];
   if (infoUser) {
-    const userDom = `<div class=usercard>
-  <div class=cutx><img src=${getTx(infoUser[2])}></div>
-  <div class=cuid>(ID：${infoUser[7]})</div>
-  <div class=cumz>${htmlToTxt(infoUser[1])}</div>
-  <div class=cuqm>${htmlToTxt(infoUser[5])}</div>
-  <div class=cucs>城市：${htmlToTxt(infoUser[4])}</div>
-  <div class=cusr>生日：${infoUser[3]}</div>
-  <div class=cusj>时间：${numToDate(infoUser[6])}</div>
-  <div class=cubt><button onclick="setMsgDx(${
-    infoUser[7]
-  })">对Ta说</button> <button onclick="cardHidden()">关闭</button></div>
-  </div>`;
+    const userDom =
+      "<div class=usercard><div class=cutx><img src=" +
+      getTx(infoUser[2]) +
+      "></div><div class=cuid>(ID：" +
+      infoUser[7] +
+      ")</div><div class=cumz>" +
+      htmlToTxt(infoUser[1]) +
+      "</div><div class=cuqm>" +
+      htmlToTxt(infoUser[5]) +
+      "</div><div class=cucs>城市：" +
+      htmlToTxt(infoUser[4]) +
+      "</div><div class=cusr>生日：" +
+      infoUser[3] +
+      "</div><div class=cusj>时间：" +
+      numToDate(infoUser[6]) +
+      '</div><div class=cubt><button onclick="setMsgDx(' +
+      infoUser[7] +
+      ')">对Ta说</button> <button onclick="cardHidden()">关闭</button></div></div>';
     $card.innerHTML = userDom;
     showDom($cardarea, "flex");
   }
@@ -155,10 +177,14 @@ function cardShowTx(utx) {
   let i = 0;
   let strDom = "";
   while (i < 95) {
-    strDom += `<div class=usertx><div class="user" onclick="setTxValue(${i})">
-    <div class=utx><img src=${getTx(i)}></div>
-    <div class=umz>头像${i}</div>
-    </div></div>`;
+    strDom +=
+      '<div class=usertx><div class="user" onclick="setTxValue(' +
+      i +
+      ')"><div class=utx><img src=' +
+      getTx(i) +
+      "></div><div class=umz>头像" +
+      i +
+      "</div></div></div>";
     i++;
   }
 
@@ -173,10 +199,15 @@ function setTxValue(utx) {
 }
 
 function getUserDom(utx, umz, uid) {
-  return `<div class="user" onclick="cardShowUser(${uid})">
-<div class=utx><img src=${getTx(utx)}></div>
-<div class=umz>${htmlToTxt(umz)}</div>
-</div>`;
+  return (
+    '<div class="user" onclick="cardShowUser(' +
+    uid +
+    ')"><div class=utx><img src=' +
+    getTx(utx) +
+    "></div><div class=umz>" +
+    htmlToTxt(umz) +
+    "</div></div>"
+  );
 }
 
 function cardHidden() {
@@ -203,7 +234,7 @@ function msgToDom(msgArr) {
     if (msgObj.clx === config.msgType.broadMsgFetch) {
       const msgFetch = toObj(msgObj.cxx);
       let msgHtml = "";
-      msgFetch.forEach((ItemMsgArr) => {
+      msgFetch.forEach(function (ItemMsgArr) {
         msgObj.uid = ItemMsgArr[1];
         if (dataObj.arrUserList[ItemMsgArr[1]]) {
           msgObj.umz = dataObj.arrUserList[ItemMsgArr[1]][1];
@@ -249,7 +280,7 @@ function newMsgCount(type) {
   }
 }
 function setMsgDx(dxid) {
-  dataObj.msgDx = dxid || 0;
+  dataObj.msgDx = dxid;
   if (dataObj.msgDx && dataObj.arrUserList[dataObj.msgDx]) {
     $msgformdx.innerHTML =
       dataObj.arrUserList[dataObj.msgDx][1].substr(0, 3) + "..<sup>×</sup>";
@@ -261,23 +292,25 @@ function setMsgDx(dxid) {
 }
 function getMsgHtml(msgObj) {
   if (msgObj.clx === config.msgType.broadInRoom) {
-    msgObj.umz = `${msgObj.cxx[0]}`;
-    msgObj.cxx = `【进入聊天室】`;
+    msgObj.umz = msgObj.cxx[0];
+    msgObj.cxx = "【进入聊天室】";
   } else if (msgObj.clx === config.msgType.broadOutRoom) {
-    msgObj.umz = `${msgObj.cxx[0]}`;
-    msgObj.cxx = `【离开聊天室】`;
+    msgObj.umz = msgObj.cxx[0];
+    msgObj.cxx = "【离开聊天室】";
   } else if (msgObj.clx === config.msgType.broadChangeUser) {
-    msgObj.cxx = `【变更个人信息】\n${msgObj.cxx}`;
+    msgObj.cxx = "【变更个人信息】\n" + msgObj.cxx;
   }
-  return `<div class=msgd><div class=msg>
-    <div class=msgu>
-    ${getUserDom(msgObj.utx, msgObj.umz, msgObj.uid)}
-    </div>
-    <div class=msgc>
-    <div class=csj>${numToDate(msgObj.csj)}</div>
-    <div class="cxx lx${msgObj.clx}">${htmlToTxt(msgObj.cxx)}</div>
-    </div>
-    </div></div>`;
+  return (
+    "<div class=msgd><div class=msg><div class=msgu>" +
+    getUserDom(msgObj.utx, msgObj.umz, msgObj.uid) +
+    "</div><div class=msgc><div class=csj>" +
+    numToDate(msgObj.csj) +
+    '</div><div class="cxx lx' +
+    msgObj.clx +
+    '">' +
+    htmlToTxt(msgObj.cxx) +
+    "</div></div></div></div>"
+  );
 }
 
 function msgTool() {
@@ -339,8 +372,8 @@ function hiddenDom(dom) {
 }
 
 function localClear() {
-  localStorage.setItem(dataUserKey, "");
-  localStorage.setItem(dataMsgKey, "");
+  storageSetItem(dataUserKey, "");
+  storageSetItem(dataMsgKey, "");
 }
 
 function toObj(val) {
@@ -378,23 +411,36 @@ function initFaceDom() {
   let faceCo = config.faceCount;
   let faceDom = "";
   while (faceCo > 0) {
-    faceDom = `{face:${faceCo}}` + faceDom;
+    faceDom = "{face:" + faceCo + "}" + faceDom;
     faceCo--;
   }
   $msgformtools.innerHTML = faceToImg(faceDom);
 }
 
 function insertFace(e) {
-  if (e.target.id.startsWith("face")) {
-    xx.value += `{${e.target.id.replace("face", "face:")}}`;
+  if (e.target.id && e.target.id.substr(0, 4) === "face") {
+    xx.value += "{" + e.target.id.replace("face", "face:") + "}";
   }
   xx.focus();
 }
 
 function numToDate(val) {
   if (val) {
-    return `${val.substr(0, 4)}-${val.substr(4, 2)}-${val.substr(6, 2)} 
-  ${val.substr(8, 2)}:${val.substr(10, 2)}:${val.substr(12, 2)}`;
+    return (
+      "" +
+      val.substr(0, 4) +
+      "-" +
+      val.substr(4, 2) +
+      "-" +
+      val.substr(6, 2) +
+      " " +
+      val.substr(8, 2) +
+      ":" +
+      val.substr(10, 2) +
+      ":" +
+      val.substr(12, 2) +
+      ""
+    );
   }
 }
 
@@ -435,7 +481,7 @@ function fhOnInput(e) {
   }
 }
 function infhOnClick() {
-  dataObj.arrUser[0] = +fh.value || 0;
+  dataObj.arrUser[0] = +fh.value;
   userSendSubmit();
   hiddenDom($infh);
 }
