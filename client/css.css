@@ -2,29 +2,24 @@ body {
   padding: 0;
   margin: 0;
   height: 100vh;
-  background-image: var(--bgimg);
   background-repeat: repeat;
   background-position-x: center;
   background-position-y: center;
-  background-color: #fff;
-  color: var(--fontcolor);
-  font-size: var(--fontsize);
 }
 h1 {
   padding-left: 12px;
 }
 h1 label {
   padding-left: 10px;
-  font-size: var(--fontsizesmall);
-  color: var(--fontcolorlight);
 }
 h1 input {
   width: 38px;
-  border: 1px solid var(--fontcolorlight);
+  border-width: 1px;
+  border-style: solid;
 }
 h1 button {
-  font-size: var(--fontsizesmall);
-  border: 1px solid var(--fontcolorlight);
+  border-width: 1px;
+  border-style: solid;
 }
 #music {
   position: fixed;
@@ -50,7 +45,8 @@ h1 button {
 }
 #menu {
   line-height: 150%;
-  border-bottom: 1px solid var(--bordercolor);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
   padding-left: 12px;
 }
 .menu div {
@@ -63,10 +59,12 @@ h1 button {
 }
 .curmenu,
 .menu div:hover {
-  border-top: 1px solid var(--bordercolor);
-  border-left: 1px solid var(--bordercolor);
-  border-right: 1px solid var(--bordercolor);
-  background-image: var(--bglinearmenu);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-right-width: 1px;
+  border-right-style: solid;
   margin-left: 1px;
   margin-right: 1px;
 }
@@ -87,11 +85,14 @@ h1 button {
   align-items: center;
 }
 #card {
-  border-top: 1px solid var(--bordercolor);
-  border-right: 1px solid var(--bordercolor);
-  border-bottom: 1px solid var(--bordercolor);
-  border-left: 12px solid var(--bordercolor);
-  background-color: var(--bgcolor);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-left-width: 12px;
+  border-left-style: solid;
+  border-right-width: 1px;
+  border-right-style: solid;
   padding: 12px;
   max-width: 288px;
   min-width: 100px;
@@ -113,20 +114,17 @@ h1 button {
   border-radius: 50%;
 }
 .cuid {
-  color: var(--fontcolorlight);
 }
 .cumz {
   margin: 12px 0;
   font-weight: bold;
 }
 .cuqm {
-  font-size: var(--fontsizesmall);
   margin-bottom: 12px;
 }
 .cucs,
 .cusr,
 .cusj {
-  font-size: var(--fontsizesmall);
   opacity: 0.6;
 }
 .cubt button {
@@ -151,12 +149,8 @@ h1 button {
 #userform select {
   padding: 5px;
   margin-right: 5px;
-  background-color: rgba(255, 255, 255, 0);
-  color: var(--fontcolor);
 }
 #userform select > option {
-  background-color: #fff;
-  color: #000;
 }
 #user {
   flex-grow: 1;
@@ -167,8 +161,8 @@ h1 button {
 .usertx {
   display: inline-block;
   width: 52px;
-  border: 1px solid var(--bordercolor);
-  background-color: var(--bgcolor);
+  border-width: 1px;
+  border-style: solid;
   padding: 5px 12px;
   margin: 5px;
 }
@@ -177,29 +171,24 @@ h1 button {
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 5px 12px;
-  border-top: 1px solid var(--bordercolor);
+  border-top-width: 1px;
+  border-top-style: solid;
 }
 .astbg,
 #msgformtools,
 #msgformsaytool:hover {
-  background-color: var(--bgcolorspe);
 }
 #msgformtool {
   display: none;
   width: 100%;
 }
 #msgformtools {
-  margin-left: 26px;
-  margin-right: 16%;
-  margin-bottom: 4px;
   padding: 11px;
-  border-radius: 11px 0 0 0;
   max-height: 128px;
   overflow: auto;
 }
-#msgformtools {
-  border: 1px solid var(--bordercolor);
+#msgformtools > img {
+  cursor: pointer;
 }
 #msgformsay {
   flex-grow: 1;
@@ -213,13 +202,10 @@ h1 button {
   line-height: 26px;
   font-size: larger;
   text-align: center;
-  border-radius: 50%;
   cursor: pointer;
-  margin-right: 5px;
+  padding: 0 5px;
 }
 #msgformdx {
-  font-size: var(--fontsizesmall);
-  color: var(--fontcolorlight);
   display: inline-block;
   height: 26px;
   cursor: pointer;
@@ -229,13 +215,12 @@ h1 button {
   flex-grow: 1;
   padding: 5px;
   margin-right: 5px;
-  background-color: rgba(255, 255, 255, 0);
-  color: var(--fontcolor);
 }
 #msgformsay > button {
   padding: 5px;
   border-radius: 20%;
   cursor: pointer;
+  margin-right: 5px;
 }
 #msg {
   flex-grow: 1;
@@ -247,10 +232,8 @@ h1 button {
   text-align: left;
   padding: 5px 12px;
   margin: 5px 12px;
-  border: 1px solid var(--bordercolor);
-  background-color: var(--bgcolorspe);
-  color: var(--fontcolorlight);
-  font-size: var(--fontsizesmall);
+  border-width: 1px;
+  border-style: solid;
 }
 .msgmy {
   text-align: right;
@@ -281,14 +264,13 @@ h1 button {
   margin: 0 5px;
 }
 .cxx {
-  border: 1px solid #d8d8dd;
+  border-width: 1px;
+  border-style: solid;
   padding: 12px;
   border-radius: 0 12px 12px 12px;
 }
 
 .csj {
-  color: var(--fontcolorlight);
-  font-size: var(--fontsizesmall);
 }
 .user {
   width: 100%;
@@ -301,7 +283,6 @@ h1 button {
 }
 .umz {
   text-align: center;
-  font-size: var(--fontsizesmall);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -312,8 +293,6 @@ h1 button {
 .lx22,
 .lx23,
 .lx24 {
-  font-size: var(--fontsizesmall);
-  color: var(--fontcolorlight);
 }
 .lx22 {
   background-color: rgb(253, 251, 239, 0.7);

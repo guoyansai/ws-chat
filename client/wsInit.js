@@ -1,4 +1,3 @@
-var $cssvar = document.getElementById("cssvar");
 var $menu = document.getElementById("menu");
 var $saycount = document.getElementById("saycount");
 var $cardarea = document.getElementById("cardarea");
@@ -18,50 +17,10 @@ var $usercount = document.getElementById("usercount");
 
 var dataUserKey = "user";
 var dataMsgKey = "msg";
-var cssObj = {
-  bgimg: "",
-  fontcolorlight: "#999",
-  fontcolor: "#000",
-  fontsizesmall: "12px",
-  fontsize: "16px",
-  bordercolor: "#d8d8d8",
-  bgcolor: "rgba(255, 255, 255, 0.8)",
-  bgcolorspe: "rgba(252, 248, 230, 0.8)",
-  bglinearmenu:
-    "linear-gradient(rgba(255, 255, 255, 0),rgba(255, 255, 255, 1))",
-};
 
 let ws = null;
 let wsTime = 10; // 重连次数
 var wsUrl = config.wsIp + config.wsPortMsg;
-
-function initCssVar() {
-  var cssStr =
-    ':root {--bgimg: url("' +
-    cssObj.bgimg +
-    '");--fontcolorlight: ' +
-    cssObj.fontcolorlight +
-    ";--fontcolor: " +
-    cssObj.fontcolor +
-    ";--fontsizesmall: " +
-    cssObj.fontsizesmall +
-    ";--fontsize: " +
-    cssObj.fontsize +
-    ";--bordercolor: " +
-    cssObj.bordercolor +
-    ";--bgcolor: " +
-    cssObj.bgcolor +
-    ";--bgcolorspe: " +
-    cssObj.bgcolorspe +
-    ";--bglinearmenu: " +
-    cssObj.bglinearmenu +
-    ";}";
-  if ($cssvar.innerHTML) {
-    $cssvar.innerHTML = cssStr;
-  } else {
-    $cssvar.styleSheet && ($cssvar.styleSheet.cssText = cssStr);
-  }
-}
 
 function wsInit() {
   ws.onopen = function () {
@@ -193,5 +152,4 @@ var wsHeart = {
   },
 };
 
-initCssVar();
 wsHeart.newWs();

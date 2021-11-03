@@ -1,4 +1,4 @@
-const dataObj = {
+var dataObj = {
   arrUid: [],
   arrUserList: {},
   arrUser: [],
@@ -102,7 +102,7 @@ function initDataMsg() {
 function chatShow(msg) {
   initDataMsg();
   if (msg && dataObj.strMsg !== msg) {
-    const msgArr = toObj(msg);
+    var msgArr = toObj(msg);
     if (msgArr.length === 6) {
       if (msgArr[2] === config.msgType.broadUser) {
         this.userToDom(msgArr);
@@ -137,7 +137,7 @@ function userToDom(msgArr) {
   let userCount = 0;
   Object.keys(dataObj.arrUserList).forEach(function (index) {
     userCount++;
-    const infoUser = dataObj.arrUserList[index];
+    var infoUser = dataObj.arrUserList[index];
     strUserList +=
       "<div class=userd>" +
       getUserDom(infoUser[2], infoUser[1], index) +
@@ -148,9 +148,9 @@ function userToDom(msgArr) {
 }
 
 function cardShowUser(uid) {
-  const infoUser = dataObj.arrUserList[uid];
+  var infoUser = dataObj.arrUserList[uid];
   if (infoUser) {
-    const userDom =
+    var userDom =
       "<div class=usercard><div class=cutx><img src=" +
       getTx(infoUser[2]) +
       "></div><div class=cuid>(ID：" +
@@ -216,9 +216,9 @@ function cardHidden() {
 }
 
 function msgToDom(msgArr) {
-  const infoUser = dataObj.arrUserList[msgArr[1]];
+  var infoUser = dataObj.arrUserList[msgArr[1]];
   if (infoUser && infoUser.length) {
-    const msgObj = {
+    var msgObj = {
       myid: dataObj.arrUid[0],
       uid: msgArr[1],
       umz: infoUser[1],
@@ -229,10 +229,10 @@ function msgToDom(msgArr) {
       csj: msgArr[5],
     };
 
-    const domMsgArea = document.createElement("div");
+    var domMsgArea = document.createElement("div");
 
     if (msgObj.clx === config.msgType.broadMsgFetch) {
-      const msgFetch = toObj(msgObj.cxx);
+      var msgFetch = toObj(msgObj.cxx);
       let msgHtml = "";
       msgFetch.forEach(function (ItemMsgArr) {
         msgObj.uid = ItemMsgArr[1];
@@ -393,7 +393,7 @@ function toStr(val) {
 function htmlToTxt(val) {
   let tmpDom = document.createElement("div");
   tmpDom.textContent ? (tmpDom.textContent = val) : (tmpDom.innerText = val);
-  const tmpTxt = faceToImg(tmpDom.innerHTML);
+  var tmpTxt = faceToImg(tmpDom.innerHTML);
   tmpDom = null;
   return tmpTxt;
 }
