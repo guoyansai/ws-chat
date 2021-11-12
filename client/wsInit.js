@@ -18,11 +18,16 @@ var $usercount = document.getElementById("usercount");
 var dataUserKey = "user";
 var dataMsgKey = "msg";
 
-let ws = null;
-let wsTime = 10; // 重连次数
+var ws = null;
+var wsTime = 10; // 重连次数
 var wsUrl = config.wsIp + config.wsPortMsg;
 
 function wsInit() {
+  var rqfh = Number((location.href+'#0').split("#")[1]);
+  if (rqfh > 0) {
+    infhUrl(rqfh);
+  }
+
   ws.onopen = function () {
     wsHeart.reStart();
   };
@@ -76,7 +81,7 @@ function wsInit() {
   $infh.addEventListener(
     "click",
     function (e) {
-      infhOnClick();
+      infhClick();
     },
     true
   );

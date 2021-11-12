@@ -480,8 +480,20 @@ function fhOnInput(e) {
     showDom($infh, "inline-block");
   }
 }
-function infhOnClick() {
-  dataObj.arrUser[0] = +fh.value;
-  userSendSubmit();
-  hiddenDom($infh);
+function infhClick() {
+  if (fh.value) {
+    dataObj.arrUser[0] = +fh.value;
+    location.href = location.href.split("#")[0] + "#" + fh.value;
+    userSendSubmit();
+    hiddenDom($infh);
+  }
+}
+function infhUrl(val) {
+  if (val) {
+    fh.value = val;
+    dataObj.arrUser[0] = +fh.value;
+    userSendSubmit();
+    hiddenDom($infh);
+  }
+  this.infhClick();
 }

@@ -1,20 +1,34 @@
-<!DOCTYPE html>
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%><%
+dim chatTitle,chatType,Server_Name
+Server_Name = lcase(CStr(Request.ServerVariables("Server_Name")))
+if right(Server_Name,7)="asai.cc" then
+chatTitle="阿赛"
+elseif right(Server_Name,7)="909.pub" then
+chatType=909
+chatTitle="啾噗"
+elseif right(Server_Name,9)="02590.com" then
+chatTitle="南京"
+else
+chatTitle=""
+end if
+chatTitle=chatTitle&"AI聊天室"
+%><!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>AI聊天室</title>
+    <title><%=chatTitle%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="AI聊天室" />
-    <meta name="description" content="AI聊天室" />
-    <meta name="copyright" content="AI聊天室" />
+    <meta name="keywords" content="<%=chatTitle%>" />
+    <meta name="description" content="<%=chatTitle%>" />
+    <meta name="copyright" content="<%=chatTitle%>" />
     <style id="cssvar"></style>
     <link type="text/css" href="css.css" rel="stylesheet" />
   </head>
   <body>
     <div id="area">
       <h1>
-        AI聊天室
+        <%=chatTitle%>
         <label for="fh">
           <input type="number" name="fh" id="fh" value="1" min="1" max="99" />
           号房
@@ -76,7 +90,7 @@
         <div id="user"><div class="user">用户列表</div></div>
 
         <div id="msg">
-          <div class="msgg">欢迎光临！这就是个简洁的聊天室而已，随意聊...</div>
+          <div class="msgg">欢迎光临！<%=chatTitle%>就是个简洁的聊天室而已，随意聊...</div>
         </div>
 
         <div id="msgform">
