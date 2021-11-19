@@ -12,7 +12,7 @@ else
 chatTitle=""
 end if
 chatTitle=chatTitle&"AI聊天室"
-%><!doctype html>
+%><!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
@@ -22,17 +22,16 @@ chatTitle=chatTitle&"AI聊天室"
     <meta name="keywords" content="<%=chatTitle%>" />
     <meta name="description" content="<%=chatTitle%>" />
     <meta name="copyright" content="<%=chatTitle%>" />
-    <style id="cssvar"></style>
-    <link type="text/css" href="css.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css.css" />
   </head>
   <body>
     <div id="area">
       <div id="bar">
         <label id="bartit" for="fh">
-          <strong><%=chatTitle%><span id="saycount"></span></strong>
+          <h1><%=chatTitle%></h1>
           <input type="number" name="fh" id="fh" value="1" min="1" max="99" />
           <span id="fhdec">号房</span>
-          <span id="infh">点击进入</span>
+          <button id="infh">点击进入</button>
         </label>
         <div id="barmid"></div>
         <div id="barset" onclick="decAuto()">···</div>
@@ -54,9 +53,10 @@ chatTitle=chatTitle&"AI聊天室"
 
             <div id="main1">
               <div id="userform">
+                　　　<img id="tximg" src="" />
                 <label for="tx">
                   头像：
-                  <select id="tx" name="tx">
+                  <select id="tx" name="tx" onchange="showTx(event)">
                     <script>
                       function getTxOption() {
                         var i = 0;
@@ -125,7 +125,9 @@ chatTitle=chatTitle&"AI聊天室"
         </div>
 
         <div id="msg">
-          <div class="msgg">欢迎光临！这就是个简洁的聊天室而已，随意聊...</div>
+          <div class="msgg">
+            欢迎光临！<%=chatTitle%>是个简洁的聊天室而已，随意聊...
+          </div>
         </div>
 
         <div id="msgform">
@@ -151,6 +153,7 @@ chatTitle=chatTitle&"AI聊天室"
       </div>
       <script src="config.js"></script>
       <script src="wsInit.js"></script>
+      <script src="wsChat.js"></script>
       <script src="wsClient.js"></script>
     </div>
   </body>

@@ -3,22 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>AI聊天室</title>
+    <title>智能AI聊天室</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="AI聊天室" />
-    <meta name="description" content="AI聊天室" />
-    <meta name="copyright" content="AI聊天室" />
-    <style id="cssvar"></style>
-    <link type="text/css" href="css.css" rel="stylesheet" />
+    <meta name="keywords" content="智能AI聊天室" />
+    <meta name="description" content="智能AI聊天室" />
+    <meta name="copyright" content="智能AI聊天室" />
+    <link rel="stylesheet" type="text/css" href="css.css" />
   </head>
   <body>
     <div id="area">
       <div id="bar">
         <label id="bartit" for="fh">
-          <strong>AI聊天室<span id="saycount"></span></strong>
+          <h1>智能AI聊天室</h1>
           <input type="number" name="fh" id="fh" value="1" min="1" max="99" />
           <span id="fhdec">号房</span>
-          <span id="infh">点击进入</span>
+          <button id="infh">点击进入</button>
         </label>
         <div id="barmid"></div>
         <div id="barset" onclick="decAuto()">···</div>
@@ -40,9 +39,10 @@
 
             <div id="main1">
               <div id="userform">
+                　　　<img id="tximg" src="" />
                 <label for="tx">
                   头像：
-                  <select id="tx" name="tx">
+                  <select id="tx" name="tx" onchange="showTx(event)">
                     <script>
                       function getTxOption() {
                         var i = 0;
@@ -111,7 +111,9 @@
         </div>
 
         <div id="msg">
-          <div class="msgg">欢迎光临！这就是个简洁的聊天室而已，随意聊...</div>
+          <div class="msgg">
+            欢迎光临！智能AI聊天室是个简洁的聊天室而已，随意聊...
+          </div>
         </div>
 
         <div id="msgform">
@@ -137,6 +139,7 @@
       </div>
       <script src="config.js"></script>
       <script src="wsInit.js"></script>
+      <script src="wsChat.js"></script>
       <script src="wsClient.js"></script>
     </div>
   </body>

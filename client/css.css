@@ -1,5 +1,5 @@
 /**
-背景色：#f2f7f0
+背景色：#f9f9f8
 文字色：#045719
 点缀色：#DD0008
 边框色：#86b18f
@@ -14,7 +14,7 @@ body {
   background-position-x: center;
   background-position-y: center;
   font-size: 16px;
-  background-color: #f2f7f0;
+  background-color: #f9f9f8;
   color: #045719;
 }
 #music {
@@ -49,29 +49,39 @@ body {
   align-items: center;
   align-content: center;
 }
-#bartit strong {
+#bartit h1 {
   padding: 0 8px;
+  display: inline-block;
+  max-width: 168px;
+  overflow: hidden;
+  word-break: keep-all;
+  text-overflow: ellipsis;
   font-size: x-large;
-  background-color: #f2f7f0;
+  background-color: #f9f9f8;
   color: #045719;
 }
 #bartit #fh {
   padding: 0;
-  margin: 0 0 0 8px;
+  margin: 0 0 0 12px;
   border: 0;
   text-align: center;
   font-size: larger;
+  outline: 0;
+  width: 38px;
   background-color: transparent;
-  color: #f2f7f0;
+  border: 1px solid #86b18f;
+  color: #f9f9f8;
+}
+#bartit #fh:focus {
+  border: 1px solid #045719;
 }
 #bartit #fhdec {
   margin: 0 3px;
-  color: #f2f7f0;
+  color: #f9f9f8;
 }
 #bartit #infh {
   cursor: pointer;
   margin: 0 3px;
-  color: #dd0008;
 }
 #barmid {
   flex-grow: 1;
@@ -85,7 +95,7 @@ body {
   align-content: center;
   justify-content: flex-end;
   position: relative;
-  color: #f2f7f0;
+  color: #f9f9f8;
 }
 #decarea {
   position: fixed;
@@ -95,7 +105,7 @@ body {
   height: 80%;
   display: flex;
   flex-direction: column;
-  background-color: #f2f7f0;
+  background-color: #f9f9f8;
 }
 #dectool {
   padding: 0 8px;
@@ -105,7 +115,7 @@ body {
   justify-content: flex-end;
   align-items: center;
   background-color: #86b18f;
-  color: #f2f7f0;
+  color: #f9f9f8;
 }
 #decclose {
   cursor: pointer;
@@ -129,12 +139,12 @@ body {
   color: #86b18f;
 }
 #decmenu > div.curmenu {
-  background-color: #f2f7f0;
+  background-color: #f9f9f8;
   color: #045719;
 }
 #decmain {
   flex-grow: 1;
-  background-color: #f2f7f0;
+  background-color: #f9f9f8;
 }
 
 #chat {
@@ -216,15 +226,20 @@ body {
   overflow: auto;
   padding: 5px 12px;
 }
+#tximg {
+  border-radius: 50%;
+}
 #userform > label {
   display: block;
   padding-bottom: 5px;
 }
+#infh,
+#card button,
 #userform button,
 #msgformsay button {
   background-color: #045719;
   border: 1px solid #045719;
-  color: #f2f7f0;
+  color: #f9f9f8;
 }
 #userform > button {
   margin-top: 12px;
@@ -243,13 +258,16 @@ body {
   outline: 0;
   border-color: #045719;
 }
+#userform input {
+  width: 155px;
+}
 #userform input,
 #userform select {
   padding: 5px;
   margin-right: 5px;
 }
 #userform select > option {
-  background-color: #f2f7f0;
+  background-color: #f9f9f8;
   color: #045719;
 }
 #user {
@@ -313,7 +331,6 @@ body {
   display: inline-block;
   height: 26px;
   cursor: pointer;
-  margin-right: 5px;
   font-size: small;
   color: #86b18f;
 }
