@@ -8,15 +8,15 @@ var dataObj = {
   msgType: config.msgType.broadMsg,
   msgDx: 0,
   menuIndex: 0,
-  newMsg: 0,
 };
 
 hiddenDom($cardarea);
-menuClick(dataObj.menuIndex);
 initDataUser();
 initFormUser();
 initFaceDom();
 hiddenDom($infh);
+menuClick(0);
+decAuto(1);
 msgSpeak(config.helloMsg[parseInt(Math.random() * config.helloMsg.length)]);
 
 function msgSend(msg) {
@@ -40,7 +40,6 @@ function userSendSubmit() {
     dataObj.arrUser,
     0,
   ]);
-  menuClick(0);
 }
 
 function msgSendSubmit() {
@@ -251,7 +250,6 @@ function msgToDom(msgArr) {
       });
       domMsgArea.innerHTML = msgHtml;
     } else {
-      newMsgCount(0);
       msgSpeak(msgObj.cxx);
       if (msgObj.uid === msgObj.myid || msgObj.cdx === msgObj.myid) {
         setDomClass(domMsgArea, "msgmy");
@@ -264,21 +262,6 @@ function msgToDom(msgArr) {
   }
 }
 
-function newMsgCount(type) {
-  if (dataObj.menuIndex !== 0) {
-    if (!type) {
-      dataObj.newMsg++;
-    }
-    if (dataObj.newMsg > 0) {
-      $saycount.innerText = dataObj.newMsg;
-    }
-  } else {
-    if (dataObj.newMsg > 0) {
-      $saycount.innerText = "";
-    }
-    dataObj.newMsg = 0;
-  }
-}
 function setMsgDx(dxid) {
   dataObj.msgDx = dxid;
   if (dataObj.msgDx && dataObj.arrUserList[dataObj.msgDx]) {
@@ -288,7 +271,6 @@ function setMsgDx(dxid) {
     dataObj.msgDx = 0;
     $msgformdx.innerHTML = "";
   }
-  menuClick(0);
 }
 function getMsgHtml(msgObj) {
   if (msgObj.clx === config.msgType.broadInRoom) {
@@ -331,26 +313,29 @@ function msgToolClose() {
   $msgformsaytool.className = "";
 }
 
-function menuClick(index) {
-  dataObj.menuIndex = index;
-  setDomClass($menu.children[0], "");
-  setDomClass($menu.children[1], "");
-  setDomClass($menu.children[2], "");
-  setDomClass($menu.children[index], "curmenu");
-  hiddenDom($user);
-  hiddenDom($userform);
-  hiddenDom($msg);
-  hiddenDom($msgform);
-  if (index === 2) {
-    showDom($userform, "block");
-  } else if (index === 1) {
-    showDom($user, "block");
+function decAuto(type = 0) {
+  if (type || $decarea.style.display !== "none") {
+    $decarea.style.display = "none";
   } else {
-    showDom($msg, "block");
-    showDom($msgform, "flex");
-    xx.focus();
+    showDom($decarea, "flex");
   }
-  newMsgCount(1);
+}
+
+function menuClick(index) {
+  const max = 2;
+  let i = 0;
+  while (i < max) {
+    setDomClass(document.getElementById("menu" + i), "");
+    hiddenDom(document.getElementById("main" + i));
+    i++;
+  }
+  if (index < max) {
+    dataObj.menuIndex = index;
+  } else {
+    dataObj.menuIndex = 0;
+  }
+  setDomClass(document.getElementById("menu" + dataObj.menuIndex), "curmenu");
+  showDom(document.getElementById("main" + dataObj.menuIndex), "block");
 }
 
 function setDomClass(dom, value) {

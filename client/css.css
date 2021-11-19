@@ -1,3 +1,11 @@
+/**
+背景色：#f2f7f0
+文字色：#045719
+点缀色：#DD0008
+边框色：#86b18f
+过渡色：#e4ece7
+透明色：rgba(246, 250, 234, 0.8)
+**/
 body {
   padding: 0;
   margin: 0;
@@ -5,21 +13,9 @@ body {
   background-repeat: repeat;
   background-position-x: center;
   background-position-y: center;
-}
-h1 {
-  padding-left: 12px;
-}
-h1 label {
-  padding-left: 10px;
-}
-h1 input {
-  width: 38px;
-  border-width: 1px;
-  border-style: solid;
-}
-h1 button {
-  border-width: 1px;
-  border-style: solid;
+  font-size: 16px;
+  background-color: #f2f7f0;
+  color: #045719;
 }
 #music {
   position: fixed;
@@ -37,40 +33,115 @@ h1 button {
   display: flex;
   flex-direction: column;
 }
+
+#bar {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: small;
+  background-color: #86b18f;
+}
+#bartit {
+  width: auto;
+  height: 28px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+#bartit strong {
+  padding: 0 8px;
+  font-size: x-large;
+  background-color: #f2f7f0;
+  color: #045719;
+}
+#bartit #fh {
+  padding: 0;
+  margin: 0 0 0 8px;
+  border: 0;
+  text-align: center;
+  font-size: larger;
+  background-color: transparent;
+  color: #f2f7f0;
+}
+#bartit #fhdec {
+  margin: 0 3px;
+  color: #f2f7f0;
+}
+#bartit #infh {
+  cursor: pointer;
+  margin: 0 3px;
+  color: #dd0008;
+}
+#barmid {
+  flex-grow: 1;
+}
+#barset {
+  cursor: pointer;
+  width: auto;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-end;
+  position: relative;
+  color: #f2f7f0;
+}
+#decarea {
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f2f7f0;
+}
+#dectool {
+  padding: 0 8px;
+  height: 28px;
+  min-height: 28px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #86b18f;
+  color: #f2f7f0;
+}
+#decclose {
+  cursor: pointer;
+  font-size: larger;
+}
+#dec {
+  display: flex;
+  flex-grow: 1;
+  overflow: auto;
+  border: 1px solid #e4ece7;
+  background-color: #e4ece7;
+}
+#decmenu {
+  line-height: 58px;
+  width: 88px;
+  min-width: 88px;
+  text-align: center;
+}
+#decmenu > div {
+  cursor: pointer;
+  color: #86b18f;
+}
+#decmenu > div.curmenu {
+  background-color: #f2f7f0;
+  color: #045719;
+}
+#decmain {
+  flex-grow: 1;
+  background-color: #f2f7f0;
+}
+
 #chat {
   flex-grow: 1;
   overflow: auto;
   display: flex;
   flex-direction: column;
-}
-#menu {
-  line-height: 150%;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  padding-left: 12px;
-}
-.menu div {
-  padding: 5px 8px;
-  display: inline-block;
-  cursor: pointer;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-bottom: -1px;
-}
-.curmenu,
-.menu div:hover {
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-left-width: 1px;
-  border-left-style: solid;
-  border-right-width: 1px;
-  border-right-style: solid;
-  margin-left: 1px;
-  margin-right: 1px;
-}
-.curmenu {
-  font-weight: bold;
-  pointer-events: none;
 }
 
 #cardarea {
@@ -98,6 +169,11 @@ h1 button {
   min-width: 100px;
   max-height: 88%;
   overflow: auto;
+  border-top-color: #e4ece7;
+  border-bottom-color: #e4ece7;
+  border-left-color: #e4ece7;
+  border-right-color: #e4ece7;
+  background-color: rgba(246, 250, 234, 0.8);
 }
 .usercard {
 }
@@ -114,6 +190,7 @@ h1 button {
   border-radius: 50%;
 }
 .cuid {
+  color: #86b18f;
 }
 .cumz {
   margin: 12px 0;
@@ -121,11 +198,13 @@ h1 button {
 }
 .cuqm {
   margin-bottom: 12px;
+  font-size: small;
 }
 .cucs,
 .cusr,
 .cusj {
   opacity: 0.6;
+  font-size: small;
 }
 .cubt button {
   cursor: pointer;
@@ -141,9 +220,28 @@ h1 button {
   display: block;
   padding-bottom: 5px;
 }
+#userform button,
+#msgformsay button {
+  background-color: #045719;
+  border: 1px solid #045719;
+  color: #f2f7f0;
+}
 #userform > button {
   margin-top: 12px;
   padding: 12px 24px;
+}
+#msgformsay input,
+#userform input,
+#userform select {
+  background-color: transparent;
+  border: 1px solid #86b18f;
+  color: #045719;
+}
+#msgformsay input:focus,
+#userform input:focus,
+#userform select:focus {
+  outline: 0;
+  border-color: #045719;
 }
 #userform input,
 #userform select {
@@ -151,6 +249,8 @@ h1 button {
   margin-right: 5px;
 }
 #userform select > option {
+  background-color: #f2f7f0;
+  color: #045719;
 }
 #user {
   flex-grow: 1;
@@ -165,6 +265,8 @@ h1 button {
   border-style: solid;
   padding: 5px 12px;
   margin: 5px;
+  background-color: rgba(246, 250, 234, 0.8);
+  border-color: #e4ece7;
 }
 
 #msgform {
@@ -173,10 +275,12 @@ h1 button {
   flex-direction: column;
   border-top-width: 1px;
   border-top-style: solid;
+  border-top-color: #e4ece7;
 }
 .astbg,
 #msgformtools,
 #msgformsaytool:hover {
+  background-color: rgba(246, 250, 234, 0.8);
 }
 #msgformtool {
   display: none;
@@ -210,11 +314,15 @@ h1 button {
   height: 26px;
   cursor: pointer;
   margin-right: 5px;
+  font-size: small;
+  color: #86b18f;
 }
 #msgformsay > input {
   flex-grow: 1;
   padding: 5px;
   margin-right: 5px;
+  background-color: transparent;
+  color: #045719;
 }
 #msgformsay > button {
   padding: 5px;
@@ -234,6 +342,10 @@ h1 button {
   margin: 5px 12px;
   border-width: 1px;
   border-style: solid;
+  font-size: small;
+  background-color: rgba(246, 250, 234, 0.8);
+  border-color: #e4ece7;
+  color: #86b18f;
 }
 .msgmy {
   text-align: right;
@@ -268,9 +380,12 @@ h1 button {
   border-style: solid;
   padding: 12px;
   border-radius: 0 12px 12px 12px;
+  border-color: #e4ece7;
 }
 
 .csj {
+  color: #86b18f;
+  font-size: small;
 }
 .user {
   width: 100%;
@@ -286,6 +401,7 @@ h1 button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: small;
 }
 
 .lx20 {
@@ -293,6 +409,8 @@ h1 button {
 .lx22,
 .lx23,
 .lx24 {
+  font-size: small;
+  color: #86b18f;
 }
 .lx22 {
   background-color: rgb(253, 251, 239, 0.7);

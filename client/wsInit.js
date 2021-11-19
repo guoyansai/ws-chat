@@ -1,3 +1,4 @@
+var $decarea = document.getElementById("decarea");
 var $menu = document.getElementById("menu");
 var $saycount = document.getElementById("saycount");
 var $cardarea = document.getElementById("cardarea");
