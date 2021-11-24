@@ -68,11 +68,6 @@ const nameList = [
   "李桂英",
   "刘芳",
 ];
-let users = initAIUser(10);
-const aiCount = Object.keys(users).length;
-const aiSleep = 50; // 多少人在线的时候AI可以睡觉
-let uid = aiCount;
-let uuser = {};
 
 function initAIUser(num) {
   var i = 0;
@@ -95,6 +90,12 @@ function getAIUser(index) {
     index,
   ];
 }
+
+let users = initAIUser(10);
+const aiCount = Object.keys(users).length;
+const aiSleep = 50; // 多少人在线的时候AI可以睡觉
+let uid = aiCount;
+let uuser = {};
 
 // 广播
 wss.broadcast = (msg, ws = {}) => {
