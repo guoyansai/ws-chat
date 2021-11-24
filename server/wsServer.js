@@ -70,15 +70,14 @@ const nameList = [
 ];
 
 function initAIUser(num) {
-  var i = 0;
   var userList = {};
-  while (i < num) {
-    userList[i + 1] = getAIUser(i + 1);
+  for (var ii = 1; ii <= num; ii++) {
+    userList[ii] = getAIUser(ii);
   }
   return userList;
 }
 
-function getAIUser(index) {
+function getAIUser(ii) {
   return [
     0,
     "[AI]" + nameList[parseInt(Math.random() * 50)],
@@ -87,7 +86,7 @@ function getAIUser(index) {
     "-",
     "-",
     getTime(),
-    index,
+    ii,
   ];
 }
 
