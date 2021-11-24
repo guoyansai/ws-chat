@@ -68,112 +68,33 @@ const nameList = [
   "李桂英",
   "刘芳",
 ];
-let users = {
-  1: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    1,
-  ],
-  2: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    2,
-  ],
-  3: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    3,
-  ],
-  4: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    4,
-  ],
-  5: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    5,
-  ],
-  6: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    6,
-  ],
-  7: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    7,
-  ],
-  8: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    8,
-  ],
-  9: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    9,
-  ],
-  10: [
-    0,
-    nameList[parseInt(Math.random() * 50)],
-    parseInt(Math.random() * 90 + 1),
-    "2012-02-14",
-    "-",
-    "-",
-    getTime(),
-    10,
-  ],
-};
+let users = initAIUser(10);
 const aiCount = Object.keys(users).length;
-const aiSleep = 50; // 多少人在线的时候AI睡觉
+const aiSleep = 50; // 多少人在线的时候AI可以睡觉
 let uid = aiCount;
 let uuser = {};
+
+function initAIUser(num) {
+  var i = 0;
+  var userList = {};
+  while (i < num) {
+    userList[i + 1] = getAIUser(i + 1);
+  }
+  return userList;
+}
+
+function getAIUser(index) {
+  return [
+    0,
+    "[AI]" + nameList[parseInt(Math.random() * 50)],
+    parseInt(Math.random() * 90 + 1),
+    "2012-02-14",
+    "-",
+    "-",
+    getTime(),
+    index,
+  ];
+}
 
 // 广播
 wss.broadcast = (msg, ws = {}) => {
