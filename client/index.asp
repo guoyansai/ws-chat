@@ -6,7 +6,7 @@ chatTitle="阿赛"
 elseif right(Server_Name,7)="909.pub" then
 chatType=909
 chatTitle="啾噗"
-elseif right(Server_Name,9)="02590.com" then
+elseif right(Server_Name,9)="asai.cc" then
 chatTitle="南京"
 else
 chatTitle=""
