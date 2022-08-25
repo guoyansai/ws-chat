@@ -24,7 +24,7 @@ function chatShow(msg) {
         dataObj.arrUid[0] = msgArr[1];
         dataObj.arrUid[1] = msgArr[5];
         if (!dataObj.arrUser[1] || dataObj.arrUser[1] === config.epVal) {
-          dataObj.arrUser = msgArr[3];
+          dataObj.arrUser = ip2City(msgArr[3]);
           storageSetItem(dataUserKey, toStr(dataObj.arrUser));
           initDataUser();
           initFormUser();
@@ -43,6 +43,27 @@ function chatShow(msg) {
       }
     }
   }
+}
+
+function ip2City(val) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4) {
+      console.log(666.123,xhr.responseText)
+      return xhr.responseText
+        .replace("电信", "")
+        .replace("联通", "")
+        .replace("移动", "");
+    }
+  };
+  xhr.open(
+    "get",
+    "http://ip.asai.cc/?ty=2&ip=" +
+      val.match(/\d+/g).join("."),
+    true
+  );
+  xhr.overrideMimeType("text/html;charset=gb2312");
+  xhr.send(null);
 }
 
 function userToDom(msgArr) {

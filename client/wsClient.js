@@ -90,7 +90,7 @@ function cardShowUser(uid) {
       "</div><div class=cuqm>" +
       htmlToTxt(infoUser[5]) +
       "</div><div class=cucs>城市：" +
-      ip2City(infoUser[4]) +
+      htmlToTxt(infoUser[4]) +
       "</div><div class=cusr>生日：" +
       infoUser[3] +
       "</div><div class=cusj>时间：" +
@@ -243,26 +243,6 @@ function htmlToTxt(val) {
   var tmpTxt = faceToImg(tmpDom.innerHTML);
   tmpDom = null;
   return tmpTxt;
-}
-
-function ip2City(val) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-      return xhr.responseText
-        .replace("电信", "")
-        .replace("联通", "")
-        .replace("移动", "");
-    }
-  };
-  xhr.open(
-    "get",
-    "http://ip.asai.cc/?ty=2&ip=" +
-      htmlToTxt(val).match(/\d+/g).join("."),
-    true
-  );
-  xhr.overrideMimeType("text/html;charset=gb2312");
-  xhr.send(null);
 }
 
 function faceToImg(val) {
