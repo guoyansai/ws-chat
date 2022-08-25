@@ -1,4 +1,5 @@
 var config = {
+  ipCity: "http://ip.asai.cc/?ty=2&ip=", // http://localhost:99/-ip/?ty=2&ip=
   wsIp: "ws://tc.asai.cc:",
   wsIpLocal: "ws://localhost:",
   wsPortMsg: 909,

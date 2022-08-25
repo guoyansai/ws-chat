@@ -176,7 +176,7 @@ wss.on("connection", (ws, req) => {
     time: getTime(),
     user: config.userTmp,
   };
-  uuser.user[1] = `游客${uid}`;
+  uuser.user[1] = `${uid}`;
   uuser.user[4] = `${req.connection.remoteAddress}`;
   ws.us = uuser;
   ws.send(toStr([0, uid, config.msgType.myUid, uuser.user, 0, uuser.time]));

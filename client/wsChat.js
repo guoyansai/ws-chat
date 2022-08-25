@@ -24,18 +24,28 @@ function chatShow(msg) {
         dataObj.arrUid[0] = msgArr[1];
         dataObj.arrUid[1] = msgArr[5];
         if (!dataObj.arrUser[1] || dataObj.arrUser[1] === config.epVal) {
-          dataObj.arrUser = ip2City(msgArr[3]);
-          storageSetItem(dataUserKey, toStr(dataObj.arrUser));
-          initDataUser();
-          initFormUser();
+          ip2City(msgArr[3]).then((res) => {
+            dataObj.arrUser = res;
+            storageSetItem(dataUserKey, toStr(dataObj.arrUser));
+            initDataUser();
+            initFormUser();
+            msgSend([
+              msgArr[0],
+              msgArr[1],
+              config.msgType.wsInRoom,
+              dataObj.arrUser,
+              0,
+            ]);
+          });
+        } else {
+          msgSend([
+            msgArr[0],
+            msgArr[1],
+            config.msgType.wsInRoom,
+            dataObj.arrUser,
+            0,
+          ]);
         }
-        msgSend([
-          msgArr[0],
-          msgArr[1],
-          config.msgType.wsInRoom,
-          dataObj.arrUser,
-          0,
-        ]);
       } else {
         storageSetItem(dataMsgKey, msg);
         dataObj.strMsg = msg;
@@ -45,25 +55,31 @@ function chatShow(msg) {
   }
 }
 
-function ip2City(val) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-      console.log(666.123,xhr.responseText)
-      return xhr.responseText
-        .replace("电信", "")
-        .replace("联通", "")
-        .replace("移动", "");
-    }
-  };
-  xhr.open(
-    "get",
-    "http://ip.asai.cc/?ty=2&ip=" +
-      val.match(/\d+/g).join("."),
-    true
-  );
-  xhr.overrideMimeType("text/html;charset=gb2312");
-  xhr.send(null);
+function ip2City(value) {
+  let val = [...value];
+  return new Promise((resolve, reject) => {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        let tmp = xhr.responseText
+          .replace("电信", "")
+          .replace("联通", "")
+          .replace("移动", "")
+          .replace("保留地址", "");
+        val[4] = tmp;
+        val[1] = (tmp || "游客") + val[1];
+        return resolve(val);
+      }
+    };
+    xhr.open(
+      "get",
+      config.ipCity +
+        (val[4] || "").match(/\d+/g).join("."),
+      true
+    );
+    xhr.overrideMimeType("text/html;charset=gb2312");
+    xhr.send(null);
+  });
 }
 
 function userToDom(msgArr) {
@@ -117,7 +133,7 @@ function msgToDom(msgArr) {
           msgObj.umz = dataObj.arrUserList[ItemMsgArr[1]][1];
           msgObj.utx = dataObj.arrUserList[ItemMsgArr[1]][2];
         } else {
-          msgObj.umz = "游客" + msgObj.uid;
+          msgObj.umz = msgObj.uid;
           msgObj.utx = 0;
         }
         msgObj.clx = ItemMsgArr[2];
