@@ -203,6 +203,10 @@ wss.on("connection", (ws, req) => {
       console.log(666.909, e);
     }
   });
+
+  ws.on("error", (err) => {
+    console.log(666.906, err);
+  });
 });
 
 function toObj(val) {
