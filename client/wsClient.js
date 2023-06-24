@@ -301,9 +301,11 @@ function msgSpeak(val) {
     if (eesfstr != "") {
       let sdom = document.createElement("video");
       sdom.style.display = "none";
+      // https://tts.baidu.com/text2audio?cuid=baike&lan=ZH&ctp=1&pdt=301&vol=9&rate=32&per=
+      // http://tts.baidu.com/text2audio/text2audio?lan=zh&ie=UTF-8&spd=6&per=
       // 0为女声,1为男声,3为情感合成-度逍遥,4为情感合成-度丫丫;
       sdom.src =
-        "http://tts.baidu.com/text2audio/text2audio?lan=zh&ie=UTF-8&spd=6&per=" +
+        "https://tts.baidu.com/text2audio?cuid=baike&lan=ZH&ctp=1&pdt=301&vol=9&rate=32&per=" +
         Math.floor(Math.random() * 4) +
         "&text=" +
         eesfstr;

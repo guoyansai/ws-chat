@@ -6,7 +6,7 @@ chatTitle="阿赛"
 elseif right(Server_Name,7)="909.pub" then
 chatType=909
 chatTitle="啾噗"
-elseif right(Server_Name,9)="asai.cc" then
+elseif right(Server_Name,9)="02590.com" then
 chatTitle="南京"
 else
 chatTitle=""
@@ -34,7 +34,7 @@ chatTitle=chatTitle&"AI聊天室"
           <button id="infh">点击进入</button>
         </label>
         <div id="barmid"></div>
-        <div id="barset" onclick="decAuto()">···</div>
+        <div id="barset" onclick="decAuto()">当前在线</div>
       </div>
       <div id="music"></div>
       <div id="decarea">

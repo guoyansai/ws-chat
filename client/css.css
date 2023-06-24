@@ -1,10 +1,10 @@
 /**
-背景色：#f9f9f8
-文字色：#045719
-点缀色：#DD0008
-边框色：#86b18f
-过渡色：#e4ece7
-透明色：rgba(246, 250, 234, 0.8)
+背景色：#f5f8e6
+文字色：#001100
+点缀色：#d01c1f
+主体色：#4b81bf
+会话色: #3aa845
+话字色: #000102
 **/
 body {
   padding: 0;
@@ -14,8 +14,8 @@ body {
   background-position-x: center;
   background-position-y: center;
   font-size: 16px;
-  background-color: #f9f9f8;
-  color: #045719;
+  background-color: #f5f8e6;
+  color: #001100;
 }
 #music {
   position: fixed;
@@ -39,7 +39,7 @@ body {
   display: flex;
   align-items: center;
   font-size: small;
-  background-color: #86b18f;
+  background-image: linear-gradient(90deg, #4b81bf88, #4b81bf);
 }
 #bartit {
   width: auto;
@@ -57,11 +57,13 @@ body {
   word-break: keep-all;
   text-overflow: ellipsis;
   font-size: x-large;
-  background-color: #f9f9f8;
-  color: #045719;
+  background-color: #f5f8e6;
+  color: #4b81bf;
+  text-shadow: 0px 0px 0 #4b81bf22, 1px -1px 0 #4b81bf33, 2px -2px 0 #4b81bf44,
+    3px -3px 0 #4b81bf55;
 }
 #bartit #fh {
-  padding: 0;
+  padding: 0 0 0 10px;
   margin: 0 0 0 12px;
   border: 0;
   text-align: center;
@@ -69,15 +71,16 @@ body {
   outline: 0;
   width: 38px;
   background-color: transparent;
-  border: 1px solid #86b18f;
-  color: #f9f9f8;
+  border: 1px solid #4b81bf22;
+  color: #f5f8e6;
+  border-radius: 6px;
 }
 #bartit #fh:focus {
-  border: 1px solid #045719;
+  border: 1px solid #4b81bf;
 }
 #bartit #fhdec {
   margin: 0 3px;
-  color: #f9f9f8;
+  color: #f5f8e6;
 }
 #bartit #infh {
   cursor: pointer;
@@ -95,7 +98,7 @@ body {
   align-content: center;
   justify-content: flex-end;
   position: relative;
-  color: #f9f9f8;
+  color: #f5f8e6;
 }
 #decarea {
   position: fixed;
@@ -105,7 +108,9 @@ body {
   height: 80%;
   display: flex;
   flex-direction: column;
-  background-color: #f9f9f8;
+  background-color: #f5f8e6;
+  border-radius: 8px;
+  box-shadow: 0px 0px 6px 3px #4b81bf88;
 }
 #dectool {
   padding: 0 8px;
@@ -114,8 +119,9 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: #86b18f;
-  color: #f9f9f8;
+  background-color: #4b81bf;
+  color: #f5f8e6;
+  border-radius: 8px 8px 0 0;
 }
 #decclose {
   cursor: pointer;
@@ -125,8 +131,9 @@ body {
   display: flex;
   flex-grow: 1;
   overflow: auto;
-  border: 1px solid #e4ece7;
-  background-color: #e4ece7;
+  border: 1px solid #4b81bf88;
+  background-color: #4b81bf88;
+  border-radius: 0 0 8px 8px;
 }
 #decmenu {
   line-height: 58px;
@@ -136,15 +143,15 @@ body {
 }
 #decmenu > div {
   cursor: pointer;
-  color: #86b18f;
+  color: #4b81bf;
 }
 #decmenu > div.curmenu {
-  background-color: #f9f9f8;
-  color: #045719;
+  background-color: #f5f8e6;
+  color: #001100;
 }
 #decmain {
   flex-grow: 1;
-  background-color: #f9f9f8;
+  background-color: #f5f8e6;
 }
 
 #chat {
@@ -179,11 +186,13 @@ body {
   min-width: 100px;
   max-height: 88%;
   overflow: auto;
-  border-top-color: #e4ece7;
-  border-bottom-color: #e4ece7;
-  border-left-color: #e4ece7;
-  border-right-color: #e4ece7;
-  background-color: rgba(246, 250, 234, 0.8);
+  border-top-color: #4b81bf88;
+  border-bottom-color: #4b81bf88;
+  border-left-color: #4b81bf88;
+  border-right-color: #4b81bf88;
+  background-color: #f5f8e6;
+  box-shadow: 0px 0px 6px 3px #4b81bf88;
+  border-radius: 8px;
 }
 .usercard {
 }
@@ -200,7 +209,7 @@ body {
   border-radius: 50%;
 }
 .cuid {
-  color: #86b18f;
+  color: #4b81bf;
 }
 .cumz {
   margin: 12px 0;
@@ -237,9 +246,12 @@ body {
 #card button,
 #userform button,
 #msgformsay button {
-  background-color: #045719;
-  border: 1px solid #045719;
-  color: #f9f9f8;
+  background-image: linear-gradient(180deg, #4b81bf22, #4b81bf88);
+  border: 1px solid #4b81bf;
+  color: #4b81bf;
+  border-radius: 6px;
+  box-shadow: 0px 0px 6px 3px #4b81bf44;
+  outline: 0;
 }
 #userform > button {
   margin-top: 12px;
@@ -249,14 +261,15 @@ body {
 #userform input,
 #userform select {
   background-color: transparent;
-  border: 1px solid #86b18f;
-  color: #045719;
+  border: 1px solid #4b81bf;
+  color: #001100;
+  border-radius: 3px;
 }
 #msgformsay input:focus,
 #userform input:focus,
 #userform select:focus {
   outline: 0;
-  border-color: #045719;
+  border-color: #001100;
 }
 #userform input {
   width: 155px;
@@ -267,8 +280,8 @@ body {
   margin-right: 5px;
 }
 #userform select > option {
-  background-color: #f9f9f8;
-  color: #045719;
+  background-color: #f5f8e6;
+  color: #001100;
 }
 #user {
   flex-grow: 1;
@@ -283,8 +296,9 @@ body {
   border-style: solid;
   padding: 5px 12px;
   margin: 5px;
-  background-color: rgba(246, 250, 234, 0.8);
-  border-color: #e4ece7;
+  background-color: #4b81bf22;
+  border-color: #4b81bf88;
+  border-radius: 6px;
 }
 
 #msgform {
@@ -293,12 +307,12 @@ body {
   flex-direction: column;
   border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: #e4ece7;
+  border-top-color: #4b81bf88;
 }
 .astbg,
 #msgformtools,
 #msgformsaytool:hover {
-  background-color: rgba(246, 250, 234, 0.8);
+  background-color: #4b81bf22;
 }
 #msgformtool {
   display: none;
@@ -332,14 +346,14 @@ body {
   height: 26px;
   cursor: pointer;
   font-size: small;
-  color: #86b18f;
+  color: #4b81bf;
 }
 #msgformsay > input {
   flex-grow: 1;
   padding: 5px;
   margin-right: 5px;
   background-color: transparent;
-  color: #045719;
+  color: #001100;
 }
 #msgformsay > button {
   padding: 5px;
@@ -360,9 +374,9 @@ body {
   border-width: 1px;
   border-style: solid;
   font-size: small;
-  background-color: rgba(246, 250, 234, 0.8);
-  border-color: #e4ece7;
-  color: #86b18f;
+  background-image: linear-gradient(180deg, #4b81bf22, #4b81bf88);
+  border-color: #4b81bf88;
+  color: #4b81bf;
 }
 .msgmy {
   text-align: right;
@@ -375,6 +389,7 @@ body {
 }
 .msgmy .cxx {
   border-radius: 12px 0 12px 12px;
+  background-image: linear-gradient(315deg, #3aa84566, #3aa845cc);
 }
 .msgd {
   display: inline-block;
@@ -397,11 +412,14 @@ body {
   border-style: solid;
   padding: 12px;
   border-radius: 0 12px 12px 12px;
-  border-color: #e4ece7;
+  color: #000102;
+  border-color: #3aa845;
+  background-image: linear-gradient(135deg, #3aa84566, #3aa845cc);
+  box-shadow: 0px 0px 6px 3px #3aa84566;
 }
 
 .csj {
-  color: #86b18f;
+  color: #4b81bf;
   font-size: small;
 }
 .user {
@@ -427,7 +445,7 @@ body {
 .lx23,
 .lx24 {
   font-size: small;
-  color: #86b18f;
+  color: #4b81bf;
 }
 .lx22 {
   background-color: rgb(253, 251, 239, 0.7);

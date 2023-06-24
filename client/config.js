@@ -1,6 +1,6 @@
 var config = {
-  ipCity: "http://localhost:99/-ip/?ty=2&ip=", // http://localhost:99/-ip/?ty=2&ip=
-  wsIp: "ws://localhost:",
+  ipCity: "http://ip.asai.cc/?ty=2&ip=", // http://localhost:99/-ip/?ty=2&ip=
+  wsIp: "ws://tc.asai.cc:",
   wsIpLocal: "ws://localhost:",
   wsPortMsg: 909,
   wsPortUser: 900,
@@ -29,4 +29,4 @@ var config = {
 };
 try {
   module.exports = config;
-} catch(e) {}
+} catch (e) {}
